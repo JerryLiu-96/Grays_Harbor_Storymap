@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>Load data from an external GeoJSON file</title>
+<meta name="viewport" content="initial-scale=1,maximum-scale=1,user-scalable=no">
+<link href="https://api.mapbox.com/mapbox-gl-js/v2.8.2/mapbox-gl.css" rel="stylesheet">
+<script src="https://api.mapbox.com/mapbox-gl-js/v2.8.2/mapbox-gl.js"></script>
+<style>
+body { 
+                margin: 0;
+                padding: 0; 
+            }
+            #map {position:absolute;
+                top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+             width: 100%; }
+</style>
+</head>
+
+<body>
+<div id="map"></div>
+
+<script>
+	mapboxgl.accessToken = 'pk.eyJ1IjoiemxpdTk2IiwiYSI6ImNsMnI3ZWNkcDA0bmwzYnFzcmxnbG9rejMifQ.KS1NO7CgxL3hJi94lTgidQ';
+    const map = new mapboxgl.Map({
+        container: 'map', // container ID
+        style: 'mapbox://styles/mapbox/satellite-v9', // style URL
+        zoom: 11, // starting zoom
+        center: [-124.0572, 46.9308] // starting center
+    });
+
+    map.on('load', () => {
+        map.addSource('coastline_2006', {
+            type: 'geojson',
+            // Use a URL for the value for the `data` property.
+            data: 'assets/f_2006_coastline.geojson'
+        });
+
+        map.addSource('coastline_1911', {
+            type: 'geojson',
+            // Use a URL for the value for the `data` property.
+            data: 'assets/f_1911_coastline.geojson'
+        });
+
+        map.addSource('coastline_1926', {
+            type: 'geojson',
+            // Use a URL for the value for the `data` property.
+            data: 'assets/f_1926_coastline.geojson'
+        });
+
+        map.addSource('coastline_1941', {
+            type: 'geojson',
+            // Use a URL for the value for the `data` property.
+            data: 'assets/f_1941_coastline.geojson'
+        });
+
+        map.addSource('coastline_1954', {
+            type: 'geojson',
+            // Use a URL for the value for the `data` property.
+            data: 'assets/f_1954_coastline.geojson'
+        });
+
+        map.addLayer({
+            'id': 'coastline_06',
+            'type': 'line',
+            'source': 'coastline_2006',
+            'paint': {
+                'line-color': '#FF0000',
+                'line-width':2},  //color Red 2006 coastline
+
+        });
+
+        map.addLayer({
+            'id': 'coastline_11',
+            'type': 'line',
+            'source': 'coastline_1911',
+            'paint': {
+                'line-color': '#A020F0',
+                'line-width':2},    //Purple 1911 coastline
+
+
+        });
+
+        map.addLayer({
+            'id': 'coastline_26',
+            'type': 'line',
+            'source': 'coastline_1926',
+            'paint': {
+                'line-color': '#e2f020',
+                'line-width':2},    //yellow 1926 coastline
+
+
+        });
+
+        map.addLayer({
+            'id': 'coastline_41',
+            'type': 'line',
+            'source': 'coastline_1941',
+            'paint': {
+                'line-color': '#00FF00',
+                'line-width':2},      //green 1941 coastline
+
+
+        });
+
+        map.addLayer({
+            'id': 'coastline_54',
+            'type': 'line',
+            'source': 'coastline_1954',
+            'paint': {
+                'line-color': '#5c2d06',
+                'line-width':2},     //brown 1954 coastline
+
+
+        });
+    });
+</script>
+
+</body>
+</html>

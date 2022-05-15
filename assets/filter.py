@@ -1,25 +1,31 @@
 import geojson
 
 import json
-# Opening JSON file
-f = open('assets/2006_coastline.geojson')
- 
-# returns JSON object as
-# a dictionary
-data = json.load(f)
+class process_json():
+    def __init__(self,year):
+        self.year=year
+    def process(self):
+        url='assets/'+str(self.year)+'_coastline.geojson'
+        print(url)
+        f=open(url)
+        data = json.load(f)
+        li=[]
+        for i in data["features"]:
+            if i["properties"]["CLASS"]=="SHORELINE":
+                li.append(i)
+            
+        tmp_name=str(self.year)+"_coastline"
+        f_data={"type": "FeatureCollection",
+                "name": tmp_name,
+                "features": li}
 
-# create a new list to store the filtered dictionaries
-li=[]
+        write_url='assets/f_'+str(self.year)+'_coastline.geojson'
+        print(write_url)
+        with open(write_url, 'w') as fp:
+            geojson.dump(f_data, fp)
 
-#only keep the dictionaries which contain the natural mean high water in the attribute
-for i in data["features"]:
-    if i["properties"]["CLASS"]=="SHORELINE":
-        li.append(i)
-print(li)
+listed_year=[1911,1926,1941,1954]
 
-f_data={"type": "FeatureCollection",
-"name": "2006_coastline",
-"features": li}
-
-with open('assets/f_2006_coastline.geojson', 'w') as fp:
-    geojson.dump(f_data, fp)
+for y in listed_year:
+    
+    process_json(y).process()

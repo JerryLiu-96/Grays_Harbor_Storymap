@@ -1,11 +1,29 @@
 <!DOCTYPE html>
 <html>
     <head>
+        <meta charset="utf-8">
         <title>Shore You Go or Knot?</title>
+        <meta name="viewport" content="initial-scale=1,maximum-scale=1,user-scalable=no">
+        <link href="https://api.mapbox.com/mapbox-gl-js/v2.8.2/mapbox-gl.css" rel="stylesheet">
+        <script src="https://api.mapbox.com/mapbox-gl-js/v2.8.2/mapbox-gl.js"></script>
         <style>
+
+            * {
+                box-sizing: border-box;
+            }
+
+            body { 
+                margin: 0;
+                padding: 0; 
+            }
+
             .container {
              position: relative;
+             height: 100%;
+             overflow: hidden;
+
              }
+             
             .title-text-block {
               position: absolute;
               top:50%;
@@ -29,9 +47,44 @@
              width: 100%;
              height: auto;
              opacity: 0.4;
+             overflow: hidden;
+             
              }
+
+             .box_content {
+             float: left;
+             width: 40%;
+             height: 800px;
+             padding: 50px;
+             overflow: auto;
+             clear: left;
+             }
+
+             .box_map {
+                 float: left;
+                 width: 60%;
+                 height: 800px;
+                 padding: 0;
+                }
+
+            iframe.map {
+                height: 100%;
+                width: 100%;
+                border: none;
+
+            }
+
+            p {
+                font-family: 'Times New Roman', Times, serif;
+                font-size: 1.8vw;
+                text-align: justify;
+            }
+
+
+  
         </style>
     </head>
+
     <body>
         <div class="container">
             <img class="opening" src="img/Westport_Marina.jpeg" alt="Westport Marina Birdview">
@@ -41,7 +94,20 @@
                 <p>Past, Present, and Future of Land and People in Westport, embracing future challenges.</p>
             </div> 
         </div>
-        
-    </body>
 
+        <div class="box_content">
+            <h1 style="font-size: 5vw;">FOREWORD</h1>
+            <p>Westport, WA, a lovely and peaceful city  located on the west coast of Grays Harbor, is home to a population of 2,000.</p>
+            <p>In past decades, Westport people have learned to build a robust community by the sea, from the sea, and for the sea. Westport is not only known for its beautiful sceneries, but also renowned recreational enjoyments, strong shipbuilding industries, and quality seafoods.</p>
+            <p>Ocean is a treasure bestowed on Westport by our nature mother. However, if we don't use it wisely, we may be punished. Without a doubt, Westport is committed to sustainable development, monitoring and adapting to oceanographic changes with help from resources including government, NGOs, and researchers. Westport has a glory past and weathered through challenges, but in an unpredictable world exacerbated by climate change and seismic risks, we would like to contend that the need for planning ahead is more pronounced.</p>
+            <p>Do you know the past and present of Westport? What do you expect in the future? Feel free to navigate through this storytelling story map, touching on the history of Westport, its dynamic coastline, and our project for the future of Westport.</p>
+        </div>
+
+        <div class="box_map">
+            <iframe class="map" src="test_geojson_mapping.html"></iframe>
+        </div>
+
+
+    </body>
+    
 </html>
