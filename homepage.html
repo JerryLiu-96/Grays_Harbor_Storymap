@@ -6,6 +6,8 @@
         <meta name="viewport" content="initial-scale=1,maximum-scale=1,user-scalable=no">
         <link href="https://api.mapbox.com/mapbox-gl-js/v2.8.2/mapbox-gl.css" rel="stylesheet">
         <script src="https://api.mapbox.com/mapbox-gl-js/v2.8.2/mapbox-gl.js"></script>
+        <script src="https://unpkg.com/intersection-observer@0.5.1/intersection-observer.js"></script>
+        <script src="https://unpkg.com/scrollama"></script>
         <style>
 
             * {
@@ -15,6 +17,10 @@
             body { 
                 margin: 0;
                 padding: 0; 
+            }
+
+            a, a:hover, a:visited {
+                color: #0071bc;
             }
 
             .container {
@@ -80,6 +86,75 @@
                 text-align: justify;
             }
 
+            #intro_map {
+                height: 100vh;
+                width: 100vw;
+
+            }
+
+            #features {
+                padding-top: 10vh;
+                padding-bottom: 10vh;
+            }
+            .hidden {
+            visibility: hidden;
+            }
+            .centered {
+                width: 50vw;
+                margin: 0 auto;
+            }
+            .lefty {
+                width: 33vw;
+                margin-left: 5vw;
+            }
+            .righty {
+                width: 33vw;
+                margin-left: 62vw;
+            }
+            .fully {
+                width: 100%;
+                margin: auto;
+            }
+            .light {
+                color: #444;
+                background-color: #fafafa;
+            }
+            .dark {
+                color: #fafafa;
+                background-color: #444;
+            }
+            .step {
+            padding-bottom: 50vh;
+            /* margin-bottom: 10vh; */
+            opacity: 0.25;
+            }
+            .step.active {
+            opacity: 0.9;
+            }
+
+            .step div {
+            padding:  25px 50px;
+            line-height: 25px;
+            font-size: 13px;
+            }
+
+            .step img {
+            width: 100%;
+            }
+
+            @media (max-width: 750px) {
+                .centered, .lefty, .righty, .fully {
+                    width: 90vw;
+                    margin: 0 auto;
+                }
+            }
+
+            /* Fix issue on mobile browser where scroll breaks  */
+            .mapboxgl-canvas-container.mapboxgl-touch-zoom-rotate.mapboxgl-touch-drag-pan, 
+            .mapboxgl-canvas-container.mapboxgl-touch-zoom-rotate.mapboxgl-touch-drag-pan .mapboxgl-canvas {
+                touch-action: unset;
+            }
+
 
   
         </style>
@@ -106,11 +181,120 @@
         <div class="box_map">
             <iframe class="map" src="test_geojson_mapping.html"></iframe>
         </div>
+        <div id="intro_map"></div>
+        <div id="story"></div>
+        <script src="js/config.js"></script>
+        <script>
+        var layerTypes = {
+            'fill': ['fill-opacity'],
+            'line': ['line-opacity'],
+            'circle': ['circle-opacity', 'circle-stroke-opacity'],
+            'symbol': ['icon-opacity', 'text-opacity'],
+            'raster': ['raster-opacity'],
+            'fill-extrusion': ['fill-extrusion-opacity'],
+            'heatmap': ['heatmap-opacity']
+        }
 
-        <section id="storytelling">
-            
-        </section>
+        var alignments = {
+            'left': 'lefty',
+            'center': 'centered',
+            'right': 'righty',
+            'full': 'fully'
+        }
 
+        function getLayerPaintType(layer) {
+            var layerType = map.getLayer(layer).type;
+            return layerTypes[layerType];
+        }
+
+        function setLayerOpacity(layer) {
+            var paintProps = getLayerPaintType(layer.layer);
+            paintProps.forEach(function(prop) {
+                var options = {};
+                if (layer.duration) {
+                    var transitionProp = prop + "-transition";
+                    options = { "duration": layer.duration };
+                    map.setPaintProperty(layer.layer, transitionProp, options);
+                }
+                map.setPaintProperty(layer.layer, prop, layer.opacity, options);
+            });
+        }
+
+        var story = document.getElementById('story');
+        var features = document.createElement('div');
+        features.setAttribute('id', 'features');
+        config.chapters.forEach((record, idx) => {
+            var container = document.createElement('div');
+            var chapter = document.createElement('div');
+
+            if (record.title) {
+                var title = document.createElement('h3');
+                title.innerText = record.title;
+                chapter.appendChild(title);
+            }
+
+            if (record.image) {
+                var image = new Image();
+                image.src = record.image;
+                chapter.appendChild(image);
+            }
+
+            if (record.description) {
+                var story = document.createElement('p');
+                story.innerHTML = record.description;
+                chapter.appendChild(story);
+            }
+
+            container.setAttribute('id', record.id);
+            container.classList.add('step');
+            if (idx === 0) {
+                container.classList.add('active');
+            }
+
+            chapter.classList.add(config.theme);
+            container.appendChild(chapter);
+            container.classList.add(alignments[record.alignment] || 'centered');
+            if (record.hidden) {
+                container.classList.add('hidden');
+            }
+            features.appendChild(container);
+       });
+
+        story.appendChild(features);
+        
+        mapboxgl.accessToken = config.accessToken;
+        
+        const transformRequest = (url) => {
+            const hasQuery = url.indexOf("?") !== -1;
+            const suffix = hasQuery ? "&pluginName=scrollytellingV2" : "?pluginName=scrollytellingV2";
+            return {
+              url: url + suffix
+            }
+        }
+
+        var map = new mapboxgl.Map({
+            container: 'map',
+            style: config.style,
+            center: config.chapters[0].location.center,
+            zoom: config.chapters[0].location.zoom,
+            bearing: config.chapters[0].location.bearing,
+            pitch: config.chapters[0].location.pitch,
+            interactive: false,
+            transformRequest: transformRequest
+        });
+
+        if (config.showMarkers) {
+            var marker = new mapboxgl.Marker({ color: config.markerColor });
+            marker.setLngLat(config.chapters[0].location.center).addTo(map);
+        }
+
+
+
+
+
+
+
+        </script>
 
     </body>
     
