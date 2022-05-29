@@ -13,7 +13,7 @@ var config = {
         {id: 'marina',
         alignment: 'left',
         title: 'Marina District',
-        image: '',
+        image: 'img/marina.jpeg',
         description: "Westport Marina is the largest coastal marina in the Pacific Northwest and home to Washington State's largest charter fishing fleet.",
         location: {
             center: [-124.113260, 46.907524],
@@ -38,7 +38,7 @@ var config = {
         id: 'school',
         alignment: 'left',
         title: 'Marina District',
-        image:'',
+        image:'img/Ocosta_school.jpeg',
         description:"In 2015, the Ocosta School District became the first in United States to build a publicly funded vertical tsunami shelter, located at Ocosta Elementary School .",
         location: {
             center: [-124.100888, 46.863106],
@@ -54,7 +54,7 @@ var config = {
     {id: 'jetty',
     alignment:'left',
     title:'Westport Jetty',
-    image:'',
+    image:'img/jetty.jpeg',
     description:'Westport Jetty was built in 1902. It is believed that the Jetty changed current and reclaimed the land from the sea.',
     location: {
         center: [-124.138217, 46.905534],
@@ -86,7 +86,7 @@ var config = {
 {id:'light',
     alignment:'left',
     title:'Grays Harbor Lighthouse',
-    image:'',
+    image:'img/graysharbor_light.jpeg',
     description:'It marked the entrance to Grays Harbor and was first lit up in 1898. It was located only 400 feet from the shore when completed.',
     location: {
         center: [-124.116932, 46.887758],
