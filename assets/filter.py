@@ -1,3 +1,4 @@
+# this python is used to process the vectorized 
 import geojson
 
 import json
@@ -24,7 +25,7 @@ class process_json():
         with open(write_url, 'w') as fp:
             geojson.dump(f_data, fp)
 
-listed_year=[1911,1926,1941,1954]
+listed_year=[2016]
 
 for y in listed_year:
     

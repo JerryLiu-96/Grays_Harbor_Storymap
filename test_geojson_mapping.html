@@ -33,6 +33,42 @@ body {
     });
 
     map.on('load', () => {
+        map.addSource('coastline_2016', {
+            type: 'geojson',
+            // Use a URL for the value for the `data` property.
+            data: 'assets/2016_coastline.geojson'
+        });
+
+        map.addSource('coastline_1911_bay', {
+            type: 'geojson',
+            // Use a URL for the value for the `data` property.
+            data: 'assets/f_1911_coastline_bay.geojson'
+        });
+
+        map.addSource('coastline_1922_bay', {
+            type: 'geojson',
+            // Use a URL for the value for the `data` property.
+            data: 'assets/f_1922_coastline_bay.geojson'
+        });
+
+        map.addSource('coastline_1953_bay', {
+            type: 'geojson',
+            // Use a URL for the value for the `data` property.
+            data: 'assets/f_1953_coastline_bay.geojson'
+        });
+
+        map.addSource('coastline_2007_bay', {
+            type: 'geojson',
+            // Use a URL for the value for the `data` property.
+            data: 'assets/f_2007_coastline_bay.geojson'
+        });
+
+        map.addSource('coastline_1860', {
+            type: 'geojson',
+            // Use a URL for the value for the `data` property.
+            data: 'assets/1860_coastline.geojson'
+        });
+
         map.addSource('coastline_2006', {
             type: 'geojson',
             // Use a URL for the value for the `data` property.
@@ -64,7 +100,69 @@ body {
         });
 
         map.addLayer({
-            'id': 'coastline_06',
+            'id': 'coastline_2016',
+            'type': 'line',
+            'source': 'coastline_2016',
+            'paint': {
+                'line-color': '#000000',
+                'line-width':2},  //color black 2016 coastline
+
+        });
+
+        map.addLayer({
+            'id': 'coastline_1911_bay',
+            'type': 'line',
+            'source': 'coastline_1911_bay',
+            'paint': {
+                'line-color': '#A020F0',
+                'line-width':2},  //color purple 2006 coastline
+
+        });
+
+        map.addLayer({
+            'id': 'coastline_1922_bay',
+            'type': 'line',
+            'source': 'coastline_1922_bay',
+            'paint': {
+                'line-color': '#0000FF',
+                'line-width':2},  //color blue 1922 coastline
+
+        });
+
+        map.addLayer({
+            'id': 'coastline_1953_bay',
+            'type': 'line',
+            'source': 'coastline_1953_bay',
+            'paint': {
+                'line-color': '#5c2d06',
+                'line-width':2},    //brown 1953 coastline, same as 1954
+
+
+        });
+
+        map.addLayer({
+            'id': 'coastline_2007_bay',
+            'type': 'line',
+            'source': 'coastline_2007_bay',
+            'paint': {
+                'line-color': '#FFA500',
+                'line-width':2},    //orange 2007 coastline
+
+
+        });
+
+        map.addLayer({
+            'id': 'coastline_1860',
+            'type': 'line',
+            'source': 'coastline_1860',
+            'paint': {
+                'line-color': '#EADDCA',
+                'line-width':2},  //color almond 1860 coastline
+
+        });
+
+        map.addLayer({
+            'id': 'coastline_2006',
             'type': 'line',
             'source': 'coastline_2006',
             'paint': {
@@ -74,7 +172,7 @@ body {
         });
 
         map.addLayer({
-            'id': 'coastline_11',
+            'id': 'coastline_1911',
             'type': 'line',
             'source': 'coastline_1911',
             'paint': {
@@ -85,7 +183,7 @@ body {
         });
 
         map.addLayer({
-            'id': 'coastline_26',
+            'id': 'coastline_1926',
             'type': 'line',
             'source': 'coastline_1926',
             'paint': {
@@ -95,8 +193,10 @@ body {
 
         });
 
+
+
         map.addLayer({
-            'id': 'coastline_41',
+            'id': 'coastline_1941',
             'type': 'line',
             'source': 'coastline_1941',
             'paint': {
@@ -107,7 +207,7 @@ body {
         });
 
         map.addLayer({
-            'id': 'coastline_54',
+            'id': 'coastline_1954',
             'type': 'line',
             'source': 'coastline_1954',
             'paint': {
