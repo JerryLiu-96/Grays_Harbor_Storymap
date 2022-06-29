@@ -99,11 +99,17 @@ body {
             data: 'assets/f_1954_coastline.geojson'
         });
 
+        map.addSource('coastline_cusp', {
+            type: 'geojson',
+            // Use a URL for the value for the `data` property.
+            data: 'assets/cusp.geojson'
+        });
+
         map.addLayer({
-            'id': 'coastline_2016',
+            'id': 'coastline_cusp',
             'type': 'line',
-            'source': 'coastline_2016',
-            'layout':{'visibility':'none'},
+            'source': 'coastline_cusp',
+            //'layout':{'visibility':'none'},
             'paint': {
                 'line-color': '#000000',
                 'line-width':2},  //color black 2016 coastline
@@ -166,6 +172,7 @@ body {
             'id': 'coastline_2006',
             'type': 'line',
             'source': 'coastline_2006',
+            'layout':{'visibility':'none'},
             'paint': {
                 'line-color': '#FF0000',
                 'line-width':2},  //color Red 2006 coastline
