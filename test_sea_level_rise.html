@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>Load data from an external GeoJSON file</title>
+<meta name="viewport" content="initial-scale=1,maximum-scale=1,user-scalable=no">
+<link href="https://api.mapbox.com/mapbox-gl-js/v2.8.2/mapbox-gl.css" rel="stylesheet">
+<script src="https://api.mapbox.com/mapbox-gl-js/v2.8.2/mapbox-gl.js"></script>
+<style>
+body { 
+                margin: 0;
+                padding: 0; 
+            }
+            #map {position:absolute;
+                top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+             width: 100%; }
+</style>
+</head>
+
+<body>
+<div id="map"></div>
+
+<script>
+	mapboxgl.accessToken = 'pk.eyJ1IjoiemxpdTk2IiwiYSI6ImNsMnI3ZWNkcDA0bmwzYnFzcmxnbG9rejMifQ.KS1NO7CgxL3hJi94lTgidQ';
+    const map = new mapboxgl.Map({
+        container: 'map', // container ID
+        style: 'mapbox://styles/mapbox/satellite-v9', // style URL
+        zoom: 11, // starting zoom
+        center: [-124.0572, 46.9308] // starting center
+    });
+
+    const color = ['#9e0142','#d53e4f','#f46d43','#fdae61','#fee08b','#e6f598','#abdda4','#66c2a5','#3288bd','#5e4fa2'];
+
+    map.on('load', () => {
+        for (let i = 1; i < 11; i++) {
+            map.addSource(`coastline_${i}ft`, {
+            type: 'geojson',
+            // Use a URL for the value for the `data` property.
+            data: `assets/slr_${i}ft.geojson`
+        });
+        map.addLayer({
+            'id': `coastline_${i}ft`,
+            'type': 'line',
+            'source': `coastline_${i}ft`,
+            //'layout':{'visibility':'none'},
+            'paint': {
+                'line-color': color[i-1],
+                'line-width':2},  //color black 2016 coastline
+
+        });
+        }
+    }
+    );
+</script>
+
+</body>
+</html>
