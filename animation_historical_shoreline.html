@@ -1,0 +1,363 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>Animation of historical shorelines</title>
+<meta name="viewport" content="initial-scale=1,maximum-scale=1,user-scalable=no">
+<link href="https://api.mapbox.com/mapbox-gl-js/v2.8.2/mapbox-gl.css" rel="stylesheet">
+<script src="https://api.mapbox.com/mapbox-gl-js/v2.8.2/mapbox-gl.js"></script>
+<style>
+    body { 
+          margin: 0;
+          padding: 0; 
+        }
+
+    #map {
+          position:absolute;
+          top: 0;
+          bottom: 0;
+          left: 0;
+          right: 0;
+          width: 100%; 
+        }
+
+    button {
+        position: absolute;
+        top: 15px;
+        right: 15px;
+        background-color: firebrick;
+        color: white;
+        font-size: large;
+        z-index: 9999;
+    }
+
+    #yearHolder {
+        position: absolute;
+        right: 20px;
+        bottom: 20px;
+        color:black;
+        background-color: white;
+        font-size: xx-large;
+        z-index: 9999;
+    }
+</style>
+</head>
+
+<body>
+    <div id="map"></div>
+    <button id="play">Click to play animation</button>
+    <div id="yearHolder"></div>
+
+    <script>
+       mapboxgl.accessToken = 'pk.eyJ1IjoiemxpdTk2IiwiYSI6ImNsMnI3ZWNkcDA0bmwzYnFzcmxnbG9rejMifQ.KS1NO7CgxL3hJi94lTgidQ';
+       
+       const map = new mapboxgl.Map({
+         container: 'map', // container ID
+         style: 'mapbox://styles/mapbox/satellite-v9', // style URL
+         zoom: 10.5, // starting zoom
+         center: [-124.0572, 46.8159] // starting center
+        }); 
+
+      //set the animation interval at 1000ms
+      //const interval = 1000;
+
+      const years=['1860',
+      '1911',
+      '1911_bay',
+      '1922_bay',
+      '1926',
+      '1941',
+      '1953_bay',
+      '1954',
+      '2006',
+      '2007_bay',
+      '2016',
+      'cusp',
+    ];
+
+      length = years.length;
+
+
+
+
+
+      map.on('load',() => {
+        map.addSource('coastline_2016', {
+            type: 'geojson',
+            // Use a URL for the value for the `data` property.
+            data: 'assets/2016_coastline.geojson'
+        });
+
+        map.addSource('coastline_1911_bay', {
+            type: 'geojson',
+            // Use a URL for the value for the `data` property.
+            data: 'assets/f_1911_coastline_bay.geojson'
+        });
+
+        map.addSource('coastline_1922_bay', {
+            type: 'geojson',
+            // Use a URL for the value for the `data` property.
+            data: 'assets/f_1922_coastline_bay.geojson'
+        });
+
+        map.addSource('coastline_1953_bay', {
+            type: 'geojson',
+            // Use a URL for the value for the `data` property.
+            data: 'assets/f_1953_coastline_bay.geojson'
+        });
+
+        map.addSource('coastline_2007_bay', {
+            type: 'geojson',
+            // Use a URL for the value for the `data` property.
+            data: 'assets/f_2007_coastline_bay.geojson'
+        });
+
+        map.addSource('coastline_1860', {
+            type: 'geojson',
+            // Use a URL for the value for the `data` property.
+            data: 'assets/1860_coastline.geojson'
+        });
+
+        map.addSource('coastline_2006', {
+            type: 'geojson',
+            // Use a URL for the value for the `data` property.
+            data: 'assets/f_2006_coastline.geojson'
+        });
+
+        map.addSource('coastline_1911', {
+            type: 'geojson',
+            // Use a URL for the value for the `data` property.
+            data: 'assets/f_1911_coastline.geojson'
+        });
+
+        map.addSource('coastline_1926', {
+            type: 'geojson',
+            // Use a URL for the value for the `data` property.
+            data: 'assets/f_1926_coastline.geojson'
+        });
+
+        map.addSource('coastline_1941', {
+            type: 'geojson',
+            // Use a URL for the value for the `data` property.
+            data: 'assets/f_1941_coastline.geojson'
+        });
+
+        map.addSource('coastline_1954', {
+            type: 'geojson',
+            // Use a URL for the value for the `data` property.
+            data: 'assets/f_1954_coastline.geojson'
+        });
+
+        map.addSource('coastline_cusp', {
+            type: 'geojson',
+            // Use a URL for the value for the `data` property.
+            data: 'assets/cusp.geojson'
+        });
+
+        map.addLayer({
+            'id': 'coastline_cusp',
+            'type': 'line',
+            'source': 'coastline_cusp',
+            'layout': {
+                'visibility':'none'
+            },
+            'paint': {
+                'line-color': '#000000',
+                'line-width':2
+            },  //color black 2016 coastline
+        });
+
+        map.addLayer({
+            'id': 'coastline_1911_bay',
+            'type': 'line',
+            'source': 'coastline_1911_bay',
+            'layout': {
+                'visibility':'none'
+            },
+            'paint': {
+                'line-color': '#A020F0',
+                'line-width':2
+            },  //color purple
+        });
+
+        map.addLayer({
+            'id': 'coastline_1922_bay',
+            'type': 'line',
+            'source': 'coastline_1922_bay',
+            'layout': {
+                'visibility':'none'
+            },
+            'paint': {
+                'line-color': '#0000FF',
+                'line-width':2
+            },  //color blue 1922 coastline
+        });
+
+        map.addLayer({
+            'id': 'coastline_1953_bay',
+            'type': 'line',
+            'source': 'coastline_1953_bay',
+            'layout': {
+                'visibility':'none'
+            },
+            'paint': {
+                'line-color': '#5c2d06',
+                'line-width':2
+            },    //brown 1953 coastline, same as 1954
+        });
+
+        map.addLayer({
+            'id': 'coastline_2007_bay',
+            'type': 'line',
+            'source': 'coastline_2007_bay',
+            'layout': {
+                'visibility':'none'
+            },
+            'paint': {
+                'line-color': '#FFA500',
+                'line-width':2
+            },    //orange 2007 coastline
+        });
+
+        map.addLayer({
+            'id': 'coastline_1860',
+            'type': 'line',
+            'source': 'coastline_1860',
+            'layout': {
+                'visibility':'none'
+            },
+            'paint': {
+                'line-color': '#EADDCA',
+                'line-width':2
+            },  //color almond 1860 coastline
+        });
+
+        map.addLayer({
+            'id': 'coastline_2006',
+            'type': 'line',
+            'source': 'coastline_2006',
+            'layout': {
+                'visibility':'none'
+            },
+            'paint': {
+                'line-color': '#FF0000',
+                'line-width':2
+            },  //color Red 2006 coastline
+        });
+
+        map.addLayer({
+            'id': 'coastline_1911',
+            'type': 'line',
+            'source': 'coastline_1911',
+            'layout': {
+                'visibility':'none'
+            },
+            'paint': {
+                'line-color': '#A020F0',
+                'line-width':2
+            },    //Purple 1911 coastline
+        });
+
+        map.addLayer({
+            'id': 'coastline_1926',
+            'type': 'line',
+            'source': 'coastline_1926',
+            'layout': {
+                'visibility':'none'
+            },
+            'paint': {
+                'line-color': '#e2f020',
+                'line-width':2
+            },    //yellow 1926 coastline
+        });
+
+
+
+        map.addLayer({
+            'id': 'coastline_1941',
+            'type': 'line',
+            'source': 'coastline_1941',
+            'layout': {
+                'visibility':'none'
+            },
+            'paint': {
+                'line-color': '#00FF00',
+                'line-width':2
+            },      //green 1941 coastline
+        });
+
+        map.addLayer({
+            'id': 'coastline_1954',
+            'type': 'line',
+            'source': 'coastline_1954',
+            'layout': {
+                'visibility':'none'
+            },
+            'paint': {
+                'line-color': '#5c2d06',
+                'line-width':2
+            },     //brown 1954 coastline
+        });
+
+        map.addLayer({
+            'id': 'coastline_2016',
+            'type': 'line',
+            'source': 'coastline_2016',
+            'layout': {
+                'visibility':'none'
+            },
+            'paint': {
+                'line-color': '#5c2d06',
+                'line-width':2
+            },     //brown 1954 coastline
+        });
+
+        let current = 0;
+        //let previous = 0;
+  
+
+        function myFunction () {setInterval (() => {
+            if (current == 0) {
+                previous = years.length - 1;
+            };
+            show_layer = 'coastline_'+years[current];
+            hide_layer = 'coastline_'+years[previous];
+            console.log(show_layer);
+            console.log(hide_layer);
+            
+            map.setLayoutProperty(
+                `coastline_${years[current]}`,
+                'visibility',
+                'visible'
+            );
+            map.setLayoutProperty(
+                `coastline_${years[previous]}`,
+                'visibility',
+                'none'
+            );
+
+            document.getElementById("yearHolder").innerHTML = years[current].substring(0,4);
+            
+            previous = current;
+            current +=1;
+            console.log(previous);
+            console.log(current);
+            
+            if (current > years.length-1) {
+                current = 0;
+            };
+            
+
+        },1000)};
+        document.getElementById("play").addEventListener("click", myFunction);
+
+
+
+
+
+
+      });
+
+    </script>
+</body>
+</html>
