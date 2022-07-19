@@ -33,7 +33,7 @@
 
     #yearHolder {
         position: absolute;
-        right: 20px;
+        right: 220px;
         bottom: 20px;
         color:black;
         background-color: white;
@@ -49,6 +49,200 @@
     <div id="yearHolder"></div>
 
     <script>
+
+        const shorelineColor = '#000000';
+
+        const shorelineWidth = 3;
+
+        const textSize = 26;
+
+        const displayYear1860 = {
+            'type': 'FeatureCollection',
+            'features': [
+                {
+                    'type': 'Feature',
+                    'properties': {
+                        'description': '1860',
+                    },
+                    'geometry':{
+                        'type': 'Point',
+                        'coordinates': [-124.1988,46.8452] 
+                    }
+                },
+                
+            ]
+        };
+ 
+        const displayYear1911 = {
+            'type': 'FeatureCollection',
+            'features': [
+                {
+                    'type': 'Feature',
+                    'properties': {
+                        'description': '1911',
+                    },
+                    'geometry':{
+                        'type': 'Point',
+                        'coordinates': [-124.1988,46.8452] 
+                    }
+                },
+                
+            ]
+        };
+
+        const displayYear1922 = {
+            'type': 'FeatureCollection',
+            'features': [
+                {
+                    'type': 'Feature',
+                    'properties': {
+                        'description': '1922',
+                    },
+                    'geometry':{
+                        'type': 'Point',
+                        'coordinates': [-124.1988,46.8452] 
+                    }
+                },
+                
+            ]
+        };
+
+        const displayYear1926 = {
+            'type': 'FeatureCollection',
+            'features': [
+                {
+                    'type': 'Feature',
+                    'properties': {
+                        'description': '1926',
+                    },
+                    'geometry':{
+                        'type': 'Point',
+                        'coordinates': [-124.1988,46.8452] 
+                    }
+                },
+                
+            ]
+        };
+
+        const displayYear1941 = {
+            'type': 'FeatureCollection',
+            'features': [
+                {
+                    'type': 'Feature',
+                    'properties': {
+                        'description': '1941',
+                    },
+                    'geometry':{
+                        'type': 'Point',
+                        'coordinates': [-124.1988,46.8452] 
+                    }
+                },
+                
+            ]
+        };
+
+        const displayYear1953 = {
+            'type': 'FeatureCollection',
+            'features': [
+                {
+                    'type': 'Feature',
+                    'properties': {
+                        'description': '1953',
+                    },
+                    'geometry':{
+                        'type': 'Point',
+                        'coordinates': [-124.1988,46.8452] 
+                    }
+                },
+                
+            ]
+        };
+
+        const displayYear1954 = {
+            'type': 'FeatureCollection',
+            'features': [
+                {
+                    'type': 'Feature',
+                    'properties': {
+                        'description': '1954',
+                    },
+                    'geometry':{
+                        'type': 'Point',
+                        'coordinates': [-124.1988,46.8452] 
+                    }
+                },
+                
+            ]
+        };
+
+        const displayYear2006 = {
+            'type': 'FeatureCollection',
+            'features': [
+                {
+                    'type': 'Feature',
+                    'properties': {
+                        'description': '2006',
+                    },
+                    'geometry':{
+                        'type': 'Point',
+                        'coordinates': [-124.1988,46.8452] 
+                    }
+                },
+                
+            ]
+        };
+
+        const displayYear2007 = {
+            'type': 'FeatureCollection',
+            'features': [
+                {
+                    'type': 'Feature',
+                    'properties': {
+                        'description': '2007',
+                    },
+                    'geometry':{
+                        'type': 'Point',
+                        'coordinates': [-124.1988,46.8452] 
+                    }
+                },
+                
+            ]
+        };
+
+        const displayYear2016 = {
+            'type': 'FeatureCollection',
+            'features': [
+                {
+                    'type': 'Feature',
+                    'properties': {
+                        'description': '2016',
+                    },
+                    'geometry':{
+                        'type': 'Point',
+                        'coordinates': [-124.1988,46.8452] 
+                    }
+                },
+                
+            ]
+        };
+
+        const displayYearCusp = {
+            'type': 'FeatureCollection',
+            'features': [
+                {
+                    'type': 'Feature',
+                    'properties': {
+                        'description': 'Continually Updated Shoreline',
+                    },
+                    'geometry':{
+                        'type': 'Point',
+                        'coordinates': [-124.1988,46.8452] 
+                    }
+                },
+                
+            ]
+        };
+
        mapboxgl.accessToken = 'pk.eyJ1IjoiemxpdTk2IiwiYSI6ImNsMnI3ZWNkcDA0bmwzYnFzcmxnbG9rejMifQ.KS1NO7CgxL3hJi94lTgidQ';
        
        const map = new mapboxgl.Map({
@@ -82,6 +276,248 @@
 
 
       map.on('load',() => {
+        map.addSource('displayYear1860', {
+            type:'geojson',
+            data: displayYear1860
+        });
+
+        map.addLayer({
+            'id':'displayYear1860',
+            'type':'symbol',
+            'source':'displayYear1860',
+            'layout':{
+               'text-field': ['get', 'description'],
+               'text-variable-anchor': ['top', 'bottom', 'left', 'right'],
+               'text-radial-offset': 0.5,
+               'text-justify': 'auto',
+               'text-size':textSize,
+               'visibility':'none'
+            },
+            'paint':{
+                'text-color': "#FFFFFF"
+            }
+        });
+
+        map.addSource('displayYear1911', {
+            type:'geojson',
+            data: displayYear1911
+        });
+
+        map.addLayer({
+            'id':'displayYear1911',
+            'type':'symbol',
+            'source':'displayYear1911',
+            'layout':{
+               'text-field': ['get', 'description'],
+               'text-variable-anchor': ['top', 'bottom', 'left', 'right'],
+               'text-radial-offset': 0.5,
+               'text-justify': 'auto',
+               'text-size':textSize,
+               'visibility':'none'
+            },
+            'paint':{
+                'text-color': "#FFFFFF"
+            }
+        });
+
+        map.addSource('displayYear1922', {
+            type:'geojson',
+            data: displayYear1922
+        });
+
+        map.addLayer({
+            'id':'displayYear1922',
+            'type':'symbol',
+            'source':'displayYear1922',
+            'layout':{
+               'text-field': ['get', 'description'],
+               'text-variable-anchor': ['top', 'bottom', 'left', 'right'],
+               'text-radial-offset': 0.5,
+               'text-justify': 'auto',
+               'text-size':textSize,
+               'visibility':'none'
+            },
+            'paint':{
+                'text-color': "#FFFFFF"
+            }
+        });
+
+        map.addSource('displayYear1926', {
+            type:'geojson',
+            data: displayYear1926
+        });
+
+        map.addLayer({
+            'id':'displayYear1926',
+            'type':'symbol',
+            'source':'displayYear1926',
+            'layout':{
+               'text-field': ['get', 'description'],
+               'text-variable-anchor': ['top', 'bottom', 'left', 'right'],
+               'text-radial-offset': 0.5,
+               'text-justify': 'auto',
+               'text-size':textSize,
+               'visibility':'none'
+            },
+            'paint':{
+                'text-color': "#FFFFFF"
+            }
+        });
+
+        map.addSource('displayYear1941', {
+            type:'geojson',
+            data: displayYear1941
+        });
+
+        map.addLayer({
+            'id':'displayYear1941',
+            'type':'symbol',
+            'source':'displayYear1941',
+            'layout':{
+               'text-field': ['get', 'description'],
+               'text-variable-anchor': ['top', 'bottom', 'left', 'right'],
+               'text-radial-offset': 0.5,
+               'text-justify': 'auto',
+               'text-size':textSize,
+               'visibility':'none'
+            },
+            'paint':{
+                'text-color': "#FFFFFF"
+            }
+        });
+
+        map.addSource('displayYear1953', {
+            type:'geojson',
+            data: displayYear1953
+        });
+
+        map.addLayer({
+            'id':'displayYear1953',
+            'type':'symbol',
+            'source':'displayYear1953',
+            'layout':{
+               'text-field': ['get', 'description'],
+               'text-variable-anchor': ['top', 'bottom', 'left', 'right'],
+               'text-radial-offset': 0.5,
+               'text-justify': 'auto',
+               'text-size':textSize,
+               'visibility':'none'
+            },
+            'paint':{
+                'text-color': "#FFFFFF"
+            }
+        });
+
+        map.addSource('displayYear1954', {
+            type:'geojson',
+            data: displayYear1954
+        });
+
+        map.addLayer({
+            'id':'displayYear1954',
+            'type':'symbol',
+            'source':'displayYear1954',
+            'layout':{
+               'text-field': ['get', 'description'],
+               'text-variable-anchor': ['top', 'bottom', 'left', 'right'],
+               'text-radial-offset': 0.5,
+               'text-justify': 'auto',
+               'text-size':textSize,
+               'visibility':'none'
+            },
+            'paint':{
+                'text-color': "#FFFFFF"
+            }
+        });
+
+        map.addSource('displayYear2006', {
+            type:'geojson',
+            data: displayYear2006
+        });
+
+        map.addLayer({
+            'id':'displayYear2006',
+            'type':'symbol',
+            'source':'displayYear2006',
+            'layout':{
+               'text-field': ['get', 'description'],
+               'text-variable-anchor': ['top', 'bottom', 'left', 'right'],
+               'text-radial-offset': 0.5,
+               'text-justify': 'auto',
+               'text-size':textSize,
+               'visibility':'none'
+            },
+            'paint':{
+                'text-color': "#FFFFFF"
+            }
+        });
+
+        map.addSource('displayYear2007', {
+            type:'geojson',
+            data: displayYear2007
+        });
+
+        map.addLayer({
+            'id':'displayYear2007',
+            'type':'symbol',
+            'source':'displayYear2007',
+            'layout':{
+               'text-field': ['get', 'description'],
+               'text-variable-anchor': ['top', 'bottom', 'left', 'right'],
+               'text-radial-offset': 0.5,
+               'text-justify': 'auto',
+               'text-size':textSize,
+               'visibility':'none'
+            },
+            'paint':{
+                'text-color': "#FFFFFF"
+            }
+        });
+
+        map.addSource('displayYear2016', {
+            type:'geojson',
+            data: displayYear2016
+        });
+
+        map.addLayer({
+            'id':'displayYear2016',
+            'type':'symbol',
+            'source':'displayYear2016',
+            'layout':{
+               'text-field': ['get', 'description'],
+               'text-variable-anchor': ['top', 'bottom', 'left', 'right'],
+               'text-radial-offset': 0.5,
+               'text-justify': 'auto',
+               'text-size':textSize,
+               'visibility':'none'
+            },
+            'paint':{
+                'text-color': "#FFFFFF"
+            }
+        });
+
+        map.addSource('displayYearCusp', {
+            type:'geojson',
+            data: displayYearCusp
+        });
+
+        map.addLayer({
+            'id':'displayYearcusp',
+            'type':'symbol',
+            'source':'displayYearCusp',
+            'layout':{
+               'text-field': ['get', 'description'],
+               'text-variable-anchor': ['top', 'bottom', 'left', 'right'],
+               'text-radial-offset': 0.5,
+               'text-justify': 'auto',
+               'text-size':textSize,
+               'visibility':'none'
+            },
+            'paint':{
+                'text-color': "#FFFFFF"
+            }
+        });
+
         map.addSource('coastline_2016', {
             type: 'geojson',
             // Use a URL for the value for the `data` property.
@@ -162,8 +598,8 @@
                 'visibility':'none'
             },
             'paint': {
-                'line-color': '#000000',
-                'line-width':2
+                'line-color': shorelineColor,
+                'line-width':shorelineWidth
             },  //color black 2016 coastline
         });
 
@@ -175,8 +611,8 @@
                 'visibility':'none'
             },
             'paint': {
-                'line-color': '#A020F0',
-                'line-width':2
+                'line-color': shorelineColor,
+                'line-width':shorelineWidth
             },  //color purple
         });
 
@@ -188,8 +624,8 @@
                 'visibility':'none'
             },
             'paint': {
-                'line-color': '#0000FF',
-                'line-width':2
+                'line-color': shorelineColor,
+                'line-width':shorelineWidth
             },  //color blue 1922 coastline
         });
 
@@ -201,8 +637,8 @@
                 'visibility':'none'
             },
             'paint': {
-                'line-color': '#5c2d06',
-                'line-width':2
+                'line-color': shorelineColor,
+                'line-width':shorelineWidth
             },    //brown 1953 coastline, same as 1954
         });
 
@@ -214,8 +650,8 @@
                 'visibility':'none'
             },
             'paint': {
-                'line-color': '#FFA500',
-                'line-width':2
+                'line-color': shorelineColor,
+                'line-width':shorelineWidth
             },    //orange 2007 coastline
         });
 
@@ -227,8 +663,8 @@
                 'visibility':'none'
             },
             'paint': {
-                'line-color': '#EADDCA',
-                'line-width':2
+                'line-color': shorelineColor,
+                'line-width':shorelineWidth
             },  //color almond 1860 coastline
         });
 
@@ -240,8 +676,8 @@
                 'visibility':'none'
             },
             'paint': {
-                'line-color': '#FF0000',
-                'line-width':2
+                'line-color': shorelineColor,
+                'line-width':shorelineWidth
             },  //color Red 2006 coastline
         });
 
@@ -253,8 +689,8 @@
                 'visibility':'none'
             },
             'paint': {
-                'line-color': '#A020F0',
-                'line-width':2
+                'line-color': shorelineColor,
+                'line-width':shorelineWidth
             },    //Purple 1911 coastline
         });
 
@@ -266,8 +702,8 @@
                 'visibility':'none'
             },
             'paint': {
-                'line-color': '#e2f020',
-                'line-width':2
+                'line-color': shorelineColor,
+                'line-width':shorelineWidth
             },    //yellow 1926 coastline
         });
 
@@ -281,8 +717,8 @@
                 'visibility':'none'
             },
             'paint': {
-                'line-color': '#00FF00',
-                'line-width':2
+                'line-color': shorelineColor,
+                'line-width':shorelineWidth
             },      //green 1941 coastline
         });
 
@@ -294,8 +730,8 @@
                 'visibility':'none'
             },
             'paint': {
-                'line-color': '#5c2d06',
-                'line-width':2
+                'line-color': shorelineColor,
+                'line-width':shorelineWidth
             },     //brown 1954 coastline
         });
 
@@ -307,8 +743,8 @@
                 'visibility':'none'
             },
             'paint': {
-                'line-color': '#5c2d06',
-                'line-width':2
+                'line-color': shorelineColor,
+                'line-width':shorelineWidth
             },     //brown 1954 coastline
         });
 
@@ -335,6 +771,24 @@
                 'visibility',
                 'none'
             );
+
+            current_year = years[current].substring(0,4);
+            previous_year = years[previous].substring(0,4);
+
+            if (current_year!=previous_year) {
+                map.setLayoutProperty(
+                `displayYear${current_year}`,
+                'visibility',
+                'visible'
+            );
+            map.setLayoutProperty(
+                `displayYear${previous_year}`,
+                'visibility',
+                'none'
+            );
+            }
+
+           
 
             document.getElementById("yearHolder").innerHTML = years[current].substring(0,4);
             
