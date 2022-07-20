@@ -40,6 +40,48 @@
         font-size: xx-large;
         z-index: 9999;
     }
+
+    #menu {
+background: #fff;
+position: absolute;
+z-index: 1;
+top: 35px;
+right: 10px;
+border-radius: 3px;
+width: 120px;
+border: 1px solid rgba(0, 0, 0, 0.4);
+font-family: 'Open Sans', sans-serif;
+}
+ 
+#menu a {
+font-size: 13px;
+color: #404040;
+display: block;
+margin: 0;
+padding: 0;
+padding: 10px;
+text-decoration: none;
+border-bottom: 1px solid rgba(0, 0, 0, 0.25);
+text-align: center;
+}
+ 
+#menu a:last-child {
+border: none;
+}
+ 
+#menu a:hover {
+background-color: #f8f8f8;
+color: #404040;
+}
+ 
+#menu a.active {
+background-color: #3887be;
+color: #ffffff;
+}
+
+#menu a.active:hover {
+background: #3074a4;
+}
 </style>
 </head>
 
@@ -49,7 +91,9 @@
     <div id="yearHolder"></div>
 
     <script>
+        const coordinatesYear=[-124.1788,46.9152]
 
+        
         const shorelineColor = '#000000';
 
         const shorelineWidth = 3;
@@ -66,7 +110,7 @@
                     },
                     'geometry':{
                         'type': 'Point',
-                        'coordinates': [-124.1988,46.8452] 
+                        'coordinates': coordinatesYear 
                     }
                 },
                 
@@ -83,7 +127,7 @@
                     },
                     'geometry':{
                         'type': 'Point',
-                        'coordinates': [-124.1988,46.8452] 
+                        'coordinates': coordinatesYear
                     }
                 },
                 
@@ -100,7 +144,7 @@
                     },
                     'geometry':{
                         'type': 'Point',
-                        'coordinates': [-124.1988,46.8452] 
+                        'coordinates': coordinatesYear 
                     }
                 },
                 
@@ -117,7 +161,7 @@
                     },
                     'geometry':{
                         'type': 'Point',
-                        'coordinates': [-124.1988,46.8452] 
+                        'coordinates': coordinatesYear 
                     }
                 },
                 
@@ -134,7 +178,7 @@
                     },
                     'geometry':{
                         'type': 'Point',
-                        'coordinates': [-124.1988,46.8452] 
+                        'coordinates': coordinatesYear 
                     }
                 },
                 
@@ -151,7 +195,7 @@
                     },
                     'geometry':{
                         'type': 'Point',
-                        'coordinates': [-124.1988,46.8452] 
+                        'coordinates': coordinatesYear 
                     }
                 },
                 
@@ -168,7 +212,7 @@
                     },
                     'geometry':{
                         'type': 'Point',
-                        'coordinates': [-124.1988,46.8452] 
+                        'coordinates': coordinatesYear 
                     }
                 },
                 
@@ -185,7 +229,7 @@
                     },
                     'geometry':{
                         'type': 'Point',
-                        'coordinates': [-124.1988,46.8452] 
+                        'coordinates': coordinatesYear 
                     }
                 },
                 
@@ -202,7 +246,7 @@
                     },
                     'geometry':{
                         'type': 'Point',
-                        'coordinates': [-124.1988,46.8452] 
+                        'coordinates': coordinatesYear 
                     }
                 },
                 
@@ -219,7 +263,7 @@
                     },
                     'geometry':{
                         'type': 'Point',
-                        'coordinates': [-124.1988,46.8452] 
+                        'coordinates': coordinatesYear
                     }
                 },
                 
@@ -236,7 +280,7 @@
                     },
                     'geometry':{
                         'type': 'Point',
-                        'coordinates': [-124.1988,46.8452] 
+                        'coordinates': coordinatesYear 
                     }
                 },
                 
@@ -276,6 +320,9 @@
 
 
       map.on('load',() => {
+
+        map.addControl(new mapboxgl.ScaleControl({position: 'bottom-right'}));
+
         map.addSource('displayYear1860', {
             type:'geojson',
             data: displayYear1860
@@ -748,11 +795,16 @@
             },     //brown 1954 coastline
         });
 
+        // Enumerate ids of the shoreline layers years.
+        const toggleableLayerIds = ['1860', '1911','1922','1926','1941','1953','1954','2006','2007','2016','cusp'];
+
         let current = 0;
         //let previous = 0;
+     
   
-
-        function myFunction () {setInterval (() => {
+        //this function controls the animation
+        function myFunction () {
+            myInt=setInterval (() => {
             if (current == 0) {
                 previous = years.length - 1;
             };
@@ -786,10 +838,9 @@
                 'visibility',
                 'none'
             );
-            }
+            };
 
-           
-
+            //show the year on at the bottom right
             document.getElementById("yearHolder").innerHTML = years[current].substring(0,4);
             
             previous = current;
@@ -800,15 +851,67 @@
             if (current > years.length-1) {
                 current = 0;
             };
-            
-
         },1000)};
-        document.getElementById("play").addEventListener("click", myFunction);
+
+        //this function stops the animation
+        function myStopInterval() {
+            clearInterval(myInt);
+            
+        };
+
+       /* for (const id of toggleableLayerIds) {
+           // Skip layers that already have a button set up.
+           if (document.getElementById(id)) {
+               continue;
+               };
+               // Create a link.
+               const link = document.createElement('a');
+               link.id = id;
+               link.href = '#';
+               link.textContent = id;
+               link.className = '';
+
+               // Show or hide layer when the toggle is clicked.
+              link.onclick = function (e) {
+                 const clickedLayer = this.textContent;
+                 e.preventDefault();
+                 e.stopPropagation();
+ 
+                const visibility = map.getLayoutProperty(
+                clickedLayer,
+                'visibility'
+                );
+                // Toggle layer visibility by changing the layout object's visibility property.
+                if (visibility === 'visible') {
+                  map.setLayoutProperty(clickedLayer, 'visibility', 'none');
+                  this.className = '';
+                } else {
+                  this.className = 'active';
+                  map.setLayoutProperty(
+                  clickedLayer,
+                  'visibility',
+                  'visible'
+                );
+                }
+            };
+            const layers = document.getElementById('menu');
+            layers.appendChild(link);
+        };*/
 
 
+        //document.getElementById("play").addEventListener("click", myFunction);
+        document.getElementById("play").addEventListener("click", function () {
+            if (document.getElementById("play").innerText=="Click to play animation") {
+                myFunction();
+                document.getElementById("play").innerText="Click to pause";
 
+            } else {
+                myStopInterval();
+                document.getElementById("play").innerText="Click to play animation";
 
-
+            }
+        
+        })
 
       });
 
