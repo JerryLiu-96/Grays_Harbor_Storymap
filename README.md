@@ -1,6 +1,11 @@
 # Grays_Harbor_Storymap
 
-This project maps animated historical shoreline changes dating as far back as Holocene in Grays Harbor County, Washington. Currently only the section between the City of Westport and Tokeland is mapped. We also mapped the projected shoreline changes under different sea level rise scenarios. At this point, other factors that can contribute to shoreline changes like the co-seismic subsidence and tidal waves are not considered. **Can we consider these factors as well?** We mapped the shoreline changes using the historical shoreline data from the Washington State Department of Natural Resources (DNR) and the US Geological Survey (USGS). The historical shoreline data is available at the [Washington State Shoreline Change Viewer](https://www.dnr.wa.gov/shorelines/shoreline-change-viewer). The historical shoreline data is available at the [Washington State Shoreline Change Viewer](https://www.dnr.wa.gov/shorelines/shoreline-change-viewer). The historical shoreline data is available at the [Washington State Shoreline Change Viewer](https://www.dnr.wa.gov/shorelines/shoreline-change-viewer). The historical shoreline data is available at the [Washington State Shoreline Change Viewer](https://www.dnr.wa.gov/shorelines/shoreline-change-viewer). The historical shoreline data is available at the [Washington State Shoreline Change Viewer](https://www.dnr.wa.gov/shorelines/shoreline-change-viewer). The historical shoreline data is available at the [Washington State Shoreline Change Viewer](https://www.dnr.wa.gov/shorelines/shoreline-change-viewer). The historical shoreline data is available at the [Washington State Shoreline Change Viewer](https://www.dnr.wa.gov/shorelines/shoreline-change-viewer). The historical shoreline data is available at the [Washington State Shoreline Change Viewer](https://www.dnr.wa.gov/shorelines/shoreline-change-viewer). The historical shoreline data is available at the [Washington State Shoreline Change Viewer](https://www.dnr.wa.gov/shorelines/shoreline-change-viewer). The historical shoreline data is available at the [Washington State Shoreline Change Viewer](https://www.dnr.wa.gov/shorelines/shoreline-change-viewer). The historical shoreline data is available at the [Washington State Shoreline Change Viewer](https://www.dnr.wa.gov/shorelines/shoreline-change-viewer). The historical shoreline data is available at the [Washington State Shoreline Change Viewer](https://www.dnr.wa.gov/shorelines/shoreline-change-viewer). The historical shoreline data is available at the [Washington State Shoreline Change Viewer](https://www.dnr.wa.gov/shorelines/shoreline-change-viewer). The historical shoreline data is available at the [Washington State Shoreline Change Viewer](https://www.dnr.wa.gov/shorelines/shoreline
+> Blockquotes are used to comment on the project. They will be removed in the final version of the README.md
+
+This project maps animated historical shoreline changes dating as far back as Holocene in Grays Harbor County, Washington. Currently only the section between the City of Westport and Tokeland is mapped. We also mapped the projected shoreline changes under different sea level rise scenarios. At this point, other factors that can contribute to shoreline changes like the co-seismic subsidence and tidal waves are not considered. 
+
+> **Can we consider these factors as well? I think it would be difficult**
+ 
 ***
 ## Objective
 
@@ -31,6 +36,7 @@ The sea level rise scenarios are available at [Map of the sea level rise scenari
 
 > This is a test page, now it displays shorelines (MHHW) after sea level rise from 1 feet to 10 feet at increment of 1 in one layer. I will add a layer control of sea leve rise later.
 
+![Sea level rise](img/seaLevelRise.png)
 ***
 
 ## Data Sources
@@ -47,16 +53,24 @@ Sea level rise scenarios were downloaded from [NOAA Sea Level Rise Viewer](https
 
 NOAA simulated sea level rise scenarios from 1 feet to 10 feet in 1 feet increments. We also wrote code to simulate sea level rise scenarios at a finer scale based on Digital Elevation Model (DEM) available at [NOAA Sea Level Rise Viewer](https://coast.noaa.gov/slr/) in GeoTIFF format. The code is available in the `assets/shoreline.py`. 
 
+> we write the code to simulate sea level rise also because we want to map the inundation under tsunami scenarios.
+
 ***
 ## Methodology of shoreline manipulation
 
 We manipulate the shorelines to interpolate the location of shoreline when it was not surveyed, and shorelines under sea level rise scenarios not available from NOAA. The methods are berifly described in the sections below. All codes are available in this repository.
 
 ### Historical Shoreline interpolation
-We referred to paper [Historical evolution of the Columbia River littoral cells](https://www.sciencedirect.com/science/article/pii/S002532271000068X?casa_token=TcagawtuglwAAAAA:fanvZ6TIDJHgqDyYTeEVTLXf1QSIoC0YUe5b-EEJ-8XqMxwxYB0sxpHubiRMz6I_KNp5z1y8ycg) by G. Kaminsky, P. Ruggiero, M. Buijsman, and D. McCandless. Shoreline change rate at was given in their paper. We use the change rate to estimate the location of shoreline in year when it is not surveyed.
+We referred to paper [Historical evolution of the Columbia River littoral cells](https://www.sciencedirect.com/science/article/pii/S002532271000068X?casa_token=TcagawtuglwAAAAA:fanvZ6TIDJHgqDyYTeEVTLXf1QSIoC0YUe5b-EEJ-8XqMxwxYB0sxpHubiRMz6I_KNp5z1y8ycg) by G. Kaminsky, P. Ruggiero, M. Buijsman, and D. McCandless. Shoreline change rates during eras were given in their paper. We use the change rate to estimate the location of shoreline in year when it is not surveyed.
+
+> compartment-averaged shoreline change rate is not  
 
 ### Sea level rise not readily available from [NOAA Sea Level Rise Viewer](https://coast.noaa.gov/slr/)
 
-We use marching squares algorithm to generate sea level rise scenarios at a finer scale based on Digital Elevation Model (DEM) available at [NOAA Sea Level Rise Viewer](https://coast.noaa.gov/slr/) in GeoTIFF format. The code is available in the `assets/shoreline.py`. This algorithm can generate shorelines under any given sea level rise scenarios. 
+We use marching squares algorithm to generate sea level rise scenarios at a finer scale based on Digital Elevation Model (DEM) available at [NOAA Sea Level Rise Viewer](https://coast.noaa.gov/slr/) in GeoTIFF format. This DEM is referenced to NAVD88 datum. The code is available in the `assets/shoreline.py` in this repository. We checked the outpouts of our codes with NOAA sea level rise viewer, and we confirm the validity of our results. This algorithm can generate shorelines under any given sea level rise scenarios. 
 
 ### Uncertainties in historical shoreline data
+
+**The uncertainties has not been reflected in the map** The uncertainty of historical shoreline data should be visualized by the width of the line. The uncertainty is given in the table 5 in [National Assessment of Shoreline Change: Historical Shoreline Change Along the Pacific Northwest Coast](https://pubs.usgs.gov/of/2012/1007/) by Ruggiero et al., 2013.
+
+> The uncertainty in table 5 in the report is applicable to surveryed shorelines, but not to the shorelines interpolated by us. We need to find a way to estimate the uncertainty of the interpolated shorelines.
