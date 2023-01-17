@@ -63,7 +63,7 @@ We manipulate the shorelines to interpolate the location of shoreline when it wa
 ### Historical Shoreline interpolation
 We referred to paper [Historical evolution of the Columbia River littoral cells](https://www.sciencedirect.com/science/article/pii/S002532271000068X?casa_token=TcagawtuglwAAAAA:fanvZ6TIDJHgqDyYTeEVTLXf1QSIoC0YUe5b-EEJ-8XqMxwxYB0sxpHubiRMz6I_KNp5z1y8ycg) by G. Kaminsky, P. Ruggiero, M. Buijsman, and D. McCandless. Shoreline change rates during eras were given in their paper. We use the change rate to estimate the location of shoreline in year when it is not surveyed.
 
-> compartment-averaged shoreline change rate is not  
+> compartment-averaged shoreline change rate is not refined enough, raw data could be more accurate. 
 
 ### Sea level rise not readily available from [NOAA Sea Level Rise Viewer](https://coast.noaa.gov/slr/)
 
