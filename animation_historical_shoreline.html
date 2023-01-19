@@ -4,8 +4,8 @@
 <meta charset="utf-8">
 <title>Animation of historical shorelines</title>
 <meta name="viewport" content="initial-scale=1,maximum-scale=1,user-scalable=no">
-<link href="https://api.mapbox.com/mapbox-gl-js/v2.8.2/mapbox-gl.css" rel="stylesheet">
-<script src="https://api.mapbox.com/mapbox-gl-js/v2.8.2/mapbox-gl.js"></script>
+<link href="https://api.mapbox.com/mapbox-gl-js/v2.9.2/mapbox-gl.css" rel="stylesheet">
+<script src="https://api.mapbox.com/mapbox-gl-js/v2.9.2/mapbox-gl.js"></script>
 <style>
     body { 
           margin: 0;
@@ -91,14 +91,32 @@ background: #3074a4;
     <div id="yearHolder"></div>
 
     <script>
+        //The coordinates where the year label is displayed
         const coordinatesYear=[-124.1788,46.9152]
 
-        
+        //color the shorelines BLACK
         const shorelineColor = '#000000';
 
         const shorelineWidth = 3;
-
+        //the font size of the years
         const textSize = 26;
+        //create a json to store the information of the year shown
+        const displayYear1700 = {
+            'type': 'FeatureCollection',
+            'features': [
+                {
+                    'type': 'Feature',
+                    'properties': {
+                        'description': '1700',
+                    },
+                    'geometry':{
+                        'type': 'Point',
+                        'coordinates': coordinatesYear 
+                    }
+                },
+                
+            ]
+        };
 
         const displayYear1860 = {
             'type': 'FeatureCollection',
@@ -296,10 +314,14 @@ background: #3074a4;
          center: [-124.0572, 46.8159] // starting center
         }); 
 
-      //set the animation interval at 1000ms
-      //const interval = 1000;
+        //map.addControl(new mapboxgl.ScaleControl(),'bottom-left');
+        const nav = new mapboxgl.NavigationControl();
+        map.addControl(nav, 'top-left');
 
-      const years=['1860',
+
+      const years=[
+      '1700',
+      '1860',
       '1911',
       '1911_bay',
       '1922_bay',
@@ -314,6 +336,7 @@ background: #3074a4;
     ];
 
       length = years.length;
+       
 
 
 
@@ -321,7 +344,30 @@ background: #3074a4;
 
       map.on('load',() => {
 
-        map.addControl(new mapboxgl.ScaleControl({position: 'bottom-right'}));
+        map.addSource('displayYear1700', {
+            type:'geojson',
+            data: displayYear1700
+        });
+
+        map.addLayer({
+            'id':'displayYear1700',
+            'type':'symbol',
+            'source':'displayYear1700',
+            'layout':{
+               'text-field': ['get', 'description'],
+               'text-variable-anchor': ['top', 'bottom', 'left', 'right'],
+               'text-radial-offset': 0.5,
+               'text-justify': 'auto',
+               'text-size':textSize,
+               'visibility':'none'
+            },
+            'paint':{
+                'text-color': "#FFFFFF"
+            }
+        });
+
+
+
 
         map.addSource('displayYear1860', {
             type:'geojson',
@@ -565,6 +611,12 @@ background: #3074a4;
             }
         });
 
+        map.addSource('coastline_1700', {
+            type: 'geojson',
+            // Use a URL for the value for the `data` property.
+            data: 'assets/1700_coastline.geojson'
+        });
+
         map.addSource('coastline_2016', {
             type: 'geojson',
             // Use a URL for the value for the `data` property.
@@ -635,6 +687,19 @@ background: #3074a4;
             type: 'geojson',
             // Use a URL for the value for the `data` property.
             data: 'assets/cusp.geojson'
+        });
+
+        map.addLayer({
+            'id': 'coastline_1700',
+            'type': 'line',
+            'source': 'coastline_1700',
+            'layout': {
+                'visibility':'none'
+            },
+            'paint': {
+                'line-color': shorelineColor,
+                'line-width':shorelineWidth
+            },  //color black 2016 coastline
         });
 
         map.addLayer({
@@ -796,7 +861,7 @@ background: #3074a4;
         });
 
         // Enumerate ids of the shoreline layers years.
-        const toggleableLayerIds = ['1860', '1911','1922','1926','1941','1953','1954','2006','2007','2016','cusp'];
+        const toggleableLayerIds = ['1700','1860', '1911','1922','1926','1941','1953','1954','2006','2007','2016','cusp'];
 
         let current = 0;
         //let previous = 0;
