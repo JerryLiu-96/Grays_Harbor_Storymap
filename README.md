@@ -2,7 +2,7 @@
 
 > Blockquotes are used to comment on the project. They will be removed in the final version of the README.md
 
-This project maps animated historical shoreline changes dating as far back as Holocene in Grays Harbor County, Washington. Currently only the section between the City of Westport and Tokeland is mapped. We also mapped the projected shoreline changes under different sea level rise scenarios. At this point, other factors that can contribute to shoreline changes like the co-seismic subsidence and tidal waves are not considered. 
+This project maps animated historical shoreline changes dating as far back as Holocene in Grays Harbor County and Pacific County, Washington as well as Tribes from Tokeland to Taholah. Currently only the section between the City of Westport and Tokeland is mapped. We also mapped the projected shoreline changes under different sea level rise scenarios. At this point, other factors that can contribute to shoreline changes like the co-seismic subsidence and tidal waves are not considered. 
 
 > **Can we consider these factors as well? I think it would be difficult**
  
@@ -51,7 +51,7 @@ Shoreline of year 1860 is available in the format of shoreline manuscript (t-she
 ### Sea level rise scenarios
 Sea level rise scenarios were downloaded from [NOAA Sea Level Rise Viewer](https://coast.noaa.gov/slr/).
 
-NOAA simulated sea level rise scenarios from 1 feet to 10 feet in 1 feet increments. We also wrote code to simulate sea level rise scenarios at a finer scale based on Digital Elevation Model (DEM) available at [NOAA Sea Level Rise Viewer](https://coast.noaa.gov/slr/) in GeoTIFF format. The code is available in the `assets/shoreline.py`. 
+NOAA simulated sea level rise scenarios from 1 foot to 10 feet in 1 foot increments. We also wrote code to simulate sea level rise scenarios at a finer scale based on Digital Elevation Model (DEM) available at [NOAA Sea Level Rise Viewer](https://coast.noaa.gov/slr/) in GeoTIFF format. The code is available in the `assets/shoreline.py`. 
 
 > we write the code to simulate sea level rise also because we want to map the inundation under tsunami scenarios.
 
