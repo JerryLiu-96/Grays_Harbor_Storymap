@@ -1,0 +1,353 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>Animation of historical shorelines</title>
+<meta name="viewport" content="initial-scale=1,maximum-scale=1,user-scalable=no">
+<link href="https://api.mapbox.com/mapbox-gl-js/v2.9.2/mapbox-gl.css" rel="stylesheet">
+<script src="https://api.mapbox.com/mapbox-gl-js/v2.9.2/mapbox-gl.js"></script>
+<style>
+    body { 
+          margin: 0;
+          padding: 0; 
+        }
+
+    #map {
+          position:absolute;
+          top: 0;
+          bottom: 0;
+          left: 0;
+          right: 0;
+          width: 100%; 
+        }
+
+    button {
+        position: absolute;
+        top: 15px;
+        right: 15px;
+        background-color: firebrick;
+        color: white;
+        font-size: large;
+        z-index: 9999;
+    }
+
+    #yearHolder {
+        position: absolute;
+        right: 220px;
+        bottom: 20px;
+        color:black;
+        background-color: white;
+        font-size: xx-large;
+        z-index: 9999;
+    }
+
+    #menu {
+        background: #fff;
+        position: absolute;
+        z-index: 1;
+        top: 35px;
+        right: 10px;
+        border-radius: 3px;
+        width: 120px;
+        border: 1px solid rgba(0, 0, 0, 0.4);
+        font-family: 'Open Sans', sans-serif;
+    }
+ 
+    #menu a {
+        font-size: 13px;
+        color: #404040;
+        display: block;
+        margin: 0;
+        padding: 0;
+        padding: 10px;
+        text-decoration: none;
+        border-bottom: 1px solid rgba(0, 0, 0, 0.25);
+        text-align: center;
+    }
+ 
+    #menu a:last-child {
+        border: none;
+    }
+ 
+    #menu a:hover {
+        background-color: #f8f8f8;
+        color: #404040;
+    }
+ 
+    #menu a.active {
+        background-color: #3887be;
+        color: #ffffff;
+    }
+
+    #menu a.active:hover {
+        background: #3074a4;
+    }
+
+</style>
+
+</head>
+
+<body>
+    <div id="map"></div>
+    <button id="play">Click to play animation</button>
+    <div id="yearHolder"></div>
+
+    <script>
+        //The coordinates where the year label is displayed
+        const coordinatesYear=[-124.2465,46.8398];
+
+        //color the shorelines RED
+        const shorelineColor = '#FF0000';
+
+        //width of the shorelines
+        const shorelineWidth = 3;
+
+        //the font size of the years
+        const textSize = 60;
+
+        //the years with surveyed shorelines
+        const years = [1700,1860,1911,1926,1942,1954,1967,1974,1986,1995,1997,1999,2001,2006,2015];
+
+        //the years without surveyed shorelines
+        let all_years = [];
+        for (let i=1700; i<2000; i++) {
+            
+            all_years.push(i);
+            
+        };
+
+        //show the year label
+        for (let i = 1700; i < 2000; i++) {
+            
+            
+            window['displayYear'+i] = {
+                'type': 'FeatureCollection',
+                'features': [
+                    {
+                        'type': 'Feature',
+                        'properties': {
+                            'description': i.toString(),
+                        },
+                        'geometry':{
+                            'type': 'Point',
+                            'coordinates': coordinatesYear 
+                        }
+                    },
+                    
+                ]
+                
+            };
+                
+        };
+        
+
+        mapboxgl.accessToken = 'pk.eyJ1IjoiemxpdTk2IiwiYSI6ImNsMnI3ZWNkcDA0bmwzYnFzcmxnbG9rejMifQ.KS1NO7CgxL3hJi94lTgidQ';
+       
+        const map = new mapboxgl.Map({
+         container: 'map', // container ID
+         style: 'mapbox://styles/mapbox/satellite-v9', // style URL
+         zoom: 10.5, // starting zoom
+         center: [-124.0572, 46.8159] // starting center
+        }); 
+
+        //map.addControl(new mapboxgl.ScaleControl(),'bottom-left');
+        const nav = new mapboxgl.NavigationControl();
+        map.addControl(nav, 'top-left');
+
+        //the year display and shorelines
+        map.on('load',() => {
+
+        
+            for (let i=1700; i < 2000; i++){
+                if (years.includes(i)) {
+                    
+                    map.addSource('yeardisplay'+i, {
+                        'type': 'geojson',
+                        'data': window['displayYear'+i]
+                    });
+
+                    map.addLayer({
+                        'id': 'yeardisplay'+i,
+                        'type': 'symbol',
+                        'source': 'yeardisplay'+i,
+                        'layout':{
+                            'text-field': ['get', 'description'],
+                            'text-variable-anchor': ['top', 'bottom', 'left', 'right'],
+                            'text-radial-offset': 0.5,
+                            'text-justify': 'auto',
+                            'text-size':textSize,
+                            'visibility':'none'
+                        },
+                        'paint':{
+                            'text-color': "#FFFFFF"
+                        }
+                    });
+
+                    if ([1700,1860,1911].includes(i)) {
+                        map.addSource('shoreline'+i, {
+                            'type': 'geojson',
+                            'data': 'assets/shore_'+i+'.geojson'
+                        });
+
+                        map.addLayer({
+                            'id': 'shoreline'+i,
+                            'type': 'line',
+                            'source': 'shoreline'+i,
+                            'layout': {
+                                'visibility':'none'
+                            },
+                            'paint': {
+                                'line-color': shorelineColor,
+                                'line-width':shorelineWidth
+                            },  //color black 2016 coastline
+                        });
+
+                    } else if ([1926,1954,2006].includes(i)) {
+                        map.addSource('shoreline'+i, {
+                            'type': 'geojson',
+                            'data': 'assets/f_'+i+'_coastline.geojson'
+                            });
+
+                            map.addLayer({
+                            'id': 'shoreline'+i,
+                            'type': 'line',
+                            'source': 'shoreline'+i,
+                            'layout': {
+                                'visibility':'none'
+                            },
+                            'paint': {
+                                'line-color': shorelineColor,
+                                'line-width':shorelineWidth
+                            },  //color black 2016 coastline
+                        });
+                    }
+
+                } else {
+                    //first add source and layer for the display of years
+                    map.addSource('yeardisplay'+i, {
+                        'type': 'geojson',
+                        'data': window['displayYear'+i]
+                    });
+
+                    map.addLayer({
+                        'id': 'yeardisplay'+i,
+                        'type': 'symbol',
+                        'source': 'yeardisplay'+i,
+                        'layout':{
+                            'text-field': ['get', 'description'],
+                            'text-variable-anchor': ['top', 'bottom', 'left', 'right'],
+                            'text-radial-offset': 0.5,
+                            'text-justify': 'auto',
+                            'text-size':textSize,
+                            'visibility':'none'
+                        },
+                        'paint':{
+                            'text-color': "#FFFFFF"
+                        }
+                    });
+
+
+                    //then add source and layer for the shorelines
+                    map.addSource('shoreline'+i, {
+                        'type': 'geojson',
+                        'data': 'assets/ECY_estimated_shorelines/'+i+'.geojson'
+                    });
+
+                    map.addLayer({
+                        'id': 'shoreline'+i,
+                        'type': 'line',
+                        'source': 'shoreline'+i,
+                        'layout': {
+                            'visibility':'none'
+                        },
+                        'paint': {
+                            'line-color': shorelineColor,
+                            'line-width':shorelineWidth
+                        },  //color black 2016 coastline
+                    });
+
+                }
+            };
+    
+
+        let current = 0;
+        //let previous = 0;
+     
+  
+        //this function controls the animation
+        function myFunction () {
+            myInt=setInterval (() => {
+            if (current == 0) {
+                previous = all_years.length - 1;
+            };
+            show_layer = 'shoreline'+all_years[current];
+            hide_layer = 'shoreline'+all_years[previous];
+            console.log(show_layer);
+            console.log(hide_layer);
+            
+            map.setLayoutProperty(
+                `shoreline${all_years[current]}`,
+                'visibility',
+                'visible'
+            );
+            map.setLayoutProperty(
+                `shoreline${all_years[previous]}`,
+                'visibility',
+                'none'
+            );
+
+            current_year = all_years[current];
+            previous_year = all_years[previous];
+
+            if (current_year!=previous_year) {
+                map.setLayoutProperty(
+                    `yeardisplay${current_year}`,
+                    'visibility',
+                    'visible'
+                );
+
+                map.setLayoutProperty(
+                    `yeardisplay${previous_year}`,
+                    'visibility',
+                    'none'
+                );
+            };
+
+            //show the year on at the bottom right
+            document.getElementById("yearHolder").innerHTML = all_years[current].toString();
+            
+            previous = current;
+            current +=1;
+            console.log(previous);
+            console.log(current);
+            
+            if (current > all_years.length-1) {
+                current = 0;
+                };
+        },1000)};
+
+        //this function stops the animation
+        function myStopInterval() {
+            clearInterval(myInt);
+            
+        };
+
+
+        //document.getElementById("play").addEventListener("click", myFunction);
+        document.getElementById("play").addEventListener("click", function () {
+            if (document.getElementById("play").innerText=="Click to play animation") {
+                myFunction();
+                document.getElementById("play").innerText="Click to pause";
+
+            } else {
+                myStopInterval();
+                document.getElementById("play").innerText="Click to play animation";
+
+            }
+        
+        });
+
+      });
+        
+    </script>
+</body>
