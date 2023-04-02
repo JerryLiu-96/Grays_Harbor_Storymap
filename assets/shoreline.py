@@ -1,3 +1,5 @@
+#This script is used to clip the raster file and get the shoreline following the sea level rise determined by user
+
 import json
 import shapely
 import numpy as np
@@ -5,6 +7,8 @@ import matplotlib.pyplot as plt
 from osgeo import gdal
 from shapely.geometry import Point
 from shapely.geometry.polygon import Polygon
+
+#open the raster file
 elev_array=gdal.Open(r'/Users/ziyangliu/Downloads/WA_SEW_dems/WA_SEW1_GCS_5m_NAVD88m.tif')
 width=elev_array.RasterXSize        
 height=elev_array.RasterYSize
