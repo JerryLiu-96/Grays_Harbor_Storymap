@@ -94,8 +94,8 @@
 
     <script>
         //The coordinates where the year label is displayed
-        const coordinatesYear=[-124.2465,46.8398];
-
+        //const coordinatesYear=[-124.2465,46.8398];
+        const coordinatesYear=[-124.083646,46.890852];
         //color the shorelines RED
         const shorelineColor = '#FF0000';
 
@@ -103,7 +103,7 @@
         const shorelineWidth = 3;
 
         //the font size of the years
-        const textSize = 60;
+        const textSize = 30;
 
         //the years with surveyed shorelines
         const years = [1700,1860,1911,1926,1942,1954,1967,1974,1986,1995,1997,1999,2001,2006,2015];
@@ -324,7 +324,7 @@
             if (current > all_years.length-1) {
                 current = 0;
                 };
-        },1000)};
+        },300)};
 
         //this function stops the animation
         function myStopInterval() {
