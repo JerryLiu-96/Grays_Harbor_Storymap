@@ -130,7 +130,7 @@
 
         //the years without surveyed shorelines
         let all_years = [];
-        for (let i=1700; i<=1911; i++) {
+        for (let i=1700; i<1912; i++) {
             
             all_years.push(i);
             
@@ -310,7 +310,7 @@
                 function myFunction () {
                     myInt = setInterval(() => {
                         if (current == 0) {
-                            previous = all_years.lenth-1;
+                            previous = all_years.length-1;
                         };
                         
                         map.setLayoutProperty(
