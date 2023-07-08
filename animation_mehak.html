@@ -31,6 +31,14 @@
         z-index: 9999;
     }
 
+    label {
+        display: block;
+        border-bottom: 1px solid rgba(0, 0, 0, 0.25);
+        font-weight: bold;
+        font-size: x-small;
+        margin: 0 0 0px;
+    }
+
     #yearHolder {
         position: absolute;
         right: 220px;
@@ -45,10 +53,10 @@
         background: #fff;
         position: absolute;
         z-index: 1;
-        top: 35px;
+        top: 135px;
         right: 10px;
         border-radius: 3px;
-        width: 120px;
+        width: 160px;
         border: 1px solid rgba(0, 0, 0, 0.4);
         font-family: 'Open Sans', sans-serif;
     }
@@ -64,6 +72,8 @@
         border-bottom: 1px solid rgba(0, 0, 0, 0.25);
         text-align: center;
     }
+
+    
  
     #menu a:last-child {
         border: none;
@@ -91,6 +101,9 @@
     <div id="map"></div>
     <button id="play">Click to play animation</button>
     <div id="yearHolder"></div>
+    <nav id="menu">
+        <label>surveyed year to display</label>
+    </nav>
 
     <script>
         
@@ -140,7 +153,7 @@
 
         const map = new mapboxgl.Map({
          container: 'map', // container ID
-         style: 'mapbox://styles/mapbox/satellite-v9', // style URL
+         style: 'mapbox://styles/mapbox/light-v11', // style URL
          zoom: 11, // starting zoom
          center: [-124.0572, 46.8159] // starting center
         }); 
@@ -408,6 +421,211 @@
             
 
         );
+
+        map.on('idle',() => {
+            // If these layers were not added to the map, abort
+            if ( !map.getLayer('shoreline1700layer1') || !map.getLayer('shoreline1700layer3') || !map.getLayer('shoreline1860layer1') || !map.getLayer('shoreline1860layer2')|| !map.getLayer('shoreline1911layer1') || !map.getLayer('shoreline1911layer2')) {
+            return;
+            }
+
+            // Enumerate ids of the layers.
+            const toggleableLayerIds = ['1700', '1860','1911'];
+
+            for (const id of toggleableLayerIds) {
+                // Skip layers that already have a button set up
+
+                /*
+                if (map.getLayer('shoreline' + id + 'layer1')) {
+                    continue;
+                }
+
+                //skip layers that are already added to the map. if id is 1700, then it has layer 3
+                if (id == '1700'){
+                    if (map.getLayer('shoreline1700layer3')) {
+                        continue;
+                    }
+                }
+
+                //skip layers that are already added to the map. if id is 1860 or 1911, then it has layer 2
+                if (id == '1860' || id == '1911') {
+                    if (map.getLayer('shoreline' + id + 'layer2')) {
+                        continue;
+                    }
+                }
+                */
+                // Create a link.
+                if (id == "1700") {
+                    // Skip id that already have a button set up
+                    if (document.getElementById(id)) {
+                        continue;
+                    };
+                    const link = document.createElement('a');
+                    link.id = id;
+                    link.href = '#';
+                    link.textContent = id;
+                    link.className = '';
+
+                    link.onclick = function (e) {
+                        const clickedLayer_1 = "shoreline1700layer1";
+                        const clickedLayer_2 = "shoreline1700layer3";
+                        e.preventDefault();
+                        e.stopPropagation(); 
+                        const visibility_1 = map.getLayoutProperty(
+                            clickedLayer_1,
+                            'visibility'
+                        );
+                        const visibility_2 = map.getLayoutProperty(
+                            clickedLayer_2,
+                            'visibility'
+                        );
+                        // Toggle layer visibility by changing the layout object's visibility property.
+                        if (visibility_1 === 'visible') {
+                            map.setLayoutProperty(
+                                clickedLayer_1,
+                                'visibility',
+                                'none'
+                            );
+                            map.setLayoutProperty(
+                                clickedLayer_2,
+                                'visibility',
+                                'none'
+                            );
+                            this.className = '';
+                        } else {
+                            this.className = 'active';
+                            map.setLayoutProperty(
+                                clickedLayer_1,
+                                'visibility',
+                                'visible'
+                            );
+                            map.setLayoutProperty(
+                                clickedLayer_2,
+                                'visibility',
+                                'visible'
+                            );
+                        }
+                    };
+
+                    const layers = document.getElementById('menu');
+                    layers.appendChild(link);
+                };
+
+                if (id=="1860") {
+                    // Skip id that already have a button set up
+                    if (document.getElementById(id)) {
+                        continue;
+                    };
+
+                    const link = document.createElement('a');
+                    link.id = id;
+                    link.href = '#';
+                    link.textContent = id;
+                    link.className = '';
+
+                    link.onclick = function (e) {
+                        const clickedLayer_1 = "shoreline1860layer1";
+                        const clickedLayer_2 = "shoreline1860layer2";
+                        e.preventDefault();
+                        e.stopPropagation();
+                        const visibility_1 = map.getLayoutProperty(
+                            clickedLayer_1,
+                            'visibility'
+                        );
+                        const visibility_2 = map.getLayoutProperty(
+                            clickedLayer_2,
+                            'visibility'
+                        );
+                        // Toggle layer visibility by changing the layout object's visibility property.
+                        if (visibility_1 === 'visible') {
+                            map.setLayoutProperty(
+                                clickedLayer_1,
+                                'visibility',
+                                'none'
+                            );
+                            map.setLayoutProperty(
+                                clickedLayer_2,
+                                'visibility',
+                                'none'
+                            );
+                            this.className = '';
+                        } else {
+                            this.className = 'active';
+                            map.setLayoutProperty(
+                                clickedLayer_1,
+                                'visibility',
+                                'visible'
+                            );
+                            map.setLayoutProperty(
+                                clickedLayer_2,
+                                'visibility',
+                                'visible'
+                            );
+                        }
+                    };
+
+                    const layers = document.getElementById('menu');
+                    layers.appendChild(link);
+                };
+
+                if (id=="1911") {
+                    // Skip id that already have a button set up
+                    if (document.getElementById(id)) {
+                        continue;
+                    };
+
+                    const link = document.createElement('a');
+                    link.id = id;
+                    link.href = '#';
+                    link.textContent = id;
+                    link.className = '';
+
+                    link.onclick = function (e) {
+
+                        const clickedLayer_1 = "shoreline1911layer1";
+                        const clickedLayer_2 = "shoreline1911layer2";
+                        const visibility_1 = map.getLayoutProperty(
+                            clickedLayer_1,
+                            'visibility'
+                        );
+                        const visibility_2 = map.getLayoutProperty(
+                            clickedLayer_2,
+                            'visibility'
+                        );
+                        // Toggle layer visibility by changing the layout object's visibility property.
+                        if (visibility_1 === 'visible') {
+                            map.setLayoutProperty(
+                                clickedLayer_1,
+                                'visibility',
+                                'none'
+                            );
+                            map.setLayoutProperty(
+                                clickedLayer_2,
+                                'visibility',
+                                'none'
+                            );
+                            this.className = '';
+                        } else {
+                            this.className = 'active';
+                            map.setLayoutProperty(
+                                clickedLayer_1,
+                                'visibility',
+                                'visible'
+                            );
+                            map.setLayoutProperty(
+                                clickedLayer_2,
+                                'visibility',
+                                'visible'
+                            );
+                        }
+                    };
+
+                    const layers = document.getElementById('menu');
+                    layers.appendChild(link);
+                    //const clickedLayer = this.textContent;
+                    
+                }
+            }
+        })
 
         
     </script>
