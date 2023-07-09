@@ -16,8 +16,8 @@
           position:absolute;
           top: 0;
           bottom: 0;
-          left: 0;
-          right: 0;
+          /*left: 0;
+          right: 0; */
           width: 100%; 
         }
 
@@ -35,8 +35,41 @@
         display: block;
         border-bottom: 1px solid rgba(0, 0, 0, 0.25);
         font-weight: bold;
-        font-size: x-small;
+        font-size: small;
         margin: 0 0 0px;
+    }
+
+    .top-left {
+        font: 12px/20px 'Helvetica Neue', Arial, Helvetica, sans-serif;
+        position: absolute;
+        width: 35%;
+        top: 0;
+        left: 0;
+        padding: 10px;
+        background-color: #fff;
+        box-shadow: 0 1px 2px rgba(0, 0, 0, 0.2);
+        border-radius: 3px;
+        
+        margin-bottom: 10px;
+    }
+
+    .top-left h3 {
+        font-size: 20px;
+        font-weight: bold;
+    }
+
+    .top-left label {
+        font-size: 16px;
+        font-weight: bold;
+    }
+
+    .top-left input {
+        background-color: transparent;
+        display: inline-block;
+        width: 100%;
+        position: relative;
+        margin: 0;
+        cursor: ew-resize;
     }
 
     #yearHolder {
@@ -102,8 +135,13 @@
     <button id="play">Click to play animation</button>
     <div id="yearHolder"></div>
     <nav id="menu">
-        <label>surveyed year to display</label>
+        <label>Surveyed Year to Display</label>
     </nav>
+    <div class="top-left">
+        <h3>Shoreline Animation Year</h3>
+        <label id="slideryear"></label>
+        <input id="slider" type="range" min="1700" max="1911" step="1" value="1700">
+    </div>
 
     <script>
         
@@ -164,6 +202,8 @@
         const year_surveyed = [1700, 1860, 1911];
 
         map.on('load',() => {
+
+            let current = 0;
             // this for loop is to load yearholders on the map
             for (let i=1700;i<1912; i++) {
                 map.addSource('yeardisplay'+i, {
@@ -316,143 +356,213 @@
                             });
                     }
 
-                };
+            };
 
-                let current = 0;
+            // when users open the page, the map will show the shoreline of 1700
+            map.setLayoutProperty(
+                'shoreline1700layer1',
+                'visibility',
+                'visible'
+            );
 
-                function myFunction () {
-                    myInt = setInterval(() => {
-                        if (current == 0) {
-                            previous = all_years.length-1;
-                        };
-                        
+            map.setLayoutProperty(
+                'yeardisplay1700',
+                'visibility',
+                'visible'
+            );
+
+            map.setLayoutProperty(
+                'shoreline1700layer3',
+                'visibility',
+                'visible'
+            );
+
+            function myFunction () {
+                myInt = setInterval(() => {
+                    if (current == 0) {
+                        previous = all_years.length-1;
+                    };
+                    
+                    map.setLayoutProperty(
+                        `shoreline${all_years[current]}layer1`,
+                        'visibility',
+                        'visible'
+                    );
+
+                    map.setLayoutProperty(
+                        `shoreline${all_years[previous]}layer1`,
+                        'visibility',
+                        'none'
+                    );
+
+                    current_year = all_years[current];
+                    previous_year = all_years[previous];
+
+                    map.setLayoutProperty(
+                        `yeardisplay${current_year}`,
+                        'visibility',
+                        'visible'
+                    );
+
+                    map.setLayoutProperty(
+                        `yeardisplay${previous_year}`,
+                        'visibility',
+                        'none'
+                    );
+
+
+                    if (current_year != 1700) {
                         map.setLayoutProperty(
-                            `shoreline${all_years[current]}layer1`,
+                            `shoreline${current_year}layer2`,
                             'visibility',
                             'visible'
                         );
+                    };
 
+                    if (previous_year != 1700) {
                         map.setLayoutProperty(
-                            `shoreline${all_years[previous]}layer1`,
+                            `shoreline${previous_year}layer2`,
                             'visibility',
                             'none'
                         );
+                    };
 
-                        current_year = all_years[current];
-                        previous_year = all_years[previous];
-
+                    if (current_year >= 1700 && current_year <= 1859) {
                         map.setLayoutProperty(
-                            `yeardisplay${current_year}`,
+                            `shoreline${current_year}layer3`,
                             'visibility',
                             'visible'
                         );
+                    };
 
+                    if (previous_year >= 1700 && previous_year <= 1859) {
                         map.setLayoutProperty(
-                            `yeardisplay${previous_year}`,
+                            `shoreline${previous_year}layer3`,
                             'visibility',
                             'none'
                         );
+                    };
+
+                    //show the year on at the bottom right
+                    document.getElementById("yearHolder").innerHTML = all_years[current].toString();
+
+                    document.getElementById('slider').value = current_year;
+
+                    document.getElementById('slideryear').textContent = current_year.toString();
 
 
-                        if (current_year != 1700) {
-                            map.setLayoutProperty(
-                                `shoreline${current_year}layer2`,
-                                'visibility',
-                                'visible'
-                            );
+                    previous = current;
+                    current += 1;
+
+                    if (current > all_years.length-1) {
+                        current = 0;
                         };
 
-                        if (previous_year != 1700) {
-                            map.setLayoutProperty(
-                                `shoreline${previous_year}layer2`,
-                                'visibility',
-                                'none'
-                            );
-                        };
 
-                        if (current_year >= 1700 && current_year <= 1859) {
-                            map.setLayoutProperty(
-                                `shoreline${current_year}layer3`,
-                                'visibility',
-                                'visible'
-                            );
-                        };
+                },300)
+            };
 
-                        if (previous_year >= 1700 && previous_year <= 1859) {
-                            map.setLayoutProperty(
-                                `shoreline${previous_year}layer3`,
-                                'visibility',
-                                'none'
-                            );
-                        };
+            //this function stops the animation
+            function myStopInterval() {
+                clearInterval(myInt);
+            };
 
-                        //show the year on at the bottom right
-                        document.getElementById("yearHolder").innerHTML = all_years[current].toString();
+            document.getElementById("play").addEventListener("click", function () {
+                if (document.getElementById("play").innerText=="Click to play animation") {
+                    myFunction();
+                    document.getElementById("play").innerText="Click to pause";
 
-                        previous = current;
-                        current += 1;
-
-                        if (current > all_years.length-1) {
-                            current = 0;
-                            };
-
-
-                    },300)
-                };
-
-                //this function stops the animation
-                function myStopInterval() {
-                    clearInterval(myInt);
-                };
-
-                document.getElementById("play").addEventListener("click", function () {
-                    if (document.getElementById("play").innerText=="Click to play animation") {
-                        myFunction();
-                        document.getElementById("play").innerText="Click to pause";
-
-                    } else {
-                        myStopInterval();
-                        document.getElementById("play").innerText="Click to play animation";
-                    }
-                
-                });
-
+                } else {
+                    myStopInterval();
+                    document.getElementById("play").innerText="Click to play animation";
                 }
             
-
-        );
-
-        map.on('idle',() => {
-            // If these layers were not added to the map, abort
+            });
+                // If these layers were not added to the map, abort
             if ( !map.getLayer('shoreline1700layer1') || !map.getLayer('shoreline1700layer3') || !map.getLayer('shoreline1860layer1') || !map.getLayer('shoreline1860layer2')|| !map.getLayer('shoreline1911layer1') || !map.getLayer('shoreline1911layer2')) {
             return;
             }
 
+//set the slider of layer toggle
+            document.getElementById('slideryear').textContent = "1700";
+
+            document.getElementById('slider').addEventListener('input', (e) => {
+                if (document.getElementById("play").innerText=="Click to pause") {
+                    myStopInterval();
+                    document.getElementById("play").innerText="Click to play animation";
+                };
+                //document.getElementById("play").innerText="Click to play animation";
+
+                const sdyear = parseInt(e.target.value,10);
+
+                //get the index of the year in the all_years array
+                current = all_years.indexOf(sdyear);
+
+                document.getElementById('slideryear').textContent = sdyear.toString();
+                for (let i=1700; i<1912; i++) {
+                    if (i==sdyear) {
+                        map.setLayoutProperty(
+                            `shoreline${i}layer1`,
+                            'visibility',
+                            'visible'
+                        );
+                        map.setLayoutProperty(
+                            `yeardisplay${i}`,
+                            'visibility',
+                            'visible'
+                        );
+                        if (i != 1700) {
+                            map.setLayoutProperty(
+                                `shoreline${i}layer2`,
+                                'visibility',
+                                'visible'
+                            );
+                        };
+                        if (i >= 1700 && i <= 1859) {
+                            map.setLayoutProperty(
+                                `shoreline${i}layer3`,
+                                'visibility',
+                                'visible'
+                            );
+                        };
+                    } else {
+                        map.setLayoutProperty(
+                            `shoreline${i}layer1`,
+                            'visibility',
+                            'none'
+                        );
+                        map.setLayoutProperty(
+                            `yeardisplay${i}`,
+                            'visibility',
+                            'none'
+                        );
+                        if (i != 1700) {
+                            map.setLayoutProperty(
+                                `shoreline${i}layer2`,
+                                'visibility',
+                                'none'
+                            );
+                        };
+                        if (i >= 1700 && i <= 1859) {
+                            map.setLayoutProperty(
+                                `shoreline${i}layer3`,
+                                'visibility',
+                                'none'
+                            );
+                        };
+                    }
+                }
+            });
+//end of slider setting
+
+//set the menu of layer toggle to show surveyed years
             // Enumerate ids of the layers.
             const toggleableLayerIds = ['1700', '1860','1911'];
 
             for (const id of toggleableLayerIds) {
                 // Skip layers that already have a button set up
 
-                /*
-                if (map.getLayer('shoreline' + id + 'layer1')) {
-                    continue;
-                }
-
-                //skip layers that are already added to the map. if id is 1700, then it has layer 3
-                if (id == '1700'){
-                    if (map.getLayer('shoreline1700layer3')) {
-                        continue;
-                    }
-                }
-
-                //skip layers that are already added to the map. if id is 1860 or 1911, then it has layer 2
-                if (id == '1860' || id == '1911') {
-                    if (map.getLayer('shoreline' + id + 'layer2')) {
-                        continue;
-                    }
-                }
-                */
+              
                 // Create a link.
                 if (id == "1700") {
                     // Skip id that already have a button set up
@@ -625,7 +735,13 @@
                     
                 }
             }
-        })
+
+                }
+            
+
+        );
+
+
 
         
     </script>
