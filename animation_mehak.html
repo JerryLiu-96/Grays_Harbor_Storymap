@@ -179,7 +179,7 @@
 
         const textSize = 30;
 
-        //the years without surveyed shorelines
+        //wnumerate the years from 1700 to 1911
         let all_years = [];
         for (let i=1700; i<1912; i++) {
             
@@ -199,7 +199,7 @@
         const nav = new mapboxgl.NavigationControl();
         map.addControl(nav, 'top-left');
 
-        const year_surveyed = [1700, 1860, 1911];
+        const year_surveyed = [1700, 1860, 1911, 1926];
 
         map.on('load',() => {
 
@@ -227,6 +227,7 @@
                             'text-color': "#FFFFFF"
                         }
                 });
+
                 //continue to add sources of shorelines
                 //write a if statement to determine whether the i is between 1700 and 1860
                 if (i>=1700 && i<=1860) {
@@ -358,7 +359,121 @@
 
             };
 
-            // when users open the page, the map will show the shoreline of 1700
+            //add shoreline data of 1926 available from WA ECY
+            map.addSource('shoreline1926',{
+                'type':"geojson",
+                'data':'assets/ECY_historical_shorelines_epsg32149/1926.geojson'
+            });
+
+            map.addLayer({
+                'id':'shoreline1926',
+                'type':'line',
+                'source': 'shoreline1926',
+                'layout':{
+                    'visibility':'none'
+                },
+                'paint':{
+                    'line-color': shorelineColor,
+                    'line-width': 3,
+                }
+            });
+
+            //add shoreline data of 1942 available from WA ECY
+            map.addSource('shoreline1942',{
+                'type':"geojson",
+                'data':'assets/ECY_historical_shorelines_epsg32149/1942.geojson'
+            });
+
+            map.addLayer({
+                'id':'shoreline1942',
+                'type':'line',
+                'source': 'shoreline1942',
+                'layout':{
+                    'visibility':'none'
+                },
+                'paint':{
+                    'line-color': shorelineColor,
+                    'line-width': 3,
+                }
+            });
+
+            //add shoreline data of 1954 available from WA ECY
+            map.addSource('shoreline1954',{
+                'type':"geojson",
+                'data':'assets/ECY_historical_shorelines_epsg32149/1954.geojson'
+            });
+
+            map.addLayer({
+                'id':'shoreline1954',
+                'type':'line',
+                'source': 'shoreline1954',
+                'layout':{
+                    'visibility':'none'
+                },
+                'paint':{
+                    'line-color': shorelineColor,
+                    'line-width': 3,
+                }
+            });
+
+            //add shoreline data of 1967 available from WA ECY
+            map.addSource('shoreline1967',{
+                'type':"geojson",
+                'data':'assets/ECY_historical_shorelines_epsg32149/1967.geojson'
+            });
+
+            map.addLayer({
+                'id':'shoreline1967',
+                'type':'line',
+                'source': 'shoreline1967',
+                'layout':{
+                    'visibility':'none'
+                },
+                'paint':{
+                    'line-color': shorelineColor,
+                    'line-width': 3,
+                }
+            });
+
+            //add shoreline data of 1974 available from WA ECY
+            map.addSource('shoreline1974',{
+                'type':"geojson",
+                'data':'assets/ECY_historical_shorelines_epsg32149/1974.geojson'
+            });
+
+            map.addLayer({
+                'id':'shoreline1974',
+                'type':'line',
+                'source': 'shoreline1974',
+                'layout':{
+                    'visibility':'none'
+                },
+                'paint':{
+                    'line-color': shorelineColor,
+                    'line-width': 3,
+                }
+            });
+
+            //add shoreline data of 1986 available from WA ECY
+            map.addSource('shoreline1986',{
+                'type':"geojson",
+                'data':'assets/ECY_historical_shorelines_epsg32149/1986.geojson'
+            });
+
+            map.addLayer({
+                'id':'shoreline1986',
+                'type':'line',
+                'source': 'shoreline1986',
+                'layout':{
+                    'visibility':'none'
+                },
+                'paint':{
+                    'line-color': shorelineColor,
+                    'line-width': 3,
+                }
+            });
+
+            // default setting: when users open the page, the map will show the shoreline of 1700
             map.setLayoutProperty(
                 'shoreline1700layer1',
                 'visibility',
@@ -377,6 +492,7 @@
                 'visible'
             );
 
+            //function to set the animation
             function myFunction () {
                 myInt = setInterval(() => {
                     if (current == 0) {
@@ -557,10 +673,10 @@
 
 //set the menu of layer toggle to show surveyed years
             // Enumerate ids of the layers.
-            const toggleableLayerIds = ['1700', '1860','1911'];
+            const toggleableLayerIds = ['1700', '1860','1911','1926'];
 
             for (const id of toggleableLayerIds) {
-                // Skip layers that already have a button set up
+                
 
               
                 // Create a link.
@@ -693,6 +809,8 @@
 
                         const clickedLayer_1 = "shoreline1911layer1";
                         const clickedLayer_2 = "shoreline1911layer2";
+                        e.preventDefault();
+                        e.stopPropagation();
                         const visibility_1 = map.getLayoutProperty(
                             clickedLayer_1,
                             'visibility'
@@ -726,6 +844,66 @@
                                 'visibility',
                                 'visible'
                             );
+                        }
+                    };
+
+                    const layers = document.getElementById('menu');
+                    layers.appendChild(link);
+                    //const clickedLayer = this.textContent;
+                    
+                };
+
+                if (id=="1926") {
+                    // Skip id that already have a button set up
+                    if (document.getElementById(id)) {
+                        continue;
+                    };
+
+                    const link = document.createElement('a');
+                    link.id = id;
+                    link.href = '#';
+                    link.textContent = id;
+                    link.className = '';
+
+                    link.onclick = function (e) {
+
+                        const clickedLayer = "shoreline1926";
+                        //const clickedLayer_2 = "shoreline1911layer2";
+                        e.preventDefault();
+                        e.stopPropagation();
+                        const visibility = map.getLayoutProperty(
+                            clickedLayer,
+                            'visibility'
+                        );
+                        /*const visibility_2 = map.getLayoutProperty(
+                            clickedLayer_2,
+                            'visibility'
+                        );*/
+                        // Toggle layer visibility by changing the layout object's visibility property.
+                        if (visibility === 'visible') {
+                            map.setLayoutProperty(
+                                clickedLayer,
+                                'visibility',
+                                'none'
+                            );
+                            /*map.setLayoutProperty(
+                                clickedLayer_2,
+                                'visibility',
+                                'none'
+                            );*/
+                            this.className = '';
+                        } else {
+                            this.className = 'active';
+                            map.setLayoutProperty(
+                                clickedLayer,
+                                'visibility',
+                                'visible'
+                            );
+                            /*map.setLayoutProperty(
+                                clickedLayer_2,
+                                'visibility',
+                                'visible'
+                            );*/
                         }
                     };
 
