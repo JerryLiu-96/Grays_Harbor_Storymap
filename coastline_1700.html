@@ -35,25 +35,449 @@ body {
         center: [-124.0572, 46.9308] // starting center
     });
 
+    let transect = {
+        'type': 'FeatureCollection',
+        'features': [
+            {
+                'type': 'Feature',
+                'geometry': {
+                    'type': 'LineString',
+                    'coordinates': [[-124.04, 46.657113], [-124.04, 46.757113]]
+                },
+                'properties': {
+                    'name': 'Transect 1'
+                }
+            }, 
+            ]
+        };
+
+        let poly = {
+        'type': 'FeatureCollection',
+        'features': [
+            {
+                'type': 'Feature',
+                'geometry': {
+                    'type': 'LineString',
+                    'coordinates': [[-124.10358, 46.733252766225945],[-124.08, 46.733252766225945],[-124.08,46.712],[-124.0345,46.712],[-124.0345,46.69],[-124.10358,46.69],[-124.10358, 46.733252766225945]]
+                },
+                'properties': {
+                    'name': 'Transect 1'
+                }
+            }, 
+            ]
+        };
+
+        let pt = {
+        'type': 'FeatureCollection',
+        'features': [
+            {
+                'type': 'Feature',
+                'geometry': {
+                    'type': 'MultiPoint',
+                    'coordinates': [[-124.09358953869004, 46.733252766225945],[-124.06143581547602, 46.70891138799941]]
+                },
+                
+            }, 
+            ]
+        };
+
+        let t = {
+            'type': 'FeatureCollection',
+            'features': [
+                {
+                    'type': 'Feature',
+                    'geometry': {
+                        'type': 'MultiLineString',
+                        'coordinates': [
+                            [[-124.04, 46.657113],[-124.04, 46.757113]],
+                            [[-124.04535895386901, 46.657113],[-124.04535895386901, 46.757113]],
+                            [[-124.05071790773802, 46.657113],[-124.05071790773802, 46.757113]],
+                            [[-124.05607686160701, 46.657113],[-124.05607686160701, 46.757113]],
+                            [[-124.06143581547602, 46.657113],[-124.06143581547602, 46.757113]],
+                            [[-124.06679476934502, 46.657113],[-124.06679476934502, 46.757113]],
+                            [[-124.07215372321403, 46.657113],[-124.07215372321403, 46.757113]],
+                            [[-124.07751267708304, 46.657113],[-124.07751267708304, 46.757113]],
+                            [[-124.08287163095203, 46.657113],[-124.08287163095203, 46.757113]],
+                            [[-124.08823058482103, 46.657113],[-124.08823058482103, 46.757113]]
+                        ]
+                    },
+                
+                }, 
+                ]
+        };
+
+        let sh_1913 = {
+        'type': 'FeatureCollection',
+        'features': [
+            {
+                'type': 'Feature',
+                'geometry': {
+                    'type': 'LineString',
+                    'coordinates': [[-124.06502575510204, 46.712], [-124.06143581547602, 46.709216132480556], [-124.05607686160701, 46.70745982617769], [-124.05071790773802, 46.706711015718035], [-124.04535895386901, 46.707420813888945], [-124.04, 46.70584814189226], [-124.04, 46.703809897697646], [-124.04535895386901, 46.70450134545436], [-124.05071790773802, 46.70526654667924], [-124.05607686160701, 46.705703548791405], [-124.06143581547602, 46.70614991803472], [-124.06679476934502, 46.70701589830491], [-124.07215372321403, 46.70802680450518], [-124.07751267708304, 46.70861517263627], [-124.08287163095203, 46.70826485352658], [-124.08823058482103, 46.70921901556006], [-124.09358953869004, 46.733252766225945]]
+                },
+                'properties': {
+                    'name': 'Transect 1'
+                }
+            }, 
+            ]
+        };
+
+        
+
+
 
     map.on('load', () => {
         map.addSource("data",{
             type:'geojson',
-            data:'assets/1700_coastline.geojson'
+            data:'assets/shore_1860.geojson'
         });
+
+        map.addSource("data1860",{
+            type:'geojson',
+            data:'assets/ECY_estimated_shorelines/Aug4/1860.geojson'
+        });
+
+        map.addSource("data2",{
+            type:'geojson',
+            data:'assets/shore_1700.geojson'
+        });
+
+        map.addSource("transect",{
+            type:'geojson',
+            data:transect
+        });
+
+        map.addSource("point",{
+            type:'geojson',
+            data:pt
+        });
+
+        map.addSource("poly",{
+            type:'geojson',
+            data:poly
+        });
+
+        map.addSource("data1890",{
+            type:'geojson',
+            data:'assets/ECY_estimated_shorelines/Aug4/1890.geojson'
+        });
+
+        map.addSource("data1911",{
+            type:'geojson',
+            data:'assets/ECY_estimated_shorelines/Aug4/1911.geojson'
+        });
+
+        map.addSource("data1994",{
+            type:'geojson',
+            data:'assets/ECY_estimated_shorelines/1994.geojson'
+        });
+
+        map.addSource("data1926",{
+            type:'geojson',
+            data:'assets/ECY_historical_shorelines_epsg32149/1926.geojson'
+        });
+
+        map.addSource("data1942",{
+            type:'geojson',
+            data:'assets/ECY_historical_shorelines_epsg32149/1942.geojson'
+        });
+
+        map.addSource("data1954",{
+            type:'geojson',
+            data:'assets/ECY_historical_shorelines_epsg32149/1954.geojson'
+        });
+
+        map.addSource("data1967",{
+            type:'geojson',
+            data:'assets/ECY_historical_shorelines_epsg32149/1967.geojson'
+        });
+
+        map.addSource("data1974",{
+            type:'geojson',
+            data:'assets/ECY_historical_shorelines_epsg32149/1974.geojson'
+        });
+
+        map.addSource("data1986",{
+            type:'geojson',
+            data:'assets/ECY_historical_shorelines_epsg32149/1986.geojson'
+        });
+
+        map.addSource("data1995",{
+            type:'geojson',
+            data:'assets/ECY_historical_shorelines_epsg32149/1995.geojson'
+        });
+
+        map.addSource("data1997",{
+            type:'geojson',
+            data:'assets/ECY_historical_shorelines_epsg32149/1997.geojson'
+        });
+
+        map.addSource("data1999",{
+            type:'geojson',
+            data:'assets/ECY_historical_shorelines_epsg32149/1999.geojson'
+        });
+
+        map.addSource("data2001",{
+            type:'geojson',
+            data:'assets/ECY_historical_shorelines_epsg32149/2001.geojson'
+        });
+
+        map.addSource("data2006",{
+            type:'geojson',
+            data:'assets/ECY_historical_shorelines_epsg32149/2005or_2006wa.geojson'
+        });
+
+        map.addSource("data2015",{
+            type:'geojson',
+            data:'assets/ECY_historical_shorelines_epsg32149/2015wa_2016or.geojson'
+        });
+
+        map.addSource("t",{
+            type:'geojson',
+            data:t
+        });
+
+        map.addSource("sh",{
+            type:'geojson',
+            data:sh_1913
+        });
+
         map.addLayer({
-            'id':"data",
+            'id':"point",
+            'type':'circle',
+            'source': "point",
+            
+        });
+
+        map.addLayer({
+            'id':"t",
             'type':'line',
-            'source': "data",
+            'source': "t",
+            'paint':{
+                'line-color':'#800080',
+                'line-width':2
+            },
+        });
+
+        map.addLayer({
+            'id':"sh",
+            'type':'line',
+            'source': "sh",
+            'paint':{
+                'line-color':'#800080',
+                'line-width':2
+            },
+        });
+
+        map.addLayer({
+            'id':"poly",
+            'type':'line',
+            'source': "poly",
             'paint':{
                 'line-color':'#FF0000',
                 'line-width':2
             },
         });
 
+        map.addLayer({
+            'id':"data1911",
+            'type':'line',
+            'source': "data1911",
+            'paint':{
+                'line-color':'#FF0000',
+                'line-width':2
+            },
+        });
+
+        map.addLayer({
+            'id':"data1926",
+            'type':'line',
+            'source': "data1926",
+            'paint':{
+                'line-color':'#a6cee3',    
+                'line-width':2
+            },
+        });
+/*
+        map.addLayer({
+            'id':"data1942",
+            'type':'line',
+            'source': "data1942",
+            'paint':{
+                'line-color':'#1f78b4',   
+                'line-width':2
+            },
+        });
+
+        map.addLayer({
+            'id':"data1954",
+            'type':'line',
+            'source': "data1954",
+            'paint':{
+                'line-color':'#b2df8a',    
+                'line-width':2
+            },
+        });
+
+        map.addLayer({
+            'id':"transect",
+            'type':'line',
+            'source': "transect",
+            'paint':{
+                'line-color':'#800080',
+                'line-width':2
+            },
+        });
+/*
+        map.addLayer({
+            'id':"data1967",
+            'type':'line',
+            'source': "data1967",
+            'paint':{
+                'line-color':'#33a02c',   
+                'line-width':2
+            },
+        });
+
+        map.addLayer({
+            'id':"data1974",
+            'type':'line',
+            'source': "data1974",
+            'paint':{
+                'line-color':'#fb9a99',    
+                'line-width':2
+            },
+        });
+
+        map.addLayer({
+            'id':"data1986",
+            'type':'line',
+            'source': "data1986",
+            'paint':{
+                'line-color':'#e31a1c',    
+                'line-width':2
+            },
+        });
+
+        map.addLayer({
+            'id':"data1995",
+            'type':'line',
+            'source': "data1995",
+            'paint':{
+                'line-color':'#fdbf6f',  
+                'line-width':2
+            },
+        });
+
+        map.addLayer({
+            'id':"data1997",
+            'type':'line',
+            'source': "data1997",
+            'paint':{
+                'line-color':'#ff7f00',    
+                'line-width':2
+            },
+        });
+
+        map.addLayer({
+            'id':"data1999",
+            'type':'line',
+            'source': "data1999",
+            'paint':{
+                'line-color':'#cab2d6',    
+                'line-width':2
+            },
+        });
+
+        map.addLayer({
+            'id':"data2001",
+            'type':'line',
+            'source': "data2001",
+            'paint':{
+                'line-color':'#6a3d9a',   
+                'line-width':2
+            },
+        });
+
+        map.addLayer({
+            'id':"data2006",
+            'type':'line',
+            'source': "data2006",
+            'paint':{
+                'line-color':'#ffff99',    
+                'line-width':2
+            },
+        });
+
+        map.addLayer({
+            'id':"data2015",
+            'type':'line',
+            'source': "data2015",
+            'paint':{
+                'line-color':'#b15928',    
+                'line-width':2
+            },
+        });
+/*
+        map.addLayer({
+            'id':"data1890",
+            'type':'line',
+            'source': "data1890",
+            'paint':{
+                'line-color':'#800080',
+                'line-width':2
+            },
+        });
+
+        map.addLayer({
+            'id':"data1994",
+            'type':'line',
+            'source': "data1994",
+            'paint':{
+                'line-color':'#FFA500',
+                'line-width':2
+            },
+        });
+
+        map.addLayer({
+            'id':"data1911",
+            'type':'line',
+            'source': "data1911",
+            'paint':{
+                'line-color':'#FF0000',
+                'line-width':2
+            },
+        });
         
+        map.addLayer({
+            'id':"data1860",
+            'type':'line',
+            'source': "data1860",
+            'paint':{
+                'line-color':'#0000FF',
+                'line-width':2
+            },
+        });
+ 
+           
+        map.addLayer({
+            'id':"data3",
+            'type':'line',
+            'source': "data3",
+            'paint':{
+                'line-color':'#FF0000',
+                'line-width':2
+            },
+        });
+        
+        
+        
+
+        */
     }
     );
+
+
 </script>
 
 </body>
