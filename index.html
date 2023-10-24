@@ -26,7 +26,15 @@
         z-index: 999;
         background: url('img/loading.gif') 50% 50% no-repeat white;
         opacity: 1;
-    }
+        }
+
+      /* #map-container {
+        position: sticky;
+        top: 0;
+        right: 0;
+        width: 67vh;
+        height: 100vh;
+      } */
 
       #map {
         position: sticky;
@@ -34,8 +42,8 @@
         /* position: fixed; */
         top: 0;
         bottom: 0;
-        right: 0;
-        width: 100%;
+        /* right: 0; */
+        width: 100vw;
         height: 100vh;
       }
 
@@ -54,6 +62,7 @@
         height: auto;
         top: 0;
         left: 0;
+        width: 35vw;
         transform: translateY(-20vh);
         }
 
@@ -103,7 +112,7 @@
         }
         .lefty {
             width: 33vw;
-            margin-left: 5vw;
+            margin-left: 0vw;
         }
         .righty {
             width: 33vw;
@@ -122,9 +131,11 @@
             background-color: #444;
         }
         .step {
+            padding-top: 5vh;
             padding-bottom: 50vh;
             /* margin-bottom: 10vh; */
             opacity: 0.25;
+            background-color: white;
         }
         .step.active {
             opacity: 0.9;
@@ -179,8 +190,8 @@
                   Chapters
                 </a>
                 <ul class="dropdown-menu">
-                  <li><a class="dropdown-item" href="#">Action</a></li>
-                  <li><a class="dropdown-item" href="#">Another action</a></li>
+                  <li><a class="dropdown-item" href="#phl">Action</a></li>
+                  <li><a class="dropdown-item" href="#indego">Another action</a></li>
                   <li><a class="dropdown-item" href="#">Something else here</a></li>
                 </ul>
               </li>
@@ -248,7 +259,9 @@
     </section>
     
     <section id="geonarrative-container">
-        <div id="map"></div>
+
+            <div id="map"></div>
+
         <div id="story"></div>
         
         
@@ -401,7 +414,7 @@
         zoom: config.chapters[0].location.zoom,
         bearing: config.chapters[0].location.bearing,
         pitch: config.chapters[0].location.pitch,
-        interactive: false,
+        interactive: true,
         transformRequest: transformRequest
     });
     
@@ -443,7 +456,7 @@
             step: '.step',
             offset: 0.5,
             progress: true,
-            debug: true
+            //debug: true
         })
         .onStepEnter(response => {
             var chapter = config.chapters.find(chap => chap.id === response.element.id);
