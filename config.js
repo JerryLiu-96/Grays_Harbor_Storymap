@@ -1,5 +1,5 @@
 var config = {
-    style: 'mapbox://styles/mapbox/streets-v11',
+    style: 'mapbox://styles/mapbox/light-v11',
     accessToken: 'pk.eyJ1IjoiemxpdTk2IiwiYSI6ImNsMnI3ZWNkcDA0bmwzYnFzcmxnbG9rejMifQ.KS1NO7CgxL3hJi94lTgidQ',
     showMarkers: false,
     theme: 'light',
@@ -9,61 +9,77 @@ var config = {
     footer: '',
     chapters: [
         {
-            id: 'phl',
+            id: 'shore-change',
             alignment: 'left',
-            title: 'Philadelphia Bicycle Infrastructure',
+            title: 'Visualizing Holocene Shoreline since 1700',
+            range: '1700',
             image: '',
             description: 'Getting around Philadelphia on two wheels is fast, fun, and cheap. As a typical East Coast large city, the urban core is dense, so there is a lot within reach of a 15 minute ride... even mountain bike trails. Paired with the public transit infrastructure, cycling can be more efficient and much less expensive than driving (and parking) a car.',
             location: {
-                center: [-75.13080, 39.97790],
-                zoom: 9.83,
+                center: [-124.0572, 46.8159],
+                zoom: 11,
                 pitch: 0.00,
                 bearing: 0.00
             },
-            onChapterEnter: [
-                {
-                    layer: 'phl-city-limits',
-                    opacity: .45
-                }
-            ],
-            onChapterExit: [
-                {
-                    layer: 'phl-city-limits',
-                    opacity: 0
-                }
-            ]
+            record_yrs: [1700, 1860, 1911, 1926, 1942, 1954, 1967, 1974, 1986, 1995, 1997, 1999, 2001, 2006, 2015],
+            // onChapterEnter: [
+            //     {
+            //         layer: 'phl-city-limits',
+            //         opacity: .45
+            //     }
+            // ],
+            // onChapterExit: [
+            //     {
+            //         layer: 'phl-city-limits',
+            //         opacity: 0
+            //     }
+            // ]
         },
         {
-            id: 'bike-lanes',
+            id: 'sea-level-rise',
             alignment: 'left',
-            title: 'Bike Lanes',
+            title: 'Sea Level Rise Projections',
             image: '',
             description: 'Philadelphia has XX miles of bike lanes, XX miles of which are protected. Drivers are getting more used to sharing the road, but ride defensively.',
             location: {
-                center: [-75.13901, 39.97085],
-                zoom: 11.62,
-                pitch: 55.50,
-                bearing: -7.20
+                center: [-124.0572, 46.8159],
+                zoom: 11,
+                pitch: 0.00,
+                bearing: 0.00
             },
-            onChapterEnter: [
+
+            lines: [
                 {
-                    layer: 'phl-bike-network',
-                    opacity: 1
-                }
-            ],
-            onChapterExit: []
+                  name: 'RCP 8.5',
+                  values: [{ year: 2020, ft: 0.1, lower: -0.1, upper:0.2 }, { year: 2030, ft: 0.2, lower:0, upper: 0.3}, { year: 2040, ft: 0.3, lower:0, upper: 0.6}, { year: 2050, ft: 0.4, lower:0, upper:0.8 }, { year: 2060, ft: 0.6, lower:0.1, upper:1.1 }, { year: 2070, ft: 0.8, lower:0.2, upper:1.5 },{ year: 2080, ft: 1.0, lower:0.3, upper:1.9 },{ year: 2090, ft: 1.2, lower:0.4, upper:2.4 },{ year: 2100, ft: 1.5, lower:0.5, upper:3.0 },{ year: 2110, ft: 1.6, lower:0.5, upper:3.2 },{ year: 2120, ft: 1.9, lower:0.7, upper:3.9 },{ year: 2130, ft: 2.1, lower:0.7, upper:4.5 },{ year: 2140, ft: 2.4, lower:0.8, upper:5.1 },{ year: 2150, ft: 2.7, lower:0.8, upper:5.8 }],
+                  color: 'blue'
+                },
+                {
+                  name: 'RCP 4.5',
+                  values: [{ year: 2020, ft: 0.1, lower:-0.1, upper:0.2 }, { year: 2030, ft: 0.2, lower:0, upper:0.4 }, { year: 2040, ft: 0.3, lower:0, upper:0.5 }, { year: 2050, ft: 0.4, lower:0, upper:0.8 }, { year: 2060, ft: 0.5, lower:0, upper:1.0 }, { year: 2070, ft: 0.6, lower:0.1, upper:1.3 },{ year: 2080, ft: 0.8, lower:0.1, upper:1.6 },{ year: 2090, ft: 0.9, lower:0.1, upper:2.0 },{ year: 2100, ft: 1.1, lower:0.1, upper:2.4 },{ year: 2110, ft: 1.2, lower:0.1, upper:2.7 },{ year: 2120, ft: 1.3, lower:0.1, upper:3.1 },{ year: 2130, ft: 1.5, lower:0.1, upper:3.6 },{ year: 2140, ft: 1.6, lower:0, upper:4.1 },{ year: 2150, ft: 1.7, lower:-0.1, upper: 4.6}],
+                  color: 'red'
+                },
+                
+              ]
+            // onChapterEnter: [
+            //     {
+            //         layer: 'phl-bike-network',
+            //         opacity: 1
+            //     }
+            // ],
+            // onChapterExit: []
         },
         {
-            id: 'indego',
+            id: 'tsunami',
             alignment: 'left',
-            title: 'Indego Bike Share',
+            title: 'A Possible Tsunami Scenario',
             image: '',
             description: 'Indego has been operating in Philadelphia since 20XX. The system initally was focused on Center City, but has expanded service to neighboring areas to support equitable mobility options to the city\'s residents.',
             location: {
-                center: [-75.16468, 39.94503],
-                zoom: 13.15,
-                pitch: 60.00,
-                bearing: -16.80
+                center: [-124.0572, 46.8159],
+                zoom: 11,
+                pitch: 0.00,
+                bearing: 0.00
             },
             onChapterEnter: [
                 {

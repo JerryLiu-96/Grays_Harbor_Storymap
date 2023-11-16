@@ -13,6 +13,7 @@
     <script src="https://api.mapbox.com/mapbox-gl-js/v2.9.2/mapbox-gl.js"></script>
     <script src="https://unpkg.com/scrollama"></script>
     <script src="https://unpkg.com/intersection-observer@0.5.1/intersection-observer.js"></script>
+    <script src="https://d3js.org/d3.v6.min.js"></script>
 
     
 
@@ -190,7 +191,7 @@
                   Chapters
                 </a>
                 <ul class="dropdown-menu">
-                  <li><a class="dropdown-item" href="#phl">Action</a></li>
+                  <li><a class="dropdown-item" href="#shore-change">Historical Shoreline Movements</a></li>
                   <li><a class="dropdown-item" href="#indego">Another action</a></li>
                   <li><a class="dropdown-item" href="#">Something else here</a></li>
                 </ul>
@@ -294,6 +295,14 @@
         'right': 'righty',
         'full': 'fully'
     }
+
+    //enumerate the years from 1700 to 1911
+    let all_years_hist_shore = [];
+        for (let i=1700; i<2016; i++) {
+            
+            all_years_hist_shore.push(i);
+            
+        };
     
     function getLayerPaintType(layer) {
         var layerType = map.getLayer(layer).type;
@@ -311,6 +320,16 @@
             }
             map.setPaintProperty(layer.layer, prop, layer.opacity, options);
         });
+    }
+
+    // function to set all layers to invisible
+    function setAllHistLayersInvisible() {
+        for (let i=1700; i<2015; i++) {
+            map.setLayoutProperty("main-line"+i, 'visibility', 'none');
+            map.setLayoutProperty("blur-line"+i, 'visibility', 'none');
+            map.setLayoutProperty("blur-line-2"+i, 'visibility', 'none');
+            map.setLayoutProperty("blur-line-3"+i, 'visibility', 'none');
+        }
     }
     
     var story = document.getElementById('story');
@@ -352,7 +371,201 @@
             title.innerText = record.title;
             chapter.appendChild(title);
         }
-    
+
+        if (idx==0) {
+            var btn = document.createElement('button');
+            btn.setAttribute('id', 'clickable');
+            var playpause = document.createElement('i');
+            playpause.setAttribute('class','bi');
+            playpause.classList.add('bi-pause-circle');  //icon default to pause because scrollama set animation default to play
+            playpause.setAttribute('id', 'playpause-hist');
+            playpause.setAttribute('onclick', 'pauseHistShore()');
+            btn.appendChild(playpause);
+            chapter.appendChild(btn);
+        }
+
+        if (record.range) {
+            var label = document.createElement('label');
+            label.setAttribute('for', 'customRange'+record.id);
+            label.setAttribute('class', 'form-label');
+            label.setAttribute('id', 'customRangeLabel'+record.id);
+            label.innerText = record.range;
+
+            var range = document.createElement('input');
+            range.setAttribute('type', 'range');
+            range.setAttribute('class', 'form-range');
+            range.setAttribute('min', '1700');
+            range.setAttribute('max', '2015');
+            range.setAttribute('value', '1700')    //set the default value to 1700
+            range.setAttribute('id', 'customRange'+record.id);
+
+            chapter.appendChild(label);
+            chapter.appendChild(range);
+        }
+
+        // set toggle switches for the surveyed years
+        if (record.record_yrs) {
+            var title = document.createElement('h5');
+            title.innerText = 'Surveyed years:';
+            title.style.paddingTop = '25px';
+            chapter.appendChild(title);
+            const row = document.createElement('div');
+            row.className = 'row';
+            row.setAttribute('id', 'row-switch');
+            row.style.paddingTop = '5px';
+
+            // Create two columns and append to row
+            const col1 = document.createElement('div');
+            col1.className = 'col';
+            col1.setAttribute('id', 'col-left');
+            const col2 = document.createElement('div');
+            col2.className = 'col';
+            col2.setAttribute('id', 'col-right');
+            // row.appendChild(col1);
+            // row.appendChild(col2);
+            record.record_yrs.forEach((yr,idx) => {
+                
+                var swich = document.createElement('div');
+                swich.setAttribute('class', 'form-check form-switch');
+                swich.style.paddingTop = '5px';
+                swich.style.paddingBottom = '5px';
+                var input = document.createElement('input');
+                input.setAttribute('class', 'form-check-input');
+                input.setAttribute('type', 'checkbox');
+                input.setAttribute('id', 'flexSwitchCheckDefault'+yr);
+                swich.appendChild(input);
+                var label = document.createElement('label');
+                label.setAttribute('class', 'form-check-label');
+                label.setAttribute('for', 'flexSwitchCheckDefault'+yr);
+                label.innerText = yr.toString();
+                swich.appendChild(label);
+
+                if (idx <= record.record_yrs.length/2) {
+                    //col_l = document.getElementById('col-left');
+                    col1.appendChild(swich);
+                } else {
+                    //col_r = document.getElementById('col-right');
+                    col2.appendChild(swich);
+                }
+
+            });
+
+            row.appendChild(col1);
+            row.appendChild(col2);
+            chapter.appendChild(row);
+
+        }
+        
+        // if lines exist
+        if (record.lines) {
+
+            // Set the dimensions and margins of the graph
+            const margin = { top: 10, right: 30, bottom: 30, left: 60 },
+            width = 360 - margin.left - margin.right, // Total width of the SVG
+            height = 300 - margin.top - margin.bottom; // Total height of the SVG
+
+            d3_slr = document.createElement('div');
+            // set the id of this div
+            d3_slr.setAttribute('id', 'd3_slr');
+            
+            // set the xscale
+            var xScale = d3.scaleLinear()
+                .domain([2020, 2150])    // the range of the projection years
+                .range([0, width - margin.right]);
+
+            // set the yscale
+            var yScale = d3.scaleLinear()
+                .domain([-2, 10])  // the range of the sea level rise in feet
+                .range([height, 0]);
+
+            // line generator
+            const lineGenerator = d3.line()
+                .x(d => xScale(d.year)) // Access the 'year' property
+                .y(d => yScale(d.ft));  // Access the 'ft' property
+
+
+            //confidence interval area generator
+            const areaGenerator = d3.area()
+                .x(d => xScale(d.year))
+                .y0(d => yScale(d.lower))
+                .y1(d => yScale(d.upper));
+
+            
+
+
+            // append svg to the div
+            const svg = d3.select(d3_slr).append('svg')
+                .attr('width', width+margin.left+margin.right)
+                .attr('height', height+margin.top+margin.bottom)
+                .append('g')
+                .attr('transform', `translate(${margin.left}, ${margin.top})`);
+
+            // Create the x-axis using the xScale
+            const xAxis = d3.axisBottom(xScale)
+                .ticks(5); // Adjust the number of ticks as needed
+
+            // Append the x-axis to the SVG
+            svg.append('g')
+                .attr('class', 'x-axis')
+                .attr('transform', `translate(0,${height})`) // Move the x-axis to the bottom
+                .call(xAxis);
+
+            // Create the y-axis using the yScale
+            const yAxis = d3.axisLeft(yScale)
+                .ticks(10);
+
+            // Append the y-axis to the SVG
+            svg.append('g')
+                .attr('class', 'y-axis')
+                .attr('transform', `translate(${-5},0)`) // Move the y-axis 5 pixels to the left
+                .call(yAxis);
+
+            // Add x-axis label
+            svg.append('text')
+                .attr('class', 'x-axis-label')
+                .attr('text-anchor', 'middle')
+                .attr('x', width / 2)
+                .attr('y', height + margin.bottom - 5)
+                .text('Year');
+
+            // Add y-axis label
+            svg.append('text')
+                .attr('class', 'y-axis-label')
+                .attr('text-anchor', 'middle')
+                .attr('transform', `rotate(-90)`)
+                .attr('x', -height / 2)
+                .attr('y', -margin.left + 20)
+                .text('Sea Level Rise (ft)');
+
+            // Bind data to the SVG and create one 'path' per data series for central estimate
+            svg.selectAll('.line')
+            .data(record.lines) // Bind the data to the lines
+            .enter() // Enter the data
+            .append('path') // Append a path element for each data series
+                .attr('class', 'line')
+                .attr('d', d => lineGenerator(d.values)) // Generate the line
+                .attr('stroke', d => d.color) // Use the color from the data
+                .attr('fill', 'none')
+                .attr('stroke-width', 2);
+
+
+            // Bind data to the SVG and create one 'path' per data series for the confidence interval
+            svg.selectAll('.confidence-interval')
+            .data(record.lines) // Bind the data to the lines
+            .enter() // Enter the data
+            .append('path') // Append a path element for each data series
+                .attr('class', 'confidence-interval')
+                .attr('d', d => areaGenerator(d.values)) // Generate the line
+                .attr('stroke', d => d.color) // Use the color from the data
+                .attr('fill', d => d.color)
+                .attr('fill-opacity', 0.2)
+                .attr('stroke-dasharray', '5,5');
+
+
+            chapter.appendChild(d3_slr);
+
+        }
+
         if (record.image) {
             var image = new Image();
             image.src = record.image;
@@ -448,6 +661,298 @@
                 }
             });
         };
+
+        var surveyed_year = [1700, 1860, 1911, 1926, 1942, 1954, 1967, 1974, 1986, 1995, 1997, 1999, 2001, 2006, 2015];
+
+        // add sources and layers of the shorelines from 1700 to 2015
+        // set them to invisible by default
+        for (let i=1700; i<2015; i++) {
+            // add the source for the main boundary
+            map.addSource("shoreline"+i,{
+                "type": "geojson",
+                "data": "assets/ECY_estimated_shorelines/Oct1/"+i+".geojson"
+            });
+
+            map.addLayer({
+            "id":"main-line"+i,
+            "type":"line",
+            "source":"shoreline"+i,
+            "layout":{
+                'visibility': 'none'
+            },
+            "paint":{
+                "line-width": 1,
+                "line-color": "red"
+            }
+        });
+        // if the year is not surveyed, then do the following, otherwise, skip
+        if (!surveyed_year.includes(i)) {
+            // first layer of the blurred boundary
+            map.addLayer({
+            "id":"blur-line"+i,
+            "type":"line",
+            "source":"shoreline"+i,
+            "layout":{
+                'visibility': 'none'
+            },
+            "paint":{
+                "line-width": 4,
+                "line-color": "red",
+                "line-opacity": 0.6
+            }
+            });
+
+            // second layer of the blurred boundary
+            map.addLayer({
+            "id":"blur-line-2"+i,
+            "type":"line",
+            "source":"shoreline"+i,
+            "layout":{
+                'visibility': 'none'
+            },
+            "paint":{
+                "line-width": 8,
+                "line-color": "red",
+                "line-opacity": 0.5
+            }
+            });
+
+            // third layer of the blurred boundary
+            map.addLayer({
+            "id":"blur-line-3"+i,
+            "type":"line",
+            "source":"shoreline"+i,
+            "layout":{
+                'visibility': 'none'
+            },
+            "paint":{
+                "line-width": 12,
+                "line-color": "red",
+                "line-opacity": 0.25
+            }
+            });
+        }
+        };
+
+        // set the switches
+        surveyed_year.forEach((yr) => {
+            document.getElementById('flexSwitchCheckDefault'+yr).addEventListener('change', function(e) {
+                if (e.target.checked) {
+                    map.setLayoutProperty('main-line'+yr, 'visibility', 'visible');
+                } else {
+                    map.setLayoutProperty('main-line'+yr, 'visibility', 'none');
+                }
+            });
+
+        });
+
+        //let current=0;
+
+        // function playHistShore () {
+        //     myInt = setInterval(() => {
+        //         if (current==0) {
+        //             previous = all_years_hist_shore.length-1;
+        //         };
+
+        //         map.setLayoutProperty("main-line"+all_years_hist_shore[previous], 'visibility', 'none');
+        //         map.setLayoutProperty("main-line"+all_years_hist_shore[current], 'visibility', 'visible');
+
+        //         if (!surveyed_year.includes(all_years_hist_shore[current])) {
+        //             map.setLayoutProperty("blur-line"+all_years_hist_shore[current], 'visibility', 'visible');
+        //             map.setLayoutProperty("blur-line-2"+all_years_hist_shore[current], 'visibility', 'visible');
+        //             map.setLayoutProperty("blur-line-3"+all_years_hist_shore[current], 'visibility', 'visible');
+        //         };
+
+        //         if (!surveyed_year.includes(all_years_hist_shore[previous])) {
+        //             map.setLayoutProperty("blur-line"+all_years_hist_shore[previous], 'visibility', 'none');
+        //             map.setLayoutProperty("blur-line-2"+all_years_hist_shore[previous], 'visibility', 'none');
+        //             map.setLayoutProperty("blur-line-3"+all_years_hist_shore[previous], 'visibility', 'none');
+        //         };
+
+        //         document.getElementById("customRangeLabelshore-change").textContent = all_years_hist_shore[current].toString();
+
+        //         document.getElementById("customRangeshore-change").value = all_years_hist_shore[current].toString();
+
+        //         document.getElementById('playpause-hist').classList.remove('bi-play-circle');
+
+        //         document.getElementById('playpause-hist').classList.add('bi-pause-circle');
+
+        //         previous = current;
+        //         current = current+1;
+
+        //         if (current==all_years_hist_shore.length) {
+        //             current=0;
+        //         };
+
+        //         //check whether the switch is on, if it is on, do not set to invisible
+        //         surveyed_year.forEach((yr) => {
+        //             if (document.getElementById('flexSwitchCheckDefault'+yr).checked) {
+        //                 map.setLayoutProperty('main-line'+yr, 'visibility', 'visible');
+        //             } 
+        //         });
+
+        //     }, 250)
+
+            
+        // };
+
+        let previous = all_years_hist_shore.length - 1;
+        let current = 0;
+        let requestId;
+
+        // Set the fps limit
+        const fps = 10; // For example, 10 frames per second
+        // Calculate the interval in milliseconds for each frame
+        const fpsInterval = 1000 / fps;
+        // Initialize the then variable with the current time
+        let then = Date.now();
+
+        function playHistShore() {
+            
+
+            function animate() {
+
+                // Request another frame
+                requestId = requestAnimationFrame(animate);
+
+                // Get the current time
+                const now = Date.now();
+                // Calculate the elapsed time since the last frame
+                const elapsed = now - then;
+
+                // If enough time has elapsed, draw the next frame
+                if (elapsed > fpsInterval) {
+                    // Set the then variable to the current time for the next frame
+                    then = now - (elapsed % fpsInterval);
+
+                    if (current == 0) {
+                    previous = all_years_hist_shore.length - 1;
+                    }
+
+                    
+                    map.setLayoutProperty("main-line" + all_years_hist_shore[current], 'visibility', 'visible');
+
+                    map.setLayoutProperty("main-line" + all_years_hist_shore[previous], 'visibility', 'none');
+
+                    //if the current year is not a surveyed year, then show the blurred layers
+                    if (!surveyed_year.includes(all_years_hist_shore[current])) {
+                    map.setLayoutProperty("blur-line" + all_years_hist_shore[current], 'visibility', 'visible');
+                    map.setLayoutProperty("blur-line-2" + all_years_hist_shore[current], 'visibility', 'visible');
+                    map.setLayoutProperty("blur-line-3" + all_years_hist_shore[current], 'visibility', 'visible');
+                    }
+
+                    // if the previous year is not a surveyed year, then hide the blurred layers
+                    if (!surveyed_year.includes(all_years_hist_shore[previous])) {
+                    map.setLayoutProperty("blur-line" + all_years_hist_shore[previous], 'visibility', 'none');
+                    map.setLayoutProperty("blur-line-2" + all_years_hist_shore[previous], 'visibility', 'none');
+                    map.setLayoutProperty("blur-line-3" + all_years_hist_shore[previous], 'visibility', 'none');
+                    }
+
+                    document.getElementById("customRangeLabelshore-change").textContent = all_years_hist_shore[current].toString();
+                    document.getElementById("customRangeshore-change").value = all_years_hist_shore[current].toString();
+                    document.getElementById('playpause-hist').classList.remove('bi-play-circle');
+                    document.getElementById('playpause-hist').classList.add('bi-pause-circle');
+
+                    previous = current;
+                    current = current + 1;
+
+                    if (current == all_years_hist_shore.length) {
+                        current = 0;
+                    }
+
+                    //check whether the switch is on, if it is on, do not set to invisible
+                    surveyed_year.forEach((yr) => {
+                    if (document.getElementById('flexSwitchCheckDefault' + yr).checked) {
+                        map.setLayoutProperty('main-line' + yr, 'visibility', 'visible');
+                    }
+                    });
+
+
+                }
+                
+
+                // setTimeout(() => {
+                //     requestId=requestAnimationFrame(animate);
+                //     }, 250);
+            }
+            requestId=requestAnimationFrame(animate);
+            //animate();
+        };
+
+
+        function pauseHistShore () {
+            cancelAnimationFrame(requestId);
+
+            document.getElementById('playpause-hist').classList.remove('bi-pause-circle');
+            document.getElementById('playpause-hist').classList.add('bi-play-circle');
+        };
+
+        // Get the range slider element by its ID
+        const rangeSlider = document.getElementById('customRangeshore-change');
+
+        // Listen for the 'input' event
+        rangeSlider.addEventListener('input', function(event) {
+
+            pauseHistShore();
+            // Get the current value
+            const currentValue = event.target.value;
+
+            current = all_years_hist_shore.indexOf(parseInt(currentValue));
+
+            
+
+            document.getElementById("customRangeLabelshore-change").textContent = currentValue;
+
+            // Hide all layers
+            setAllHistLayersInvisible();
+
+            //show layers that are toggled on by the switch
+            surveyed_year.forEach((yr) => {
+                if (document.getElementById('flexSwitchCheckDefault'+yr).checked) {
+                    map.setLayoutProperty('main-line'+yr, 'visibility', 'visible');
+                } 
+            });
+
+            // Show the layer for the current year
+            map.setLayoutProperty("main-line"+currentValue, 'visibility', 'visible');
+
+            // if the current year is not a surveyed year, then show the blurred layers
+            if (!surveyed_year.includes(parseInt(currentValue))) {
+                map.setLayoutProperty("blur-line"+currentValue, 'visibility', 'visible');
+                map.setLayoutProperty("blur-line-2"+currentValue, 'visibility', 'visible');
+                map.setLayoutProperty("blur-line-3"+currentValue, 'visibility', 'visible');
+
+
+
+            }
+        });
+
+        // set the function to play animation of historical shorelines
+
+        
+
+        //document.addEventListener('DOMContentLoaded', () => {
+        playPauseButton = document.getElementById('clickable');
+        playPauseIcon = playPauseButton.querySelector('i');
+
+        playPauseButton.addEventListener('click', () => {
+            
+            if (playPauseIcon.classList.contains('bi-play-circle')) {
+                playPauseIcon.classList.remove('bi-play-circle');
+                playPauseIcon.classList.add('bi-pause-circle');
+                playHistShore();
+            } else {
+                playPauseIcon.classList.remove('bi-pause-circle');
+                playPauseIcon.classList.add('bi-play-circle');
+                pauseHistShore();
+            }
+        });
+
+
+
+        //});
+
+        
     
         // setup the instance, pass callback functions
         scroller
@@ -460,15 +965,24 @@
         })
         .onStepEnter(response => {
             var chapter = config.chapters.find(chap => chap.id === response.element.id);
+
+            if (response.element.id=="shore-change") {
+                console.log("hello");
+                current=0;
+                playHistShore();
+            };
+
             response.element.classList.add('active');
+            
+
             map[chapter.mapAnimation || 'flyTo'](chapter.location);
     
             if (config.showMarkers) {
                 marker.setLngLat(chapter.location.center);
             }
-            if (chapter.onChapterEnter.length > 0) {
-                chapter.onChapterEnter.forEach(setLayerOpacity);
-            }
+            // if (chapter.onChapterEnter.length > 0) {
+            //     chapter.onChapterEnter.forEach(setLayerOpacity);
+            // }
             if (chapter.callback) {
                 window[chapter.callback]();
             }
@@ -482,18 +996,30 @@
                     });
                 });
             }
+            //if (chapter.id=="shore-change") {
+                
+                
+            //}
         })
         .onStepExit(response => {
             var chapter = config.chapters.find(chap => chap.id === response.element.id);
             response.element.classList.remove('active');
-            if (chapter.onChapterExit.length > 0) {
-                chapter.onChapterExit.forEach(setLayerOpacity);
+            // if (chapter.onChapterExit.length > 0) {
+            //     chapter.onChapterExit.forEach(setLayerOpacity);
+            // }
+
+            if (chapter.id == "shore-change") {
+                pauseHistShore();
+                setAllHistLayersInvisible();
+                
             }
         });
     });
     
     // setup resize event
     window.addEventListener('resize', scroller.resize);
+
+    
     
     </script>
 
