@@ -9,222 +9,84 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-rbsA2VBKQhggwzxH7pPCaAqO46MgnOM80zW1RWuH61DGLwZJEdK2Kadq2F9CUG65" crossorigin="anonymous">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css">
     <link rel="stylesheet" href="css/main.css">
+    <link rel="stylesheet" href="css/geonarrative.css">
     <link href="https://api.mapbox.com/mapbox-gl-js/v2.9.2/mapbox-gl.css" rel="stylesheet">
     <script src="https://api.mapbox.com/mapbox-gl-js/v2.9.2/mapbox-gl.js"></script>
     <script src="https://unpkg.com/scrollama"></script>
     <script src="https://unpkg.com/intersection-observer@0.5.1/intersection-observer.js"></script>
     <script src="https://d3js.org/d3.v6.min.js"></script>
-
-    
-
-    <style>
-      #loader {
-        position: fixed;
-        width: 100%;
-        height: 100%;
-        top: 0;
-        bottom: 0;
-        z-index: 999;
-        background: url('img/loading.gif') 50% 50% no-repeat white;
-        opacity: 1;
-        }
-
-      /* #map-container {
-        position: sticky;
-        top: 0;
-        right: 0;
-        width: 67vh;
-        height: 100vh;
-      } */
-
-      #map {
-        position: sticky;
-        position: -webkit-sticky;
-        /* position: fixed; */
-        top: 0;
-        bottom: 0;
-        /* right: 0; */
-        width: 100vw;
-        height: 100vh;
-      }
-
-      #geonarrative-container {
-        position: relative;
-        /* overflow-y: scroll; */
-
-      }
-
-      #story {
-        /* position: relative; */
-        /* position: sticky; */
-        /* position: absolute; */
-        z-index: 2;
-        overflow-y: auto;
-        height: auto;
-        top: 0;
-        left: 0;
-        width: 35vw;
-        transform: translateY(-20vh);
-        }
-
-      body {
-        margin:0;
-        padding:0;
-        font-family: sans-serif;
-        box-sizing: border-box;
-        }
-
-        a, a:hover, a:visited {
-            color: #0071bc;
-        }
-
-        #header {
-            margin: auto;
-            width: 100%;
-            position: relative;
-            z-index: 5;
-        }
-        #header h1, #header h2, #header p {
-            margin: 0;
-            padding: 2vh 2vw;
-            text-align: center;
-        }
-        #footer {
-            width: 100%;
-            min-height: 5vh;
-            padding-top: 2vh;
-            padding-bottom: 2vh;
-            text-align: center;
-            line-height: 25px;
-            font-size: 13px;
-            position: relative;
-            z-index: 5;
-        }
-        #features {
-            padding-top: 10vh;
-            padding-bottom: 10vh;
-        }
-        .hidden {
-            visibility: hidden;
-        }
-        .centered {
-            width: 50vw;
-            margin: 0 auto;
-        }
-        .lefty {
-            width: 33vw;
-            margin-left: 0vw;
-        }
-        .righty {
-            width: 33vw;
-            margin-left: 62vw;
-        }
-        .fully {
-            width: 100%;
-            margin: auto;
-        }
-        .light {
-            color: #444;
-            background-color: #fafafa;
-        }
-        .dark {
-            color: #fafafa;
-            background-color: #444;
-        }
-        .step {
-            padding-top: 5vh;
-            padding-bottom: 50vh;
-            /* margin-bottom: 10vh; */
-            opacity: 0.25;
-            background-color: white;
-        }
-        .step.active {
-            opacity: 0.9;
-        }
-
-        .step div {
-            padding:  25px 50px;
-            line-height: 25px;
-            font-size: 13px;
-        }
-
-        .step img {
-            width: 100%;
-        }
-
-        @media (max-width: 750px) {
-            .centered, .lefty, .righty, .fully {
-                width: 90vw;
-                margin: 0 auto;
-            }
-        }
-
-        /* Fix issue on mobile browser where scroll breaks  */
-        .mapboxgl-canvas-container.mapboxgl-touch-zoom-rotate.mapboxgl-touch-drag-pan, 
-        .mapboxgl-canvas-container.mapboxgl-touch-zoom-rotate.mapboxgl-touch-drag-pan .mapboxgl-canvas {
-            touch-action: unset;
-        }
-
-      
-    </style>
+    <link href="https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400..700;1,400..700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Merienda:wght@300..900&display=swap" rel="stylesheet">
   </head>
 
 
   <body>
-    
+
     <div id="loader"></div>
 
     <nav class="navbar fixed-top navbar-expand-lg bg-light">
-        <div class="container-fluid">
-            <a class="navbar-brand" href="./">
-                <img src="img/nsf_logo.png" alt="Logo" width="30" height="30" class="d-inline-block align-text-top">
-                Frontpage
-            </a>
-          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
-            <span class="navbar-toggler-icon"></span>
-          </button>
-          <div class="collapse navbar-collapse" id="navbarNavDropdown">
-            <ul class="navbar-nav">
-              
-              <li class="nav-item dropdown">
-                <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                  Chapters
-                </a>
-                <ul class="dropdown-menu">
-                  <li><a class="dropdown-item" href="#shore-change">Historical Shoreline Movements</a></li>
-                  <li><a class="dropdown-item" href="#indego">Another action</a></li>
-                  <li><a class="dropdown-item" href="#">Something else here</a></li>
-                </ul>
-              </li>
-              <li class="nav-item dropdown">
-                <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                  External Links
-                </a>
-                <ul class="dropdown-menu">
-                    <li><a class="dropdown-item" target="_blank" href="https://digitalcollections.lib.washington.edu/digital/collection/ohc/search/searchterm/coastal%20hazards/field/all/mode/exact/conn/and"> Interview Transcripts </a></li>
-                    <li><a class="dropdown-item" target="_blank" href="https://www.nsf.gov/awardsearch/showAward?AWD_ID=1940024"> M9 Project NSF Award Page</a></li>
-                    <li><a class="dropdown-item" target="_blank" href="https://www.nsf.gov/awardsearch/showAward?AWD_ID=1940024"> CoPe Project NSF Award Page</a></li>
-                    <li><a class="dropdown-item" target="_blank" href="https://www.lib.washington.edu">UW Library</a></li>
-                    <li><a class="dropdown-item" target="_blank" href="https://hazards.uw.edu/geology/m9/">M9 Project at UW</a></li>
-                </ul>
-              </li>
-            </ul>
-          </div>
+      <div class="container-fluid">
+        <a class="navbar-brand" href="./">
+          <img src="img/nsf_logo.png" alt="Logo" width="30" height="30" class="d-inline-block align-text-top">
+          Homepage
+        </a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
+          <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNavDropdown">
+          <ul class="navbar-nav">
+            <li class="nav-item dropdown">
+              <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                Chapters
+              </a>
+              <ul class="dropdown-menu">
+                <li><a class="dropdown-item" href="#shore-change">Historical Shoreline Movements</a></li>
+                <li><a class="dropdown-item" href="#indego">Another action</a></li>
+                <li><a class="dropdown-item" href="#">Something else here</a></li>
+              </ul>
+            </li>
+            <li class="nav-item dropdown">
+              <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                External Resources
+              </a>
+              <ul class="dropdown-menu">
+                <li><a class="dropdown-item" target="_blank" href="https://digitalcollections.lib.washington.edu/digital/collection/ohc/search/searchterm/coastal%20hazards/field/all/mode/exact/conn/and"> Interview Transcripts </a></li>
+                <li><a class="dropdown-item" target="_blank" href="https://www.nsf.gov/awardsearch/showAward?AWD_ID=1940024"> M9 Project NSF Award Page</a></li>
+                <li><a class="dropdown-item" target="_blank" href="https://www.nsf.gov/awardsearch/showAward?AWD_ID=1940024"> CoPe Project NSF Award Page</a></li>
+                <li><a class="dropdown-item" target="_blank" href="https://www.lib.washington.edu">UW Library</a></li>
+                <li><a class="dropdown-item" target="_blank" href="https://hazards.uw.edu/geology/m9/">M9 Project at UW</a></li>
+              </ul>
+            </li>
+          </ul>
         </div>
-      </nav>
+      </div>
+    </nav>
 
-    <section id="cover"> 
+    <section id="cover">
         <!-- citation -->
         <li style="background: url('img/bk1.jpg') no-repeat center center;  background-size: cover;">
-            <div class="lp_image_attribution">Image Attribution: <a style="color: white" target="_blank" href="https://www.usgs.gov/media/images/otter-rock-oregon">Janet Watt, USGS</a></div>
+          <div class="lp_image_attribution">
+            Image Attribution:
+            <a style="color: white" target="_blank" href="https://www.usgs.gov/media/images/otter-rock-oregon">
+              Janet Watt, USGS
+            </a>
+          </div>
         </li>
         <li style="background: url('img/mask.png') no-repeat center center;  background-size: cover;">
-            <div class="lp_image_attribution">Image Attribution: <a style="color: white" target="_blank" href="https://www.researchgate.net/publication/252069651_Dating_the_1700_Cascadia_Earthquake_Great_Coastal_Earthquakes_in_Native_Stories">Figure 3. Swai’xwe mask from mainland British Columbia from Ludwin,
-                    Ruth S et al., 2005.</a>
-            </div>
+          <div class="lp_image_attribution">
+            Image Attribution:
+            <a style="color: white" target="_blank" href="https://www.researchgate.net/publication/252069651_Dating_the_1700_Cascadia_Earthquake_Great_Coastal_Earthquakes_in_Native_Stories">
+              Figure 3. Swai’xwe mask from mainland British Columbia from Ludwin, Ruth S et al., 2005.
+            </a>
+          </div>
         </li>
         <li style="background: url('img/bk5.jpg') no-repeat center center;  background-size: cover;">
-            <div class="lp_image_attribution">Image Attribution: <a style="color: white" target="_blank" href="https://www.usgs.gov/media/images/cascadia-subduction-zone-0">USGS</a></div>
+          <div class="lp_image_attribution">
+            Image Attribution:
+              <a style="color: white" target="_blank" href="https://www.usgs.gov/media/images/cascadia-subduction-zone-0">
+                USGS
+              </a>
+            </div>
         </li>
 
         <div class="down-arrow-cover animate__animated animate__flash animate__infinite animate__slow">
@@ -232,20 +94,21 @@
                 Click down arrow to view the stories
             </div>
             <div class="down-arrow-cover-arrow">
-                <i class="bi bi-chevron-double-down animate__animated animate__flash animate__infinite animate__slow" style="font-size: 3em; color:white;text-shadow: 2px 2px 4px rgb(51, 51, 51); position: static;left: auto;transform: none ;bottom: auto;" onclick="scrollToMapbox()"></i>
+                <i class="bi bi-chevron-double-down animate__animated animate__flash animate__infinite animate__slow" style="font-size: 3em; color:white;text-shadow: 2px 2px 4px rgb(51, 51, 51); position: static;left: auto;transform: none ;bottom: auto;" onclick="scrollToIntroduction()"></i>
             </div>
         </div>
 
         <div id="introText">
-            <h1 class="text-center">The Continuing Adaptation to South Beach's Shifting Shore</h1>
+            <h1 class="text-center"><strong>Geonarrative Part <span>&#8545;</span></strong>: The Continuing Adaptation to South Beach's Shifting Shore</h1>
             <!-- <h5 class="text-center"><i>this line is a place holder for subtitle</i></h5> -->
-            <p style="text-align:justify">The South Beach area of Grays Harbor County, Washington,
+            <p style="text-align:justify">
+                The South Beach area of Grays Harbor County, Washington,
                 is a dynamic coastal environment that has been shaped by the forces of nature and
-                the actions of humans. The area has been home to the Quinault Indian Nation for 
+                the actions of humans. The area has been home to the Quinault Indian Nation for
                 thousands of years. The Quinault people have adapted to the changing
                 landscape and have developed a deep understanding of the natural processes that shape
                 the area. <br> <br> White settlers arrived in this area in the 1800s. Even though they
-                have experienced significant changes in coastal environment since then as well, their presence 
+                have experienced significant changes in coastal environment since then as well, their presence
                 on this land is still transient and there is much to learn from the Quinault people about the history of the area and how to adapt. <br> <br>
                 This Geo-narrative narrates the evolution of South Beach coastal environment. As we lay out
                 scenarios of shifting shores in this storytelling, we hope to inspire you to think about how both you and your community as a whole can adapt and thrive in the face of an uncertain and challenging future.
@@ -258,28 +121,132 @@
             </div>
         </div>
     </section>
-    
-    <section id="geonarrative-container">
 
-            <div id="map"></div>
+    <section id="introduction">
+      <article>
+        <h1>Introduction</h1>
+        <h2>Climate Change and Geological Hazards</h2>
+        <p>
+            Washington's coast is increasingly threatened by climate change and geological hazards. You may have heard about terms like "sea level rise", "global warming", "earthquake", "tsunami" from the Internet, from news media, from your community leaders... But do you really understand these terms? Like, what are their relationships with climate change and geological hazards? And more importantly, what are their impacts on South Beach communities?
 
-        <div id="story"></div>
-        
-        
+        </p>
+        <section class="column">
+            <h3>Climate Change</h3>
+            <p>
+                <strong>Global warming</strong> refers specifically to the long-term increase in Earth's average surface temperature, primarily due to human activities such as burning fossil fuels, deforestation, and industrial processes.
+            </p>
+            <p>
+                <strong>Climate change</strong>, on the other hand, encompasses a broader range of changes in Earth's climate system, including not only rising temperatures but also shifts in precipitation patterns, extreme weather events, <strong>sea level rise</strong>, and so on.
+            </p>
+            <p>
+                Mounting evidence has suggested that the sea level is rising globally, and the sea level rise is accelerating due to the worsening climate change and global warming. Impacts of sea level rise includes erosion of beaches, inundation of deltas, salinity of water. <span class="underline"><strong>The South Beach coastal communities are at the frontline</strong></span>.
+            </p>
+        </section>
+        <section class="column">
+            <h3>Geological Hazards</h3>
+            <p style="padding-bottom: 10px;">
+                South Beach communities sit on the Cascadia Subduction Zone, which is a ticking bomb of <strong>earthquakes</strong> and <strong>tsunamis</strong>.
+            </p>
+            <figure>
+                <img src="img/csz.png" alt="Cascadia Subduction Zone" class="ctr-img">
+                <figcaption>
+                    Cascadia Subduction Zone.
+                    <a href="https://pnsn.org/outreach/earthquakesources/csz"> Credit: PNSN</a>
+                </figcaption>
+            </figure>
+            <p style="padding-top: 10px;">
+                The last subduction zone earthquake happened in 1700. More than 300 years of peace does not indicate safety. Geological evidence shows that the subduction zone earthquake has a recurrence rate of ~500 years. It has been silently amassing energy for the next earthquake. <strong>It will come again!</strong> Ground shaking and tsunami waves may wreck havoc on the shore.
+            </p>
+
+        </section>
+        <div style="text-align: center;">
+          <svg xmlns="http://www.w3.org/2000/svg" width="3em" fill="currentColor" class="bi bi-chevron-down fs-1" viewBox="0 0 16 16">
+            <path fill-rule="evenodd" d="M1.646 4.646a.5.5 0 0 1 .708 0L8 10.293l5.646-5.647a.5.5 0 0 1 .708.708l-6 6a.5.5 0 0 1-.708 0l-6-6a.5.5 0 0 1 0-.708"/>
+          </svg>
+        </div>
+        <section style="width: 70%; margin-left: auto; margin-right: auto; border: 3px dashed #999797; padding: 20px;">
+            <h3 style="text-align: center; margin-top: 10px;">The combined effects of climate change and geological hazards</h3>
+            <p>
+                <ul>
+                    <li>
+                        The inter-seismic uplift of the tectonic plate will offset the sea level rise in South Beach.
+                        <p>
+                            An earthquake is an acute geological disaster. But you cannot say during periods of calm, the tectonic plates are still. Actually, they are in constant motion, both vertically and horizontally, at a slow pace that easily goes unnoticed. We call this phenomenon <strong>inter-seismic tectonic movement</strong>.
+                        </p>
+                        <p>
+                            The tectonic plate in our South Beach area is uplifting, we call this <strong>Inter-seismic uplift</strong>. In other words, the sea level rise referenced to our place is anticipated to be less than the global average.
+                        </p>
+                    </li>
+                    <li>
+                        However, this may bring a false sense of security:
+                        <p>It is anticipated that the South Beach area will experience an immediate subsidence of approximately 4.0 to 5.2 feet during a seismic event, and the land subsidence will have the effect of raising the local sea level. It will also rise the runup height of tsunami waves. </p>
+                    </li>
+                </ul>
+
+            </p>
+        </section>
+      </article>
+      <article style="margin-top: 10px;">
+        <h2>Takeaways from this section</h2>
+        <ol style="margin-bottom: 0; padding-bottom: 30px;">
+            <li>Climate change and associated sea level rise will impact South Beach;</li>
+            <li>South Beach is also risky to earthquake and tsunami hazards;</li>
+            <li>Climate change and geological hazards have combined effects;</li>
+            <li>climate change and earthquake will fundamentally reshape the coastal environment in South Beach.</li>
+        </ol>
+      </article>
     </section>
-   
+    <section id="history-shoreline">
+      <article style="margin-top: 15px; margin-bottom: 15px;">
+        <h1>However, Coastal Change is NOT new</h1>
+        <h2>A Historically Dynamic Coastline</h2>
+        <blockquote>
+          Climate change and geological hazards are posing new challenges to South Beach communities.
+          Scientists believe that climate change and geological hazards will fundamentally reshape their living space. <br> <br> However, changes to the living space is not new to this land. South Beach's coastline has been famously dynamic throughout the history.
+        </blockquote>
+        <p>
+            Climate change and geological hazards are posing new challenges to South Beach communities. Climate change is evolving at an unprecedented speed, and many of the South Beach communities have no shared experience of tsunamis, the latest of which happened in 1700, according to geological evidences and indigeous tales.
+        </p>
+        <p>We believe that climate change and geological hazards will fundamentally reshape the living space. <span class="capital uppercase"><strong>We need adaptation planning</strong> </span>and adaptation planning to future environmental changes is going to be tough. Because firstly, climate change is at an unprecedented speed, and secondly many communities have no experience of tsunamis. There is no readily available solution to rely on.</p>
+        <h2>Adaptation is in our blood</h2>
+        <p>But don't panic! Though we may seem a little bit foreign to climate change and tsunamis, we are familiar with one thing: <span class="capital uppercase"><strong>adaptation. </strong></span> The coastline in South Beach has been historically dynamic. We are living on the fastest changing coastline in North America. Our community has been learning to adapt to coastline changes quite well. See below the time-lapsed satellite images of South Beach coastline from 1984 to 2016.</p>
+        <figure>
+            <img src="img/dynamic-shoreline.gif" alt="Dynamic Shoreline" class="ctr-img">
+            <figcaption>
+                The dynamic shoreline of South Beach, Washington. Composite of annual Google Maps satellite views taken from 1984 to 2016. Credit: Robert Hutchison Architecture and Cory Mattheis.
+                <a href="https://archleague.org/article/south-beach-washington-intro/" target="_blank">
+                    Available from American Roundtable
+                </a>
+            </figcaption>
+        </figure>
+      </article>
+        <div class="down-arrow-cover animate__animated animate__flash animate__infinite animate__slow" style="position: relative;">
+            <div class="down-arrow-cover-text">
+                Scroll down to interact with the map to see how the shoreline has changed over time
+            </div>
+            <div class="down-arrow-cover-arrow">
+                <i class="bi bi-chevron-double-down animate__animated animate__flash animate__infinite animate__slow" style="font-size: 3em; color:white;text-shadow: 2px 2px 4px rgb(51, 51, 51); position: static;left: auto;transform: none ;bottom: auto;" ></i>
+            </div>
+        </div>
+    </section>
+
+    <section id="geonarrative-container">
+      <div id="map"></div>
+      <div id="story"></div>
+    </section>
+
 
     <script src="./config.js"></script>
 
-    
+
     <script>
-        window.onload = function() {
-            document.getElementById("loader").style.display = "none";
-        };
+      window.onload = function() {
+        document.getElementById("loader").style.display = "none";
+      };
     </script>
 
-<script>
-    var layerTypes = {
+    <script>
+      var layerTypes = {
         'fill': ['fill-opacity'],
         'line': ['line-opacity'],
         'circle': ['circle-opacity', 'circle-stroke-opacity'],
@@ -287,28 +254,28 @@
         'raster': ['raster-opacity'],
         'fill-extrusion': ['fill-extrusion-opacity'],
         'heatmap': ['heatmap-opacity']
-    }
-    
-    var alignments = {
+      }
+
+      var alignments = {
         'left': 'lefty',
         'center': 'centered',
         'right': 'righty',
         'full': 'fully'
-    }
+      }
 
     //enumerate the years from 1700 to 1911
     let all_years_hist_shore = [];
         for (let i=1700; i<2016; i++) {
-            
+
             all_years_hist_shore.push(i);
-            
+
         };
-    
+
     function getLayerPaintType(layer) {
         var layerType = map.getLayer(layer).type;
         return layerTypes[layerType];
     }
-    
+
     function setLayerOpacity(layer) {
         var paintProps = getLayerPaintType(layer.layer);
         paintProps.forEach(function(prop) {
@@ -331,41 +298,44 @@
             map.setLayoutProperty("blur-line-3"+i, 'visibility', 'none');
         }
     }
-    
+
     var story = document.getElementById('story');
     var features = document.createElement('div');
     features.setAttribute('id', 'features');
-    
+
     var header = document.createElement('div');
-    
+
     if (config.title) {
         var titleText = document.createElement('h1');
         titleText.innerText = config.title;
         header.appendChild(titleText);
     }
-    
+
     if (config.subtitle) {
         var subtitleText = document.createElement('h2');
         subtitleText.innerText = config.subtitle;
         header.appendChild(subtitleText);
     }
-    
+
     if (config.byline) {
         var bylineText = document.createElement('p');
         bylineText.innerText = config.byline;
         header.appendChild(bylineText);
     }
-    
+
     if (header.innerText.length > 0) {
         header.classList.add(config.theme);
         header.setAttribute('id', 'header');
         story.appendChild(header);
     }
-    
+
+    //get the length of the chapters
+    let chapters_length = config.chapters.length;
+
     config.chapters.forEach((record, idx) => {
         var container = document.createElement('div');
         var chapter = document.createElement('div');
-    
+
         if (record.title) {
             var title = document.createElement('h3');
             title.innerText = record.title;
@@ -424,7 +394,7 @@
             // row.appendChild(col1);
             // row.appendChild(col2);
             record.record_yrs.forEach((yr,idx) => {
-                
+
                 var swich = document.createElement('div');
                 swich.setAttribute('class', 'form-check form-switch');
                 swich.style.paddingTop = '5px';
@@ -455,8 +425,8 @@
             chapter.appendChild(row);
 
         }
-        
-        // if lines exist
+
+        // if lines exist for sea level rise section
         if (record.lines) {
 
             // Set the dimensions and margins of the graph
@@ -467,7 +437,7 @@
             d3_slr = document.createElement('div');
             // set the id of this div
             d3_slr.setAttribute('id', 'd3_slr');
-            
+
             // set the xscale
             var xScale = d3.scaleLinear()
                 .domain([2020, 2150])    // the range of the projection years
@@ -490,7 +460,7 @@
                 .y0(d => yScale(d.lower))
                 .y1(d => yScale(d.upper));
 
-            
+
 
 
             // append svg to the div
@@ -571,19 +541,50 @@
             image.src = record.image;
             chapter.appendChild(image);
         }
-    
+
         if (record.description) {
             var story = document.createElement('p');
             story.innerHTML = record.description;
             chapter.appendChild(story);
         }
-    
+
+        if(idx < chapters_length-1) {
+            let next = document.createElement('div');
+            next.classList.add('down-arrow-cover', 'animate__animated', 'animate__flash', 'animate__infinite', 'animate__slow');
+            next.style.position = 'relative';
+
+
+            let next_text = document.createElement('div');
+            next_text.classList.add('down-arrow-cover-text');
+            next_text.innerText = 'Keep scrolling to read more';
+
+            let next_arrow = document.createElement('div');
+            next_arrow.classList.add('down-arrow-cover-arrow');
+
+            let next_icon = document.createElement('i');
+            next_icon.classList.add('bi', 'bi-chevron-double-down', 'animate__animated', 'animate__flash', 'animate__infinite', 'animate__slow');
+            next_icon.style.fontSize = '3em';
+            next_icon.style.color = 'white';
+            next_icon.style.textShadow = '2px 2px 4px rgb(51, 51, 51)';
+            next_icon.style.position = 'static';
+            next_icon.style.left = 'auto';
+            next_icon.style.transform = 'none';
+            next_icon.style.bottom = 'auto';
+
+            next_arrow.appendChild(next_icon);
+
+            next.appendChild(next_text);
+            next.appendChild(next_arrow);
+
+            chapter.appendChild(next);
+        }
+
         container.setAttribute('id', record.id);
         container.classList.add('step');
         if (idx === 0) {
             container.classList.add('active');
         }
-    
+
         chapter.classList.add(config.theme);
         container.appendChild(chapter);
         container.classList.add(alignments[record.alignment] || 'centered');
@@ -592,34 +593,34 @@
         }
         features.appendChild(container);
     });
-    
+
     story.appendChild(features);
-    
+
     var footer = document.createElement('div');
-    
+
     if (config.footer) {
         var footerText = document.createElement('p');
         footerText.innerHTML = config.footer;
         footer.appendChild(footerText);
     }
-    
+
     if (footer.innerText.length > 0) {
         footer.classList.add(config.theme);
         footer.setAttribute('id', 'footer');
         story.appendChild(footer);
     }
-    
+
     mapboxgl.accessToken = config.accessToken;
-    
+
     const transformRequest = (url) => {
         const hasQuery = url.indexOf("?") !== -1;
         const suffix = hasQuery ? "&pluginName=scrollytellingV2" : "?pluginName=scrollytellingV2";
-    
+
         return {
           url: url + suffix
         }
     }
-    
+
     var map = new mapboxgl.Map({
         container: 'map',
         style: config.style,
@@ -630,15 +631,15 @@
         interactive: true,
         transformRequest: transformRequest
     });
-    
+
     if (config.showMarkers) {
         var marker = new mapboxgl.Marker({ color: config.markerColor });
         marker.setLngLat(config.chapters[0].location.center).addTo(map);
     }
-    
+
     // instantiate the scrollama
     var scroller = scrollama();
-    
+
     map.on("load", function() {
         if (config.use3dTerrain) {
             map.addSource('mapbox-dem', {
@@ -649,7 +650,7 @@
             });
             // add the DEM source as a terrain layer with exaggerated height
             map.setTerrain({ 'source': 'mapbox-dem', 'exaggeration': 1.5 });
-    
+
             // add a sky layer that will show when the map is highly pitched
             map.addLayer({
                 'id': 'sky',
@@ -788,12 +789,12 @@
         //         surveyed_year.forEach((yr) => {
         //             if (document.getElementById('flexSwitchCheckDefault'+yr).checked) {
         //                 map.setLayoutProperty('main-line'+yr, 'visibility', 'visible');
-        //             } 
+        //             }
         //         });
 
         //     }, 250)
 
-            
+
         // };
 
         let previous = all_years_hist_shore.length - 1;
@@ -808,7 +809,7 @@
         let then = Date.now();
 
         function playHistShore() {
-            
+
 
             function animate() {
 
@@ -829,7 +830,7 @@
                     previous = all_years_hist_shore.length - 1;
                     }
 
-                    
+
                     map.setLayoutProperty("main-line" + all_years_hist_shore[current], 'visibility', 'visible');
 
                     map.setLayoutProperty("main-line" + all_years_hist_shore[previous], 'visibility', 'none');
@@ -869,7 +870,7 @@
 
 
                 }
-                
+
 
                 // setTimeout(() => {
                 //     requestId=requestAnimationFrame(animate);
@@ -899,7 +900,7 @@
 
             current = all_years_hist_shore.indexOf(parseInt(currentValue));
 
-            
+
 
             document.getElementById("customRangeLabelshore-change").textContent = currentValue;
 
@@ -910,7 +911,7 @@
             surveyed_year.forEach((yr) => {
                 if (document.getElementById('flexSwitchCheckDefault'+yr).checked) {
                     map.setLayoutProperty('main-line'+yr, 'visibility', 'visible');
-                } 
+                }
             });
 
             // Show the layer for the current year
@@ -929,14 +930,14 @@
 
         // set the function to play animation of historical shorelines
 
-        
+
 
         //document.addEventListener('DOMContentLoaded', () => {
         playPauseButton = document.getElementById('clickable');
         playPauseIcon = playPauseButton.querySelector('i');
 
         playPauseButton.addEventListener('click', () => {
-            
+
             if (playPauseIcon.classList.contains('bi-play-circle')) {
                 playPauseIcon.classList.remove('bi-play-circle');
                 playPauseIcon.classList.add('bi-pause-circle');
@@ -952,12 +953,12 @@
 
         //});
 
-        
-    
+
+
         // setup the instance, pass callback functions
         scroller
         .setup({
-            
+
             step: '.step',
             offset: 0.5,
             progress: true,
@@ -973,10 +974,10 @@
             };
 
             response.element.classList.add('active');
-            
+
 
             map[chapter.mapAnimation || 'flyTo'](chapter.location);
-    
+
             if (config.showMarkers) {
                 marker.setLngLat(chapter.location.center);
             }
@@ -997,8 +998,8 @@
                 });
             }
             //if (chapter.id=="shore-change") {
-                
-                
+
+
             //}
         })
         .onStepExit(response => {
@@ -1011,25 +1012,29 @@
             if (chapter.id == "shore-change") {
                 pauseHistShore();
                 setAllHistLayersInvisible();
-                
+
             }
         });
     });
-    
+
     // setup resize event
     window.addEventListener('resize', scroller.resize);
 
-    
-    
+
+
     </script>
 
     <script>
         function scrollToMapbox() {
         // This will smoothly scroll the page to the Mapbox container
         document.getElementById('geonarrative-container').scrollIntoView({ behavior: 'smooth' });
-        }
+        };
+
+        function scrollToIntroduction() {
+        document.getElementById('introduction').scrollIntoView({ behavior: 'smooth' });
+        };
     </script>
- 
+
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-kenU1KFdBIe4zVF0s0G1M5b4hcpxyD9F7jL+jjXkk+Q2h455rYXK/7HAuoJl+0I4" crossorigin="anonymous"></script>
   </body>
 </html>

@@ -17,7 +17,7 @@ var config = {
             description: 'Getting around Philadelphia on two wheels is fast, fun, and cheap. As a typical East Coast large city, the urban core is dense, so there is a lot within reach of a 15 minute ride... even mountain bike trails. Paired with the public transit infrastructure, cycling can be more efficient and much less expensive than driving (and parking) a car.',
             location: {
                 center: [-124.0572, 46.8159],
-                zoom: 11,
+                zoom: 10.5,
                 pitch: 0.00,
                 bearing: 0.00
             },
@@ -43,7 +43,7 @@ var config = {
             description: 'Philadelphia has XX miles of bike lanes, XX miles of which are protected. Drivers are getting more used to sharing the road, but ride defensively.',
             location: {
                 center: [-124.0572, 46.8159],
-                zoom: 11,
+                zoom: 10.5,
                 pitch: 0.00,
                 bearing: 0.00
             },
@@ -59,7 +59,7 @@ var config = {
                   values: [{ year: 2020, ft: 0.1, lower:-0.1, upper:0.2 }, { year: 2030, ft: 0.2, lower:0, upper:0.4 }, { year: 2040, ft: 0.3, lower:0, upper:0.5 }, { year: 2050, ft: 0.4, lower:0, upper:0.8 }, { year: 2060, ft: 0.5, lower:0, upper:1.0 }, { year: 2070, ft: 0.6, lower:0.1, upper:1.3 },{ year: 2080, ft: 0.8, lower:0.1, upper:1.6 },{ year: 2090, ft: 0.9, lower:0.1, upper:2.0 },{ year: 2100, ft: 1.1, lower:0.1, upper:2.4 },{ year: 2110, ft: 1.2, lower:0.1, upper:2.7 },{ year: 2120, ft: 1.3, lower:0.1, upper:3.1 },{ year: 2130, ft: 1.5, lower:0.1, upper:3.6 },{ year: 2140, ft: 1.6, lower:0, upper:4.1 },{ year: 2150, ft: 1.7, lower:-0.1, upper: 4.6}],
                   color: 'red'
                 },
-                
+
               ]
             // onChapterEnter: [
             //     {
