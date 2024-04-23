@@ -295,7 +295,7 @@
         'full': 'fully'
       }
 
-    //enumerate the years from 1700 to 1911
+    //enumerate the years from 1700 to 2015
     let all_years_hist_shore = [];
         for (let i=1700; i<2016; i++) {
 
@@ -695,7 +695,7 @@
             });
         };
 
-        var surveyed_year = [1700, 1860, 1911, 1926, 1942, 1954, 1967, 1974, 1986, 1995, 1997, 1999, 2001, 2006, 2015];
+        let surveyed_year = [1700, 1860, 1911, 1926, 1942, 1954, 1967, 1974, 1986, 1995, 1997, 1999, 2001, 2006, 2015];
 
         // add sources and layers of the shorelines from 1700 to 2015
         // set them to invisible by default
@@ -719,6 +719,7 @@
             }
         });
         // if the year is not surveyed, then do the following, otherwise, skip
+        // the if statement added blur effect (Not satisfied at this stage
         if (!surveyed_year.includes(i)) {
             // first layer of the blurred boundary
             map.addLayer({
@@ -768,6 +769,7 @@
         };
 
         // set the switches
+        // the switches toggle the visibility of the SURVEYED shorelines
         surveyed_year.forEach((yr) => {
             document.getElementById('flexSwitchCheckDefault'+yr).addEventListener('change', function(e) {
                 if (e.target.checked) {
@@ -832,89 +834,134 @@
         let previous = all_years_hist_shore.length - 1;
         let current = 0;
         let requestId;
+        let timerId = null;
 
-        // Set the fps limit
-        const fps = 10; // For example, 10 frames per second
-        // Calculate the interval in milliseconds for each frame
-        const fpsInterval = 1000 / fps;
-        // Initialize the then variable with the current time
-        let then = Date.now();
+        // // Set the fps limit
+        // const fps = 10; // For example, 10 frames per second
+        // // Calculate the interval in milliseconds for each frame
+        // const fpsInterval = 1000 / fps;
+        // // Initialize the then variable with the current time
+        // let then = Date.now();
 
         function playHistShore() {
+            timerId = setInterval(updateShoreline, 2000);
+        };
 
+        function updateShoreline() {
+            if (current == 0) {
+                previous = all_years_hist_shore.length - 1;
+            };
 
-            function animate() {
+            // set the current year to visible
+            map.setLayoutProperty("main-line" + all_years_hist_shore[current], 'visibility', 'visible');
 
-                // Request another frame
-                requestId = requestAnimationFrame(animate);
+            // set the previous year to invisible
+            map.setLayoutProperty("main-line" + all_years_hist_shore[previous], 'visibility', 'none');
 
-                // Get the current time
-                const now = Date.now();
-                // Calculate the elapsed time since the last frame
-                const elapsed = now - then;
+            //if the current year is not a surveyed year, then show the blurred layers
+            if (!surveyed_year.includes(all_years_hist_shore[current])) {
+                map.setLayoutProperty("blur-line" + all_years_hist_shore[current], 'visibility', 'visible');
+                map.setLayoutProperty("blur-line-2" + all_years_hist_shore[current], 'visibility', 'visible');
+                map.setLayoutProperty("blur-line-3" + all_years_hist_shore[current], 'visibility', 'visible');
+            };
 
-                // If enough time has elapsed, draw the next frame
-                if (elapsed > fpsInterval) {
-                    // Set the then variable to the current time for the next frame
-                    then = now - (elapsed % fpsInterval);
+            // if the previous year is not a surveyed year, then hide the blurred layers
+            if (!surveyed_year.includes(all_years_hist_shore[previous])) {
+                map.setLayoutProperty("blur-line" + all_years_hist_shore[previous], 'visibility', 'none');
+                map.setLayoutProperty("blur-line-2" + all_years_hist_shore[previous], 'visibility', 'none');
+                map.setLayoutProperty("blur-line-3" + all_years_hist_shore[previous], 'visibility', 'none');
+            };
 
-                    if (current == 0) {
-                    previous = all_years_hist_shore.length - 1;
-                    }
+            // update the year label and range slider
+            document.getElementById("customRangeLabelshore-change").textContent = all_years_hist_shore[current].toString();
+            document.getElementById("customRangeshore-change").value = all_years_hist_shore[current].toString();
 
+            // set the play/pause button to pause
+            document.getElementById('playpause-hist').classList.remove('bi-play-circle');
+            document.getElementById('playpause-hist').classList.add('bi-pause-circle');
 
-                    map.setLayoutProperty("main-line" + all_years_hist_shore[current], 'visibility', 'visible');
-
-                    map.setLayoutProperty("main-line" + all_years_hist_shore[previous], 'visibility', 'none');
-
-                    //if the current year is not a surveyed year, then show the blurred layers
-                    if (!surveyed_year.includes(all_years_hist_shore[current])) {
-                    map.setLayoutProperty("blur-line" + all_years_hist_shore[current], 'visibility', 'visible');
-                    map.setLayoutProperty("blur-line-2" + all_years_hist_shore[current], 'visibility', 'visible');
-                    map.setLayoutProperty("blur-line-3" + all_years_hist_shore[current], 'visibility', 'visible');
-                    }
-
-                    // if the previous year is not a surveyed year, then hide the blurred layers
-                    if (!surveyed_year.includes(all_years_hist_shore[previous])) {
-                    map.setLayoutProperty("blur-line" + all_years_hist_shore[previous], 'visibility', 'none');
-                    map.setLayoutProperty("blur-line-2" + all_years_hist_shore[previous], 'visibility', 'none');
-                    map.setLayoutProperty("blur-line-3" + all_years_hist_shore[previous], 'visibility', 'none');
-                    }
-
-                    document.getElementById("customRangeLabelshore-change").textContent = all_years_hist_shore[current].toString();
-                    document.getElementById("customRangeshore-change").value = all_years_hist_shore[current].toString();
-                    document.getElementById('playpause-hist').classList.remove('bi-play-circle');
-                    document.getElementById('playpause-hist').classList.add('bi-pause-circle');
-
-                    previous = current;
-                    current = current + 1;
-
-                    if (current == all_years_hist_shore.length) {
-                        current = 0;
-                    }
-
-                    //check whether the switch is on, if it is on, do not set to invisible
-                    surveyed_year.forEach((yr) => {
-                    if (document.getElementById('flexSwitchCheckDefault' + yr).checked) {
-                        map.setLayoutProperty('main-line' + yr, 'visibility', 'visible');
-                    }
-                    });
-
-
-                }
-
-
-                // setTimeout(() => {
-                //     requestId=requestAnimationFrame(animate);
-                //     }, 250);
-            }
-            requestId=requestAnimationFrame(animate);
-            //animate();
+            // set the previous year to the current year
+            previous = current;
+            current = current + 1;
+            if (current == all_years_hist_shore.length) {
+                current = 0;
+            };
         };
 
 
+        //     function animate() {
+
+        //         // Request another frame
+        //         requestId = requestAnimationFrame(animate);
+
+        //         // Get the current time
+        //         const now = Date.now();
+        //         // Calculate the elapsed time since the last frame
+        //         const elapsed = now - then;
+
+        //         // If enough time has elapsed, draw the next frame
+        //         if (elapsed > fpsInterval) {
+        //             // Set the then variable to the current time for the next frame
+        //             then = now - (elapsed % fpsInterval);
+
+        //             if (current == 0) {
+        //             previous = all_years_hist_shore.length - 1;
+        //             }
+
+
+        //             map.setLayoutProperty("main-line" + all_years_hist_shore[current], 'visibility', 'visible');
+
+        //             map.setLayoutProperty("main-line" + all_years_hist_shore[previous], 'visibility', 'none');
+
+        //             //if the current year is not a surveyed year, then show the blurred layers
+        //             if (!surveyed_year.includes(all_years_hist_shore[current])) {
+        //             map.setLayoutProperty("blur-line" + all_years_hist_shore[current], 'visibility', 'visible');
+        //             map.setLayoutProperty("blur-line-2" + all_years_hist_shore[current], 'visibility', 'visible');
+        //             map.setLayoutProperty("blur-line-3" + all_years_hist_shore[current], 'visibility', 'visible');
+        //             }
+
+        //             // if the previous year is not a surveyed year, then hide the blurred layers
+        //             if (!surveyed_year.includes(all_years_hist_shore[previous])) {
+        //             map.setLayoutProperty("blur-line" + all_years_hist_shore[previous], 'visibility', 'none');
+        //             map.setLayoutProperty("blur-line-2" + all_years_hist_shore[previous], 'visibility', 'none');
+        //             map.setLayoutProperty("blur-line-3" + all_years_hist_shore[previous], 'visibility', 'none');
+        //             }
+
+        //             document.getElementById("customRangeLabelshore-change").textContent = all_years_hist_shore[current].toString();
+        //             document.getElementById("customRangeshore-change").value = all_years_hist_shore[current].toString();
+        //             document.getElementById('playpause-hist').classList.remove('bi-play-circle');
+        //             document.getElementById('playpause-hist').classList.add('bi-pause-circle');
+
+        //             previous = current;
+        //             current = current + 1;
+
+        //             if (current == all_years_hist_shore.length) {
+        //                 current = 0;
+        //             }
+
+        //             //check whether the switch is on, if it is on, do not set to invisible
+        //             surveyed_year.forEach((yr) => {
+        //             if (document.getElementById('flexSwitchCheckDefault' + yr).checked) {
+        //                 map.setLayoutProperty('main-line' + yr, 'visibility', 'visible');
+        //             }
+        //             });
+
+
+        //         }
+
+
+        //         // setTimeout(() => {
+        //         //     requestId=requestAnimationFrame(animate);
+        //         //     }, 250);
+        //     }
+        //     requestId=requestAnimationFrame(animate);
+        //     //animate();
+        // };
+
+
         function pauseHistShore () {
-            cancelAnimationFrame(requestId);
+            clearInterval(timerId);
+            timerId = null;
 
             document.getElementById('playpause-hist').classList.remove('bi-pause-circle');
             document.getElementById('playpause-hist').classList.add('bi-play-circle');
@@ -924,7 +971,7 @@
         const rangeSlider = document.getElementById('customRangeshore-change');
 
         // Listen for the 'input' event
-        rangeSlider.addEventListener('input', function(event) {
+        rangeSlider.addEventListener('input', function (event) {
 
             pauseHistShore();
             // Get the current value
