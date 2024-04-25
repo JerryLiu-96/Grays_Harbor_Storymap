@@ -278,21 +278,36 @@ article i:hover {
 
 #introText {
     position: absolute;
-    left: 50%;
-    top: 50%;
-    transform: translateX(-50%) translateY(-50%);
+    display: flex;
+    left: 10%;
+    top: 20%;
     max-height: 70%;
-    max-width: 90%;
+    max-width: 70%;
     color: #fff;
     padding: 2rem;
-    display: table;
+
     background-color: rgba(0, 0, 0, 0.5);
     border-radius: 5px;
     text-shadow: 0 0 6px rgba(0, 0, 0, .95);
 }
 
+.flex-column {
+    display: flex;
+    flex-direction: column;
+}
+
+.flex-row {
+    display: flex;
+    flex-direction: row;
+}
+
+.flex-column p{
+    margin-top: 15px;
+    margin-bottom: 25px;
+}
+
 #introText .footnote {
-    text-align: right;
+    text-align: left;
 }
 
 #introText .footnote a {
@@ -306,7 +321,7 @@ article i:hover {
     color: #fff;
     text-shadow: 0 0 3px rgba(0, 0, 0, .95);
     font-style: italic;
-    font-size: small;
+    font-size: 10px;
 }
 
 #oral_history_container {
@@ -360,6 +375,11 @@ article i:hover {
     text-decoration: none;
 }
 
+.hide-nav {
+    top: -100px;
+    transition: top 0.3s;
+}
+
 .legend_wrapper {
     position: fixed;
     bottom: 0;
@@ -377,7 +397,7 @@ article i:hover {
     background-color: rgba(0, 0, 0, 0.8);
 }
 
-/* 
+/*
 .zoom_btns {
   position: fixed;
   top: 50px;
@@ -662,7 +682,7 @@ img.avatar-64 {
     background: #00000098;
 }
 
-/* 
+/*
 @media screen and (max-height: 1220px) {
   .adaptive_stations_scene_slider {
     padding: 1rem;
@@ -828,4 +848,8 @@ img.avatar-64 {
 
 #resolutionSliderContainer:hover #resolutionSliderTooltipText {
     visibility: visible;
+}
+
+.white-nav {
+    background-color: white !important;
 }

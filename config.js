@@ -11,10 +11,11 @@ var config = {
         {
             id: 'shore-change',
             alignment: 'left',
-            title: 'Visualizing Holocene Shoreline since 1700',
+            title: 'Visualizing Holocene Shorelines since 1700',
+            chapterIntro: ["As we have mentioned before, geological evidence and indiguous myth suggest that there was a subduction zone earthquake in 1700. Not surprisingly, geological evidence of the big earthquake also provides a reliable refrence for the shoreline positions back then.","On your right is an interactive tool visualizing holocene shorelines since 1700. Click the play/pause button to view/pause the changes of the shoreline over time. You can also drag the slider, see the position of the shoreline in the year of your interest."],
             range: '1700',
             image: '',
-            description: 'Getting around Philadelphia on two wheels is fast, fun, and cheap. As a typical East Coast large city, the urban core is dense, so there is a lot within reach of a 15 minute ride... even mountain bike trails. Paired with the public transit infrastructure, cycling can be more efficient and much less expensive than driving (and parking) a car.',
+            description: 'You may have found out that in some years the shorelines are depicted by crispy lines, while in most years the shorelines are depicted by fuzzy lines. The crispy lines represent the shorelines that are surveyed, while the fuzzy lines represent the shorelines that are interpolated based on the well documented shorelines. Higher level of uncertainty is expected for the interpolated shorelines.',
             location: {
                 center: [-124.0572, 46.8159],
                 zoom: 10.5,
@@ -40,7 +41,7 @@ var config = {
             alignment: 'left',
             title: 'Sea Level Rise Projections',
             image: '',
-            description: 'Philadelphia has XX miles of bike lanes, XX miles of which are protected. Drivers are getting more used to sharing the road, but ride defensively.',
+            description: 'The plan is to introduce uncertainties by sources to the visualization',
             location: {
                 center: [-124.0572, 46.8159],
                 zoom: 10.5,

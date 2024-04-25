@@ -17,6 +17,8 @@
     <script src="https://d3js.org/d3.v6.min.js"></script>
     <link href="https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400..700;1,400..700&display=swap" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Merienda:wght@300..900&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Lobster&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0" />
   </head>
 
 
@@ -24,11 +26,11 @@
 
     <div id="loader"></div>
 
-    <nav class="navbar fixed-top navbar-expand-lg bg-light">
+    <nav class="navbar fixed-top navbar-expand-lg" style="background-color: transparent;">
       <div class="container-fluid">
-        <a class="navbar-brand" href="./">
+        <a class="navbar-brand" href="./" style="color: #154778;">
           <img src="img/nsf_logo.png" alt="Logo" width="30" height="30" class="d-inline-block align-text-top">
-          Homepage
+          <strong>Homepage</strong>
         </a>
         <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
           <span class="navbar-toggler-icon"></span>
@@ -99,26 +101,36 @@
         </div>
 
         <div id="introText">
-            <h1 class="text-center"><strong>Geonarrative Part <span>&#8545;</span></strong>: The Continuing Adaptation to South Beach's Shifting Shore</h1>
-            <!-- <h5 class="text-center"><i>this line is a place holder for subtitle</i></h5> -->
-            <p style="text-align:justify">
-                The South Beach area of Grays Harbor County, Washington,
-                is a dynamic coastal environment that has been shaped by the forces of nature and
-                the actions of humans. The area has been home to the Quinault Indian Nation for
-                thousands of years. The Quinault people have adapted to the changing
-                landscape and have developed a deep understanding of the natural processes that shape
-                the area. <br> <br> White settlers arrived in this area in the 1800s. Even though they
-                have experienced significant changes in coastal environment since then as well, their presence
-                on this land is still transient and there is much to learn from the Quinault people about the history of the area and how to adapt. <br> <br>
-                This Geo-narrative narrates the evolution of South Beach coastal environment. As we lay out
-                scenarios of shifting shores in this storytelling, we hope to inspire you to think about how both you and your community as a whole can adapt and thrive in the face of an uncertain and challenging future.
-            </p>
-            <div class="footnote text-right">
-                <span>This project was funded by National Science Foundation award #190024</span>
-                <a target="_blank" href="https://www.nsf.gov/awardsearch/showAward?AWD_ID=1940024"> <img src="img/nsf_logo.png" width="40px" style="vertical-align: middle;" /></a>
-                <a target="_blank" href="https://www.uw.edu"> <img src="img/uw_logo.png" width="40px" style="vertical-align: middle;  margin-top: 6px;" /></a>
+            <div class="flex-column" style="padding-right: 10px;">
+                <h1 style="text-align: left;"><strong>Geonarrative Part <span>&#8545;</span></strong>: The Continuing Adaptation to South Beach's Shifting Shore</h1>
+                <!-- <h5 class="text-center"><i>this line is a place holder for subtitle</i></h5> -->
+                <div class="footnote">
+                    <span>This project was funded by National Science Foundation award #190024</span>
+                    <a target="_blank" href="https://www.nsf.gov/awardsearch/showAward?AWD_ID=1940024"> <img src="img/nsf_logo.png" width="40px" style="vertical-align: middle;" /></a>
+                    <a target="_blank" href="https://www.uw.edu"> <img src="img/uw_logo.png" width="40px" style="vertical-align: middle;  margin-top: 6px;" /></a>
 
+                </div>
             </div>
+            <div class="flex-column" style="justify-content: space-between;">
+                <p style="text-align:justify">
+                    The South Beach area of Grays Harbor County, Washington,
+                    is a dynamic coastal environment that has been shaped by the forces of nature and
+                    the actions of humans. The area has been home to the Quinault Indian Nation for
+                    thousands of years. The Quinault people have adapted to the changing
+                    landscape and have developed a deep understanding of the natural processes that shape
+                    the area.
+                </p>
+                <p style="text-align:justify">
+                    White settlers arrived in this area in the 1800s. Even though they
+                    have experienced significant changes in coastal environment since then as well, their presence
+                    on this land is still transient and there is much to learn from the Quinault people about the history of the area and how to adapt.
+                </p>
+                <p style="text-align:justify">
+                    This Geo-narrative narrates the evolution of South Beach coastal environment. As we lay out
+                    scenarios of shifting shores in this storytelling, we hope to inspire you to think about how both you and your community as a whole can adapt and thrive in the face of an uncertain and challenging future.
+                </p>
+            </div>
+
         </div>
     </section>
 
@@ -130,34 +142,41 @@
             Washington's coast is increasingly threatened by climate change and geological hazards. You may have heard about terms like "sea level rise", "global warming", "earthquake", "tsunami" from the Internet, from news media, from your community leaders... But do you really understand these terms? Like, what are their relationships with climate change and geological hazards? And more importantly, what are their impacts on South Beach communities?
 
         </p>
-        <section class="column">
-            <h3>Climate Change</h3>
-            <p>
-                <strong>Global warming</strong> refers specifically to the long-term increase in Earth's average surface temperature, primarily due to human activities such as burning fossil fuels, deforestation, and industrial processes.
-            </p>
-            <p>
-                <strong>Climate change</strong>, on the other hand, encompasses a broader range of changes in Earth's climate system, including not only rising temperatures but also shifts in precipitation patterns, extreme weather events, <strong>sea level rise</strong>, and so on.
-            </p>
-            <p>
-                Mounting evidence has suggested that the sea level is rising globally, and the sea level rise is accelerating due to the worsening climate change and global warming. Impacts of sea level rise includes erosion of beaches, inundation of deltas, salinity of water. <span class="underline"><strong>The South Beach coastal communities are at the frontline</strong></span>.
-            </p>
-        </section>
-        <section class="column">
-            <h3>Geological Hazards</h3>
-            <p style="padding-bottom: 10px;">
-                South Beach communities sit on the Cascadia Subduction Zone, which is a ticking bomb of <strong>earthquakes</strong> and <strong>tsunamis</strong>.
-            </p>
-            <figure>
-                <img src="img/csz.png" alt="Cascadia Subduction Zone" class="ctr-img">
-                <figcaption>
-                    Cascadia Subduction Zone.
-                    <a href="https://pnsn.org/outreach/earthquakesources/csz"> Credit: PNSN</a>
-                </figcaption>
-            </figure>
-            <p style="padding-top: 10px;">
-                The last subduction zone earthquake happened in 1700. More than 300 years of peace does not indicate safety. Geological evidence shows that the subduction zone earthquake has a recurrence rate of ~500 years. It has been silently amassing energy for the next earthquake. <strong>It will come again!</strong> Ground shaking and tsunami waves may wreck havoc on the shore.
-            </p>
 
+        <section class="flex-row" style="margin-left: 15px; margin-right: 15px;">
+            <section style="width: 50%;">
+                <h3>Climate Change<span class="material-symbols-outlined">
+                    weather_hail
+                    </span></h3>
+                <p>
+                    <strong>Global warming</strong> refers specifically to the long-term increase in Earth's average surface temperature, primarily due to human activities such as burning fossil fuels, deforestation, and industrial processes.
+                </p>
+                <p>
+                    <strong>Climate change</strong>, on the other hand, encompasses a broader range of changes in Earth's climate system, including not only rising temperatures but also shifts in precipitation patterns, extreme weather events, <strong>sea level rise</strong>, and so on.
+                </p>
+                <p>
+                    Mounting evidence has suggested that the sea level is rising globally, and the sea level rise is accelerating due to the worsening climate change and global warming. Impacts of sea level rise includes erosion of beaches, inundation of deltas, salinity of water. <span class="underline"><strong>The South Beach coastal communities are at the frontline</strong></span>.
+                </p>
+            </section>
+            <section style="width: 50%;">
+                <h3>Geological Hazards<span class="material-symbols-outlined">
+                    earthquake
+                    </span></h3>
+                <p style="padding-bottom: 10px;">
+                    South Beach communities sit on the Cascadia Subduction Zone, which is a ticking bomb of <strong>earthquakes</strong> and <strong>tsunamis</strong>.
+                </p>
+                <figure>
+                    <img src="img/csz.png" alt="Cascadia Subduction Zone" class="ctr-img">
+                    <figcaption>
+                        Cascadia Subduction Zone.
+                        <a href="https://pnsn.org/outreach/earthquakesources/csz"> Credit: PNSN</a>
+                    </figcaption>
+                </figure>
+                <p style="padding-top: 10px;">
+                    The last subduction zone earthquake happened in 1700. More than 300 years of peace does not indicate safety. Geological evidence shows that the subduction zone earthquake has a recurrence rate of ~500 years. It has been silently amassing energy for the next earthquake. <strong>It will come again!</strong> Ground shaking and tsunami waves may wreck havoc on the shore.
+                </p>
+
+            </section>
         </section>
         <div style="text-align: center;">
           <svg xmlns="http://www.w3.org/2000/svg" width="3em" fill="currentColor" class="bi bi-chevron-down fs-1" viewBox="0 0 16 16">
@@ -196,9 +215,14 @@
         </ol>
       </article>
     </section>
+
+    <section id="myth">
+        <h1>Quinault Stories of the 1700 tsunami</h1>
+    </section>
+
     <section id="history-shoreline">
       <article style="margin-top: 15px; margin-bottom: 15px;">
-        <h1>However, Coastal Change is NOT new</h1>
+        <h1>Coastal Change is NOT new</h1>
         <h2>A Historically Dynamic Coastline</h2>
         <blockquote>
           Climate change and geological hazards are posing new challenges to South Beach communities.
@@ -235,6 +259,18 @@
       <div id="story"></div>
     </section>
 
+    <section id="local stories">
+        <h2>PlaceHolder for Local Stories</h2>
+        <ul>
+            <li>stories of impacts from sea level rise</li>
+            <li>overlay hazard impacts on pinpointed stories</li>
+        </ul>
+    </section>
+
+    <section id="impact-container">
+        <div id="map-impact"></div>
+    </section>
+
 
     <script src="./config.js"></script>
 
@@ -243,6 +279,25 @@
       window.onload = function() {
         document.getElementById("loader").style.display = "none";
       };
+
+      //hide the navbar when scrolling down, show when scrolling up
+      let lastScrollTop = 0;
+      const navbar = document.querySelector('nav');
+
+      window.addEventListener('scroll', () => {
+        const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
+        if (scrollTop > lastScrollTop) {
+            navbar.classList.add('hide-nav');
+        } else {
+            navbar.classList.remove('hide-nav');
+            if (scrollTop > 150) {
+                navbar.classList.add("white-nav");
+            } else {
+                navbar.classList.remove("white-nav");
+            }
+        }
+        lastScrollTop = scrollTop;
+      });
     </script>
 
     <script>
@@ -263,7 +318,7 @@
         'full': 'fully'
       }
 
-    //enumerate the years from 1700 to 1911
+    //enumerate the years from 1700 to 2015
     let all_years_hist_shore = [];
         for (let i=1700; i<2016; i++) {
 
@@ -342,7 +397,18 @@
             chapter.appendChild(title);
         }
 
+        if (record.chapterIntro) {
+            for (let i=0; i<record.chapterIntro.length; i++) {
+
+                let intro = document.createElement('p');
+                intro.innerText = record.chapterIntro[i];
+                chapter.appendChild(intro);
+            }
+        }
+
         if (idx==0) {
+            let animatePanel = document.createElement('div');
+            animatePanel.setAttribute('id', 'animatePanel');
             var btn = document.createElement('button');
             btn.setAttribute('id', 'clickable');
             var playpause = document.createElement('i');
@@ -351,15 +417,15 @@
             playpause.setAttribute('id', 'playpause-hist');
             playpause.setAttribute('onclick', 'pauseHistShore()');
             btn.appendChild(playpause);
-            chapter.appendChild(btn);
-        }
+            animatePanel.appendChild(btn);
 
-        if (record.range) {
             var label = document.createElement('label');
             label.setAttribute('for', 'customRange'+record.id);
             label.setAttribute('class', 'form-label');
+            label.classList.add('lobster')
+            label.style.marginLeft = '10px';
             label.setAttribute('id', 'customRangeLabel'+record.id);
-            label.innerText = record.range;
+            label.innerText = "1700";
 
             var range = document.createElement('input');
             range.setAttribute('type', 'range');
@@ -369,16 +435,20 @@
             range.setAttribute('value', '1700')    //set the default value to 1700
             range.setAttribute('id', 'customRange'+record.id);
 
-            chapter.appendChild(label);
-            chapter.appendChild(range);
+            animatePanel.appendChild(label);
+            animatePanel.appendChild(range);
+            chapter.appendChild(animatePanel);
         }
 
         // set toggle switches for the surveyed years
         if (record.record_yrs) {
-            var title = document.createElement('h5');
+            let title = document.createElement('h5');
             title.innerText = 'Surveyed years:';
             title.style.paddingTop = '25px';
             chapter.appendChild(title);
+            let paragraph =document.createElement('p');
+            paragraph.innerText = 'Below are years when the shorelines were surveyed, toggle to show them on the map:';
+            chapter.appendChild(paragraph);
             const row = document.createElement('div');
             row.className = 'row';
             row.setAttribute('id', 'row-switch');
@@ -632,6 +702,17 @@
         transformRequest: transformRequest
     });
 
+    var mapImpact = new mapboxgl.Map({
+        container: 'map-impact',
+        style: config.style,
+        center: config.chapters[0].location.center,
+        zoom: config.chapters[0].location.zoom,
+        bearing: config.chapters[0].location.bearing,
+        pitch: config.chapters[0].location.pitch,
+        interactive: true,
+        transformRequest: transformRequest
+    });
+
     if (config.showMarkers) {
         var marker = new mapboxgl.Marker({ color: config.markerColor });
         marker.setLngLat(config.chapters[0].location.center).addTo(map);
@@ -663,7 +744,7 @@
             });
         };
 
-        var surveyed_year = [1700, 1860, 1911, 1926, 1942, 1954, 1967, 1974, 1986, 1995, 1997, 1999, 2001, 2006, 2015];
+        let surveyed_year = [1700, 1860, 1911, 1926, 1942, 1954, 1967, 1974, 1986, 1995, 1997, 1999, 2001, 2006, 2015];
 
         // add sources and layers of the shorelines from 1700 to 2015
         // set them to invisible by default
@@ -679,14 +760,16 @@
             "type":"line",
             "source":"shoreline"+i,
             "layout":{
-                'visibility': 'none'
+                'visibility': 'visible'
             },
             "paint":{
                 "line-width": 1,
-                "line-color": "red"
+                "line-color": "red",
+                "line-opacity": 0   //default to invisible
             }
         });
         // if the year is not surveyed, then do the following, otherwise, skip
+        // the if statement added blur effect (Not satisfied at this stage
         if (!surveyed_year.includes(i)) {
             // first layer of the blurred boundary
             map.addLayer({
@@ -694,12 +777,12 @@
             "type":"line",
             "source":"shoreline"+i,
             "layout":{
-                'visibility': 'none'
+                'visibility': 'visible'
             },
             "paint":{
                 "line-width": 4,
                 "line-color": "red",
-                "line-opacity": 0.6
+                "line-opacity": 0       //default to invisible
             }
             });
 
@@ -709,12 +792,12 @@
             "type":"line",
             "source":"shoreline"+i,
             "layout":{
-                'visibility': 'none'
+                'visibility': 'visible'
             },
             "paint":{
                 "line-width": 8,
                 "line-color": "red",
-                "line-opacity": 0.5
+                "line-opacity": 0      //default to invisible
             }
             });
 
@@ -724,165 +807,90 @@
             "type":"line",
             "source":"shoreline"+i,
             "layout":{
-                'visibility': 'none'
+                'visibility': 'visible'
             },
             "paint":{
                 "line-width": 12,
                 "line-color": "red",
-                "line-opacity": 0.25
+                "line-opacity": 0      //default to invisible
             }
             });
         }
         };
 
         // set the switches
+        // the switches toggle the visibility of the SURVEYED shorelines
         surveyed_year.forEach((yr) => {
             document.getElementById('flexSwitchCheckDefault'+yr).addEventListener('change', function(e) {
                 if (e.target.checked) {
-                    map.setLayoutProperty('main-line'+yr, 'visibility', 'visible');
+                    map.setPaintProperty('main-line'+yr, 'line-opacity', 1);
                 } else {
-                    map.setLayoutProperty('main-line'+yr, 'visibility', 'none');
+                    map.setPaintProperty('main-line'+yr, 'line-opacity', 0);
                 }
             });
 
         });
 
-        //let current=0;
-
-        // function playHistShore () {
-        //     myInt = setInterval(() => {
-        //         if (current==0) {
-        //             previous = all_years_hist_shore.length-1;
-        //         };
-
-        //         map.setLayoutProperty("main-line"+all_years_hist_shore[previous], 'visibility', 'none');
-        //         map.setLayoutProperty("main-line"+all_years_hist_shore[current], 'visibility', 'visible');
-
-        //         if (!surveyed_year.includes(all_years_hist_shore[current])) {
-        //             map.setLayoutProperty("blur-line"+all_years_hist_shore[current], 'visibility', 'visible');
-        //             map.setLayoutProperty("blur-line-2"+all_years_hist_shore[current], 'visibility', 'visible');
-        //             map.setLayoutProperty("blur-line-3"+all_years_hist_shore[current], 'visibility', 'visible');
-        //         };
-
-        //         if (!surveyed_year.includes(all_years_hist_shore[previous])) {
-        //             map.setLayoutProperty("blur-line"+all_years_hist_shore[previous], 'visibility', 'none');
-        //             map.setLayoutProperty("blur-line-2"+all_years_hist_shore[previous], 'visibility', 'none');
-        //             map.setLayoutProperty("blur-line-3"+all_years_hist_shore[previous], 'visibility', 'none');
-        //         };
-
-        //         document.getElementById("customRangeLabelshore-change").textContent = all_years_hist_shore[current].toString();
-
-        //         document.getElementById("customRangeshore-change").value = all_years_hist_shore[current].toString();
-
-        //         document.getElementById('playpause-hist').classList.remove('bi-play-circle');
-
-        //         document.getElementById('playpause-hist').classList.add('bi-pause-circle');
-
-        //         previous = current;
-        //         current = current+1;
-
-        //         if (current==all_years_hist_shore.length) {
-        //             current=0;
-        //         };
-
-        //         //check whether the switch is on, if it is on, do not set to invisible
-        //         surveyed_year.forEach((yr) => {
-        //             if (document.getElementById('flexSwitchCheckDefault'+yr).checked) {
-        //                 map.setLayoutProperty('main-line'+yr, 'visibility', 'visible');
-        //             }
-        //         });
-
-        //     }, 250)
-
-
-        // };
 
         let previous = all_years_hist_shore.length - 1;
         let current = 0;
         let requestId;
+        let timerId = null;
 
-        // Set the fps limit
-        const fps = 10; // For example, 10 frames per second
-        // Calculate the interval in milliseconds for each frame
-        const fpsInterval = 1000 / fps;
-        // Initialize the then variable with the current time
-        let then = Date.now();
 
         function playHistShore() {
+            timerId = setInterval(updateShoreline, 100);
+        };
 
+        function updateShoreline() {
+            if (current == 0) {
+                previous = all_years_hist_shore.length - 1;
+            };
 
-            function animate() {
+            // set the current year to visible
 
-                // Request another frame
-                requestId = requestAnimationFrame(animate);
+            map.setPaintProperty("main-line" + all_years_hist_shore[current], 'line-opacity', 1);
 
-                // Get the current time
-                const now = Date.now();
-                // Calculate the elapsed time since the last frame
-                const elapsed = now - then;
+            // set the previous year to invisible
 
-                // If enough time has elapsed, draw the next frame
-                if (elapsed > fpsInterval) {
-                    // Set the then variable to the current time for the next frame
-                    then = now - (elapsed % fpsInterval);
+            map.setPaintProperty("main-line" + all_years_hist_shore[previous], 'line-opacity', 0);
 
-                    if (current == 0) {
-                    previous = all_years_hist_shore.length - 1;
-                    }
+            //if the current year is not a surveyed year, then show the blurred layers
+            if (!surveyed_year.includes(all_years_hist_shore[current])) {
 
+                map.setPaintProperty("blur-line" + all_years_hist_shore[current], 'line-opacity', 0.6);
+                map.setPaintProperty("blur-line-2" + all_years_hist_shore[current], 'line-opacity', 0.5);
+                map.setPaintProperty("blur-line-3" + all_years_hist_shore[current], 'line-opacity', 0.25);
+            };
 
-                    map.setLayoutProperty("main-line" + all_years_hist_shore[current], 'visibility', 'visible');
+            // if the previous year is not a surveyed year, then hide the blurred layers
+            if (!surveyed_year.includes(all_years_hist_shore[previous])) {
 
-                    map.setLayoutProperty("main-line" + all_years_hist_shore[previous], 'visibility', 'none');
+                map.setPaintProperty("blur-line" + all_years_hist_shore[previous], 'line-opacity', 0);
+                map.setPaintProperty("blur-line-2" + all_years_hist_shore[previous], 'line-opacity', 0);
+                map.setPaintProperty("blur-line-3" + all_years_hist_shore[previous], 'line-opacity', 0);
+            };
 
-                    //if the current year is not a surveyed year, then show the blurred layers
-                    if (!surveyed_year.includes(all_years_hist_shore[current])) {
-                    map.setLayoutProperty("blur-line" + all_years_hist_shore[current], 'visibility', 'visible');
-                    map.setLayoutProperty("blur-line-2" + all_years_hist_shore[current], 'visibility', 'visible');
-                    map.setLayoutProperty("blur-line-3" + all_years_hist_shore[current], 'visibility', 'visible');
-                    }
+            // update the year label and range slider
+            document.getElementById("customRangeLabelshore-change").textContent = all_years_hist_shore[current].toString();
+            document.getElementById("customRangeshore-change").value = all_years_hist_shore[current].toString();
 
-                    // if the previous year is not a surveyed year, then hide the blurred layers
-                    if (!surveyed_year.includes(all_years_hist_shore[previous])) {
-                    map.setLayoutProperty("blur-line" + all_years_hist_shore[previous], 'visibility', 'none');
-                    map.setLayoutProperty("blur-line-2" + all_years_hist_shore[previous], 'visibility', 'none');
-                    map.setLayoutProperty("blur-line-3" + all_years_hist_shore[previous], 'visibility', 'none');
-                    }
+            // set the play/pause button to pause
+            document.getElementById('playpause-hist').classList.remove('bi-play-circle');
+            document.getElementById('playpause-hist').classList.add('bi-pause-circle');
 
-                    document.getElementById("customRangeLabelshore-change").textContent = all_years_hist_shore[current].toString();
-                    document.getElementById("customRangeshore-change").value = all_years_hist_shore[current].toString();
-                    document.getElementById('playpause-hist').classList.remove('bi-play-circle');
-                    document.getElementById('playpause-hist').classList.add('bi-pause-circle');
-
-                    previous = current;
-                    current = current + 1;
-
-                    if (current == all_years_hist_shore.length) {
-                        current = 0;
-                    }
-
-                    //check whether the switch is on, if it is on, do not set to invisible
-                    surveyed_year.forEach((yr) => {
-                    if (document.getElementById('flexSwitchCheckDefault' + yr).checked) {
-                        map.setLayoutProperty('main-line' + yr, 'visibility', 'visible');
-                    }
-                    });
-
-
-                }
-
-
-                // setTimeout(() => {
-                //     requestId=requestAnimationFrame(animate);
-                //     }, 250);
-            }
-            requestId=requestAnimationFrame(animate);
-            //animate();
+            // set the previous year to the current year
+            previous = current;
+            current = current + 1;
+            if (current == all_years_hist_shore.length) {
+                current = 0;
+            };
         };
 
 
         function pauseHistShore () {
-            cancelAnimationFrame(requestId);
+            clearInterval(timerId);
+            timerId = null;
 
             document.getElementById('playpause-hist').classList.remove('bi-pause-circle');
             document.getElementById('playpause-hist').classList.add('bi-play-circle');
@@ -892,40 +900,56 @@
         const rangeSlider = document.getElementById('customRangeshore-change');
 
         // Listen for the 'input' event
-        rangeSlider.addEventListener('input', function(event) {
+        rangeSlider.addEventListener('input', function (event) {
 
             pauseHistShore();
             // Get the current value
-            const currentValue = event.target.value;
+            const SLIDERYEAR = event.target.value;
 
-            current = all_years_hist_shore.indexOf(parseInt(currentValue));
-
-
-
-            document.getElementById("customRangeLabelshore-change").textContent = currentValue;
+            document.getElementById("customRangeLabelshore-change").textContent = SLIDERYEAR;
 
             // Hide all layers
-            setAllHistLayersInvisible();
+            //setAllHistLayersInvisible();
+
+            // set the current year to invisible
+            //current is a map.load() wide variable
+
+            map.setPaintProperty("main-line" + all_years_hist_shore[previous], 'line-opacity', 0);
+
+            //if the current year is not a surveyed year, then close the blurred layers as well
+            if (!surveyed_year.includes(all_years_hist_shore[previous])) {
+
+                map.setPaintProperty("blur-line" + all_years_hist_shore[previous], 'line-opacity', 0);
+                map.setPaintProperty("blur-line-2" + all_years_hist_shore[previous], 'line-opacity', 0);
+                map.setPaintProperty("blur-line-3" + all_years_hist_shore[previous], 'line-opacity', 0);
+            };
 
             //show layers that are toggled on by the switch
+            // toggled on layers should be kept visible
             surveyed_year.forEach((yr) => {
                 if (document.getElementById('flexSwitchCheckDefault'+yr).checked) {
-                    map.setLayoutProperty('main-line'+yr, 'visibility', 'visible');
+                    map.setPaintProperty('main-line'+yr, 'line-opacity', 1);;
                 }
             });
 
-            // Show the layer for the current year
-            map.setLayoutProperty("main-line"+currentValue, 'visibility', 'visible');
+            // Show the layer for the year on the slider
+            map.setPaintProperty("main-line"+SLIDERYEAR, 'line-opacity', 1);
 
-            // if the current year is not a surveyed year, then show the blurred layers
-            if (!surveyed_year.includes(parseInt(currentValue))) {
-                map.setLayoutProperty("blur-line"+currentValue, 'visibility', 'visible');
-                map.setLayoutProperty("blur-line-2"+currentValue, 'visibility', 'visible');
-                map.setLayoutProperty("blur-line-3"+currentValue, 'visibility', 'visible');
+            // if the slider year is not a surveyed year, then show the blurred layers as well
+            if (!surveyed_year.includes(parseInt(SLIDERYEAR))) {
+                map.setPaintProperty("blur-line"+SLIDERYEAR, 'line-opacity', 0.6);
+                map.setPaintProperty("blur-line-2"+SLIDERYEAR, 'line-opacity', 0.5);
+                map.setPaintProperty("blur-line-3"+SLIDERYEAR, 'line-opacity', 0.25)
+            };
+
+            previous = all_years_hist_shore.indexOf(parseInt(SLIDERYEAR));
+            if (previous != all_years_hist_shore.lehgth) {
+                current = previous + 1;  // current will be used by the playHistShore function
+            } else {
+                current = 0;
+            };
 
 
-
-            }
         });
 
         // set the function to play animation of historical shorelines
