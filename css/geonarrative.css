@@ -171,6 +171,12 @@ div.form-check {
   padding: 2px !important;
 }
 
+#animatePanel {
+  padding: 10px 10px;
+  background-color: #eaf4f7;
+  font-size: 24px;
+}
+
 #story {
   /* position: relative; */
   /* position: sticky; */
@@ -224,6 +230,18 @@ body {
   .hidden {
       visibility: hidden;
   }
+
+  .lobster {
+    font-family: "Lobster", sans-serif;
+  }
+
+  .hollow-text {
+    font-weight: 400; /* Use the boldest weight available */
+    font-size: 24px; /* Adjust size as needed */
+    color: transparent;
+    -webkit-text-stroke: 1px black; /* Adjust stroke width and color as needed */
+}
+
   .centered {
       width: 50vw;
       margin: 0 auto;
@@ -260,7 +278,7 @@ body {
   }
 
   .step div {
-      padding:  25px 50px;
+      padding:  15px 50px;
       line-height: 25px;
       font-size: 13px;
   }

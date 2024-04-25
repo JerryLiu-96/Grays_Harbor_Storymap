@@ -17,6 +17,8 @@
     <script src="https://d3js.org/d3.v6.min.js"></script>
     <link href="https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400..700;1,400..700&display=swap" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Merienda:wght@300..900&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Lobster&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0" />
   </head>
 
 
@@ -143,7 +145,9 @@
 
         <section class="flex-row" style="margin-left: 15px; margin-right: 15px;">
             <section style="width: 50%;">
-                <h3>Climate Change</h3>
+                <h3>Climate Change<span class="material-symbols-outlined">
+                    weather_hail
+                    </span></h3>
                 <p>
                     <strong>Global warming</strong> refers specifically to the long-term increase in Earth's average surface temperature, primarily due to human activities such as burning fossil fuels, deforestation, and industrial processes.
                 </p>
@@ -155,7 +159,9 @@
                 </p>
             </section>
             <section style="width: 50%;">
-                <h3>Geological Hazards</h3>
+                <h3>Geological Hazards<span class="material-symbols-outlined">
+                    earthquake
+                    </span></h3>
                 <p style="padding-bottom: 10px;">
                     South Beach communities sit on the Cascadia Subduction Zone, which is a ticking bomb of <strong>earthquakes</strong> and <strong>tsunamis</strong>.
                 </p>
@@ -374,7 +380,18 @@
             chapter.appendChild(title);
         }
 
+        if (record.chapterIntro) {
+            for (let i=0; i<record.chapterIntro.length; i++) {
+
+                let intro = document.createElement('p');
+                intro.innerText = record.chapterIntro[i];
+                chapter.appendChild(intro);
+            }
+        }
+
         if (idx==0) {
+            let animatePanel = document.createElement('div');
+            animatePanel.setAttribute('id', 'animatePanel');
             var btn = document.createElement('button');
             btn.setAttribute('id', 'clickable');
             var playpause = document.createElement('i');
@@ -383,15 +400,15 @@
             playpause.setAttribute('id', 'playpause-hist');
             playpause.setAttribute('onclick', 'pauseHistShore()');
             btn.appendChild(playpause);
-            chapter.appendChild(btn);
-        }
+            animatePanel.appendChild(btn);
 
-        if (record.range) {
             var label = document.createElement('label');
             label.setAttribute('for', 'customRange'+record.id);
             label.setAttribute('class', 'form-label');
+            label.classList.add('lobster')
+            label.style.marginLeft = '10px';
             label.setAttribute('id', 'customRangeLabel'+record.id);
-            label.innerText = record.range;
+            label.innerText = "1700";
 
             var range = document.createElement('input');
             range.setAttribute('type', 'range');
@@ -401,16 +418,20 @@
             range.setAttribute('value', '1700')    //set the default value to 1700
             range.setAttribute('id', 'customRange'+record.id);
 
-            chapter.appendChild(label);
-            chapter.appendChild(range);
+            animatePanel.appendChild(label);
+            animatePanel.appendChild(range);
+            chapter.appendChild(animatePanel);
         }
 
         // set toggle switches for the surveyed years
         if (record.record_yrs) {
-            var title = document.createElement('h5');
+            let title = document.createElement('h5');
             title.innerText = 'Surveyed years:';
             title.style.paddingTop = '25px';
             chapter.appendChild(title);
+            let paragraph =document.createElement('p');
+            paragraph.innerText = 'Below are years when the shorelines were surveyed, toggle to show them on the map:';
+            chapter.appendChild(paragraph);
             const row = document.createElement('div');
             row.className = 'row';
             row.setAttribute('id', 'row-switch');
@@ -711,11 +732,12 @@
             "type":"line",
             "source":"shoreline"+i,
             "layout":{
-                'visibility': 'none'
+                'visibility': 'visible'
             },
             "paint":{
                 "line-width": 1,
-                "line-color": "red"
+                "line-color": "red",
+                "line-opacity": 0   //default to invisible
             }
         });
         // if the year is not surveyed, then do the following, otherwise, skip
@@ -727,12 +749,12 @@
             "type":"line",
             "source":"shoreline"+i,
             "layout":{
-                'visibility': 'none'
+                'visibility': 'visible'
             },
             "paint":{
                 "line-width": 4,
                 "line-color": "red",
-                "line-opacity": 0.6
+                "line-opacity": 0       //default to invisible
             }
             });
 
@@ -742,12 +764,12 @@
             "type":"line",
             "source":"shoreline"+i,
             "layout":{
-                'visibility': 'none'
+                'visibility': 'visible'
             },
             "paint":{
                 "line-width": 8,
                 "line-color": "red",
-                "line-opacity": 0.5
+                "line-opacity": 0      //default to invisible
             }
             });
 
@@ -757,12 +779,12 @@
             "type":"line",
             "source":"shoreline"+i,
             "layout":{
-                'visibility': 'none'
+                'visibility': 'visible'
             },
             "paint":{
                 "line-width": 12,
                 "line-color": "red",
-                "line-opacity": 0.25
+                "line-opacity": 0      //default to invisible
             }
             });
         }
@@ -773,78 +795,23 @@
         surveyed_year.forEach((yr) => {
             document.getElementById('flexSwitchCheckDefault'+yr).addEventListener('change', function(e) {
                 if (e.target.checked) {
-                    map.setLayoutProperty('main-line'+yr, 'visibility', 'visible');
+                    map.setPaintProperty('main-line'+yr, 'line-opacity', 1);
                 } else {
-                    map.setLayoutProperty('main-line'+yr, 'visibility', 'none');
+                    map.setPaintProperty('main-line'+yr, 'line-opacity', 0);
                 }
             });
 
         });
 
-        //let current=0;
-
-        // function playHistShore () {
-        //     myInt = setInterval(() => {
-        //         if (current==0) {
-        //             previous = all_years_hist_shore.length-1;
-        //         };
-
-        //         map.setLayoutProperty("main-line"+all_years_hist_shore[previous], 'visibility', 'none');
-        //         map.setLayoutProperty("main-line"+all_years_hist_shore[current], 'visibility', 'visible');
-
-        //         if (!surveyed_year.includes(all_years_hist_shore[current])) {
-        //             map.setLayoutProperty("blur-line"+all_years_hist_shore[current], 'visibility', 'visible');
-        //             map.setLayoutProperty("blur-line-2"+all_years_hist_shore[current], 'visibility', 'visible');
-        //             map.setLayoutProperty("blur-line-3"+all_years_hist_shore[current], 'visibility', 'visible');
-        //         };
-
-        //         if (!surveyed_year.includes(all_years_hist_shore[previous])) {
-        //             map.setLayoutProperty("blur-line"+all_years_hist_shore[previous], 'visibility', 'none');
-        //             map.setLayoutProperty("blur-line-2"+all_years_hist_shore[previous], 'visibility', 'none');
-        //             map.setLayoutProperty("blur-line-3"+all_years_hist_shore[previous], 'visibility', 'none');
-        //         };
-
-        //         document.getElementById("customRangeLabelshore-change").textContent = all_years_hist_shore[current].toString();
-
-        //         document.getElementById("customRangeshore-change").value = all_years_hist_shore[current].toString();
-
-        //         document.getElementById('playpause-hist').classList.remove('bi-play-circle');
-
-        //         document.getElementById('playpause-hist').classList.add('bi-pause-circle');
-
-        //         previous = current;
-        //         current = current+1;
-
-        //         if (current==all_years_hist_shore.length) {
-        //             current=0;
-        //         };
-
-        //         //check whether the switch is on, if it is on, do not set to invisible
-        //         surveyed_year.forEach((yr) => {
-        //             if (document.getElementById('flexSwitchCheckDefault'+yr).checked) {
-        //                 map.setLayoutProperty('main-line'+yr, 'visibility', 'visible');
-        //             }
-        //         });
-
-        //     }, 250)
-
-
-        // };
 
         let previous = all_years_hist_shore.length - 1;
         let current = 0;
         let requestId;
         let timerId = null;
 
-        // // Set the fps limit
-        // const fps = 10; // For example, 10 frames per second
-        // // Calculate the interval in milliseconds for each frame
-        // const fpsInterval = 1000 / fps;
-        // // Initialize the then variable with the current time
-        // let then = Date.now();
 
         function playHistShore() {
-            timerId = setInterval(updateShoreline, 2000);
+            timerId = setInterval(updateShoreline, 100);
         };
 
         function updateShoreline() {
@@ -853,23 +820,27 @@
             };
 
             // set the current year to visible
-            map.setLayoutProperty("main-line" + all_years_hist_shore[current], 'visibility', 'visible');
+
+            map.setPaintProperty("main-line" + all_years_hist_shore[current], 'line-opacity', 1);
 
             // set the previous year to invisible
-            map.setLayoutProperty("main-line" + all_years_hist_shore[previous], 'visibility', 'none');
+
+            map.setPaintProperty("main-line" + all_years_hist_shore[previous], 'line-opacity', 0);
 
             //if the current year is not a surveyed year, then show the blurred layers
             if (!surveyed_year.includes(all_years_hist_shore[current])) {
-                map.setLayoutProperty("blur-line" + all_years_hist_shore[current], 'visibility', 'visible');
-                map.setLayoutProperty("blur-line-2" + all_years_hist_shore[current], 'visibility', 'visible');
-                map.setLayoutProperty("blur-line-3" + all_years_hist_shore[current], 'visibility', 'visible');
+
+                map.setPaintProperty("blur-line" + all_years_hist_shore[current], 'line-opacity', 0.6);
+                map.setPaintProperty("blur-line-2" + all_years_hist_shore[current], 'line-opacity', 0.5);
+                map.setPaintProperty("blur-line-3" + all_years_hist_shore[current], 'line-opacity', 0.25);
             };
 
             // if the previous year is not a surveyed year, then hide the blurred layers
             if (!surveyed_year.includes(all_years_hist_shore[previous])) {
-                map.setLayoutProperty("blur-line" + all_years_hist_shore[previous], 'visibility', 'none');
-                map.setLayoutProperty("blur-line-2" + all_years_hist_shore[previous], 'visibility', 'none');
-                map.setLayoutProperty("blur-line-3" + all_years_hist_shore[previous], 'visibility', 'none');
+
+                map.setPaintProperty("blur-line" + all_years_hist_shore[previous], 'line-opacity', 0);
+                map.setPaintProperty("blur-line-2" + all_years_hist_shore[previous], 'line-opacity', 0);
+                map.setPaintProperty("blur-line-3" + all_years_hist_shore[previous], 'line-opacity', 0);
             };
 
             // update the year label and range slider
@@ -889,76 +860,6 @@
         };
 
 
-        //     function animate() {
-
-        //         // Request another frame
-        //         requestId = requestAnimationFrame(animate);
-
-        //         // Get the current time
-        //         const now = Date.now();
-        //         // Calculate the elapsed time since the last frame
-        //         const elapsed = now - then;
-
-        //         // If enough time has elapsed, draw the next frame
-        //         if (elapsed > fpsInterval) {
-        //             // Set the then variable to the current time for the next frame
-        //             then = now - (elapsed % fpsInterval);
-
-        //             if (current == 0) {
-        //             previous = all_years_hist_shore.length - 1;
-        //             }
-
-
-        //             map.setLayoutProperty("main-line" + all_years_hist_shore[current], 'visibility', 'visible');
-
-        //             map.setLayoutProperty("main-line" + all_years_hist_shore[previous], 'visibility', 'none');
-
-        //             //if the current year is not a surveyed year, then show the blurred layers
-        //             if (!surveyed_year.includes(all_years_hist_shore[current])) {
-        //             map.setLayoutProperty("blur-line" + all_years_hist_shore[current], 'visibility', 'visible');
-        //             map.setLayoutProperty("blur-line-2" + all_years_hist_shore[current], 'visibility', 'visible');
-        //             map.setLayoutProperty("blur-line-3" + all_years_hist_shore[current], 'visibility', 'visible');
-        //             }
-
-        //             // if the previous year is not a surveyed year, then hide the blurred layers
-        //             if (!surveyed_year.includes(all_years_hist_shore[previous])) {
-        //             map.setLayoutProperty("blur-line" + all_years_hist_shore[previous], 'visibility', 'none');
-        //             map.setLayoutProperty("blur-line-2" + all_years_hist_shore[previous], 'visibility', 'none');
-        //             map.setLayoutProperty("blur-line-3" + all_years_hist_shore[previous], 'visibility', 'none');
-        //             }
-
-        //             document.getElementById("customRangeLabelshore-change").textContent = all_years_hist_shore[current].toString();
-        //             document.getElementById("customRangeshore-change").value = all_years_hist_shore[current].toString();
-        //             document.getElementById('playpause-hist').classList.remove('bi-play-circle');
-        //             document.getElementById('playpause-hist').classList.add('bi-pause-circle');
-
-        //             previous = current;
-        //             current = current + 1;
-
-        //             if (current == all_years_hist_shore.length) {
-        //                 current = 0;
-        //             }
-
-        //             //check whether the switch is on, if it is on, do not set to invisible
-        //             surveyed_year.forEach((yr) => {
-        //             if (document.getElementById('flexSwitchCheckDefault' + yr).checked) {
-        //                 map.setLayoutProperty('main-line' + yr, 'visibility', 'visible');
-        //             }
-        //             });
-
-
-        //         }
-
-
-        //         // setTimeout(() => {
-        //         //     requestId=requestAnimationFrame(animate);
-        //         //     }, 250);
-        //     }
-        //     requestId=requestAnimationFrame(animate);
-        //     //animate();
-        // };
-
-
         function pauseHistShore () {
             clearInterval(timerId);
             timerId = null;
@@ -975,36 +876,52 @@
 
             pauseHistShore();
             // Get the current value
-            const currentValue = event.target.value;
+            const SLIDERYEAR = event.target.value;
 
-            current = all_years_hist_shore.indexOf(parseInt(currentValue));
-
-
-
-            document.getElementById("customRangeLabelshore-change").textContent = currentValue;
+            document.getElementById("customRangeLabelshore-change").textContent = SLIDERYEAR;
 
             // Hide all layers
-            setAllHistLayersInvisible();
+            //setAllHistLayersInvisible();
+
+            // set the current year to invisible
+            //current is a map.load() wide variable
+
+            map.setPaintProperty("main-line" + all_years_hist_shore[previous], 'line-opacity', 0);
+
+            //if the current year is not a surveyed year, then close the blurred layers as well
+            if (!surveyed_year.includes(all_years_hist_shore[previous])) {
+
+                map.setPaintProperty("blur-line" + all_years_hist_shore[previous], 'line-opacity', 0);
+                map.setPaintProperty("blur-line-2" + all_years_hist_shore[previous], 'line-opacity', 0);
+                map.setPaintProperty("blur-line-3" + all_years_hist_shore[previous], 'line-opacity', 0);
+            };
 
             //show layers that are toggled on by the switch
+            // toggled on layers should be kept visible
             surveyed_year.forEach((yr) => {
                 if (document.getElementById('flexSwitchCheckDefault'+yr).checked) {
-                    map.setLayoutProperty('main-line'+yr, 'visibility', 'visible');
+                    map.setPaintProperty('main-line'+yr, 'line-opacity', 1);;
                 }
             });
 
-            // Show the layer for the current year
-            map.setLayoutProperty("main-line"+currentValue, 'visibility', 'visible');
+            // Show the layer for the year on the slider
+            map.setPaintProperty("main-line"+SLIDERYEAR, 'line-opacity', 1);
 
-            // if the current year is not a surveyed year, then show the blurred layers
-            if (!surveyed_year.includes(parseInt(currentValue))) {
-                map.setLayoutProperty("blur-line"+currentValue, 'visibility', 'visible');
-                map.setLayoutProperty("blur-line-2"+currentValue, 'visibility', 'visible');
-                map.setLayoutProperty("blur-line-3"+currentValue, 'visibility', 'visible');
+            // if the slider year is not a surveyed year, then show the blurred layers as well
+            if (!surveyed_year.includes(parseInt(SLIDERYEAR))) {
+                map.setPaintProperty("blur-line"+SLIDERYEAR, 'line-opacity', 0.6);
+                map.setPaintProperty("blur-line-2"+SLIDERYEAR, 'line-opacity', 0.5);
+                map.setPaintProperty("blur-line-3"+SLIDERYEAR, 'line-opacity', 0.25)
+            };
+
+            previous = all_years_hist_shore.indexOf(parseInt(SLIDERYEAR));
+            if (previous != all_years_hist_shore.lehgth) {
+                current = previous + 1;  // current will be used by the playHistShore function
+            } else {
+                current = 0;
+            };
 
 
-
-            }
         });
 
         // set the function to play animation of historical shorelines
