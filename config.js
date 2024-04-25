@@ -41,7 +41,7 @@ var config = {
             alignment: 'left',
             title: 'Sea Level Rise Projections',
             image: '',
-            description: 'Philadelphia has XX miles of bike lanes, XX miles of which are protected. Drivers are getting more used to sharing the road, but ride defensively.',
+            description: 'The plan is to introduce uncertainties by sources to the visualization',
             location: {
                 center: [-124.0572, 46.8159],
                 zoom: 10.5,

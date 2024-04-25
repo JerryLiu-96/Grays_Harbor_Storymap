@@ -9,18 +9,17 @@
   opacity: 1;
 }
 
+body {
+  font-family: "Merienda", cursive;
+}
+
+#myth {
+  font-family: "Merienda", cursive;
+}
+
 nav {
   background-color: transparent !important;
 }
-
-/* #map-container {
-  position: sticky;
-  top: 0;
-  right: 0;
-  width: 67vh;
-  height: 100vh;
-} */
-
 
 #introText h1 {
   font-family: "Lora", serif;
@@ -161,10 +160,25 @@ li {
   height: 100vh;
 }
 
+#map-impact {
+  position: sticky;
+  position: -webkit-sticky;
+  /* position: fixed; */
+  top: 0;
+  bottom: 0;
+  /* right: 0; */
+  width: 100vw;
+  height: 100vh;
+}
+
 #geonarrative-container {
   position: relative;
   /* overflow-y: scroll; */
+}
 
+#impact-container {
+  position: relative;
+  /* overflow-y: scroll; */
 }
 
 div.form-check {

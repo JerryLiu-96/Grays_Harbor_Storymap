@@ -215,9 +215,14 @@
         </ol>
       </article>
     </section>
+
+    <section id="myth">
+        <h1>Quinault Stories of the 1700 tsunami</h1>
+    </section>
+
     <section id="history-shoreline">
       <article style="margin-top: 15px; margin-bottom: 15px;">
-        <h1>However, Coastal Change is NOT new</h1>
+        <h1>Coastal Change is NOT new</h1>
         <h2>A Historically Dynamic Coastline</h2>
         <blockquote>
           Climate change and geological hazards are posing new challenges to South Beach communities.
@@ -252,6 +257,18 @@
     <section id="geonarrative-container">
       <div id="map"></div>
       <div id="story"></div>
+    </section>
+
+    <section id="local stories">
+        <h2>PlaceHolder for Local Stories</h2>
+        <ul>
+            <li>stories of impacts from sea level rise</li>
+            <li>overlay hazard impacts on pinpointed stories</li>
+        </ul>
+    </section>
+
+    <section id="impact-container">
+        <div id="map-impact"></div>
     </section>
 
 
@@ -676,6 +693,17 @@
 
     var map = new mapboxgl.Map({
         container: 'map',
+        style: config.style,
+        center: config.chapters[0].location.center,
+        zoom: config.chapters[0].location.zoom,
+        bearing: config.chapters[0].location.bearing,
+        pitch: config.chapters[0].location.pitch,
+        interactive: true,
+        transformRequest: transformRequest
+    });
+
+    var mapImpact = new mapboxgl.Map({
+        container: 'map-impact',
         style: config.style,
         center: config.chapters[0].location.center,
         zoom: config.chapters[0].location.zoom,
