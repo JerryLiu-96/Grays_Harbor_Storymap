@@ -141,11 +141,11 @@ li {
 #history-shoreline {
   position:relative;
   padding-top: 70px;
-  background-image: url('../img/graysharbor_light.jpeg');
+  background-image: url('../img/dynamic-shoreline.gif');
   background-size: cover;
   background-attachment: fixed;
   background-blend-mode: lighten;
-  background-color: rgba(255, 255, 255, 0.8);
+  background-color: rgba(255, 255, 255, 0.5);
   font-family: "Merienda", cursive;
 }
 
