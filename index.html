@@ -768,76 +768,102 @@
 
         let surveyed_year = [1700, 1860, 1911, 1926, 1942, 1954, 1967, 1974, 1986, 1995, 1997, 1999, 2001, 2006, 2015];
 
+        let offsetDistOfPoly = [4.5,9,13.6,18.3, 22.8, 27.3, 31.9, 36.6];
+
+        let colorPoly =["#238b45","#74c476","#bae4b3","#edf8e9","#eff3ff","#bdd7e7","#6baed6","#2171b5"];
+
+        // get the reverse list of offsetDistPoly
+        offsetDistOfPoly.reverse();
+        colorPoly.reverse();
+
         // add sources and layers of the shorelines from 1700 to 2015
         // set them to invisible by default
         for (let i=1700; i<2015; i++) {
             // add the source for the main boundary
-            map.addSource("shoreline"+i,{
-                "type": "geojson",
-                "data": "assets/ECY_estimated_shorelines/Oct1/"+i+".geojson"
-            });
+            // map.addSource("shoreline"+i,{
+            //     "type": "geojson",
+            //     "data": "assets/ECY_estimated_shorelines/Oct1/"+i+".geojson"
+            // });
 
-            map.addLayer({
-            "id":"main-line"+i,
-            "type":"line",
-            "source":"shoreline"+i,
-            "layout":{
-                'visibility': 'visible'
-            },
-            "paint":{
-                "line-width": 0.1,
-                "line-color": "red",
-                "line-opacity": 0   //default to invisible
-            }
-        });
+            offsetDistOfPoly.forEach((d, idx) =>{
+                map.addSource(`polygon_${i}_${d}`, {
+                    "type": "geojson",
+                    "data": `assets/ECY_estimated_shorelines_poly/May3_2024/${d}m/${i}.geojson`
+                });
+                map.addLayer({
+                    "id": `polygon_${i}_${d}`,
+                    "type": "fill",
+                    "source": `polygon_${i}_${d}`,
+                    "layout": {
+                        'visibility': 'visible'
+                    },
+                    "paint": {
+                        "fill-color": colorPoly[idx],
+                        "fill-opacity": 0
+                    }
+                });
+            });
+            // map.addLayer({
+            //     "id":"main-line"+i,
+            //     "type":"line",
+            //     "source":"shoreline"+i,
+            //     "layout":{
+            //         'visibility': 'visible'
+            //     },
+            //     "paint":{
+            //         "line-width": 0.1,
+            //         "line-color": "red",
+            //         "line-opacity": 0   //default to invisible
+            //     }
+            // });
         // if the year is not surveyed, then do the following, otherwise, skip
         // the if statement added blur effect (Not satisfied at this stage
-        if (!surveyed_year.includes(i)) {
-            // first layer of the blurred boundary
-            map.addLayer({
-            "id":"blur-line"+i,
-            "type":"line",
-            "source":"shoreline"+i,
-            "layout":{
-                'visibility': 'visible'
-            },
-            "paint":{
-                "line-width": 4,
-                "line-color": "red",
-                "line-opacity": 0       //default to invisible
-            }
-            });
+        // if (!surveyed_year.includes(i)) {
+        //     // first layer of the blurred boundary
+        //     map.addLayer({
+        //     "id":"blur-line"+i,
+        //     "type":"line",
+        //     "source":"shoreline"+i,
+        //     "layout":{
+        //         'visibility': 'visible'
+        //     },
+        //     "paint":{
+        //         "line-width": 4,
+        //         "line-color": "red",
+        //         "line-opacity": 0       //default to invisible
+        //     }
+        //     });
 
-            // second layer of the blurred boundary
-            map.addLayer({
-            "id":"blur-line-2"+i,
-            "type":"line",
-            "source":"shoreline"+i,
-            "layout":{
-                'visibility': 'visible'
-            },
-            "paint":{
-                "line-width": 12,
-                "line-color": "red",
-                "line-opacity": 0      //default to invisible
-            }
-            });
+        //     // second layer of the blurred boundary
+        //     map.addLayer({
+        //     "id":"blur-line-2"+i,
+        //     "type":"line",
+        //     "source":"shoreline"+i,
+        //     "layout":{
+        //         'visibility': 'visible'
+        //     },
+        //     "paint":{
+        //         "line-width": 12,
+        //         "line-color": "red",
+        //         "line-opacity": 0      //default to invisible
+        //     }
+        //     });
 
-            // third layer of the blurred boundary
-            map.addLayer({
-            "id":"blur-line-3"+i,
-            "type":"line",
-            "source":"shoreline"+i,
-            "layout":{
-                'visibility': 'visible'
-            },
-            "paint":{
-                "line-width": 20,
-                "line-color": "red",
-                "line-opacity": 0      //default to invisible
-            }
-            });
-        }
+        //     // third layer of the blurred boundary
+        //     map.addLayer({
+        //     "id":"blur-line-3"+i,
+        //     "type":"line",
+        //     "source":"shoreline"+i,
+        //     "layout":{
+        //         'visibility': 'visible'
+        //     },
+        //     "paint":{
+        //         "line-width": 20,
+        //         "line-color": "red",
+        //         "line-opacity": 0      //default to invisible
+        //     }
+        //     });
+        // }
         };
 
         // set the switches
@@ -845,9 +871,15 @@
         surveyed_year.forEach((yr) => {
             document.getElementById('flexSwitchCheckDefault'+yr).addEventListener('change', function(e) {
                 if (e.target.checked) {
-                    map.setPaintProperty('main-line'+yr, 'line-opacity', 1);
+                    offsetDistOfPoly.forEach((d, idx) =>{
+                        map.setPaintProperty(`polygon_${yr}_${d}`, 'fill-opacity', 1);
+                    });
+                    //map.setPaintProperty('main-line'+yr, 'fill-opacity', 1);
                 } else {
-                    map.setPaintProperty('main-line'+yr, 'line-opacity', 0);
+                    offsetDistOfPoly.forEach((d, idx) =>{
+                        map.setPaintProperty(`polygon_${yr}_${d}`, 'fill-opacity', 0);
+                    });
+                    //map.setPaintProperty('main-line'+yr, 'fill-opacity', 0);
                 }
             });
 
@@ -870,28 +902,35 @@
             };
 
             // set the current year to visible
+            offsetDistOfPoly.forEach(d => {
+                map.setPaintProperty(`polygon_${all_years_hist_shore[current]}_${d}`, 'fill-opacity', 1);
+            });
 
-            map.setPaintProperty("main-line" + all_years_hist_shore[current], 'line-opacity', 1);
+
+            //map.setPaintProperty("main-line" + all_years_hist_shore[current], 'line-opacity', 1);
 
             // set the previous year to invisible
+            offsetDistOfPoly.forEach(d => {
+                map.setPaintProperty(`polygon_${all_years_hist_shore[previous]}_${d}`, 'fill-opacity', 0);
+            });
 
-            map.setPaintProperty("main-line" + all_years_hist_shore[previous], 'line-opacity', 0);
+            //map.setPaintProperty("main-line" + all_years_hist_shore[previous], 'line-opacity', 0);
 
             //if the current year is not a surveyed year, then show the blurred layers
-            if (!surveyed_year.includes(all_years_hist_shore[current])) {
+            // if (!surveyed_year.includes(all_years_hist_shore[current])) {
 
-                map.setPaintProperty("blur-line" + all_years_hist_shore[current], 'line-opacity', 0.6);
-                map.setPaintProperty("blur-line-2" + all_years_hist_shore[current], 'line-opacity', 0.5);
-                map.setPaintProperty("blur-line-3" + all_years_hist_shore[current], 'line-opacity', 0.25);
-            };
+            //     map.setPaintProperty("blur-line" + all_years_hist_shore[current], 'line-opacity', 0.6);
+            //     map.setPaintProperty("blur-line-2" + all_years_hist_shore[current], 'line-opacity', 0.5);
+            //     map.setPaintProperty("blur-line-3" + all_years_hist_shore[current], 'line-opacity', 0.25);
+            // };
 
             // if the previous year is not a surveyed year, then hide the blurred layers
-            if (!surveyed_year.includes(all_years_hist_shore[previous])) {
+            // if (!surveyed_year.includes(all_years_hist_shore[previous])) {
 
-                map.setPaintProperty("blur-line" + all_years_hist_shore[previous], 'line-opacity', 0);
-                map.setPaintProperty("blur-line-2" + all_years_hist_shore[previous], 'line-opacity', 0);
-                map.setPaintProperty("blur-line-3" + all_years_hist_shore[previous], 'line-opacity', 0);
-            };
+            //     map.setPaintProperty("blur-line" + all_years_hist_shore[previous], 'line-opacity', 0);
+            //     map.setPaintProperty("blur-line-2" + all_years_hist_shore[previous], 'line-opacity', 0);
+            //     map.setPaintProperty("blur-line-3" + all_years_hist_shore[previous], 'line-opacity', 0);
+            // };
 
             // update the year label and range slider
             document.getElementById("customRangeLabelshore-change").textContent = all_years_hist_shore[current].toString();
@@ -935,34 +974,47 @@
 
             // set the current year to invisible
             //current is a map.load() wide variable
+            offsetDistOfPoly.forEach(d => {
+                map.setPaintProperty(`polygon_${all_years_hist_shore[previous]}_${d}`, 'fill-opacity', 0);
+            });
 
-            map.setPaintProperty("main-line" + all_years_hist_shore[previous], 'line-opacity', 0);
+            //map.setPaintProperty("main-line" + all_years_hist_shore[previous], 'line-opacity', 0);
 
             //if the current year is not a surveyed year, then close the blurred layers as well
-            if (!surveyed_year.includes(all_years_hist_shore[previous])) {
+            // if (!surveyed_year.includes(all_years_hist_shore[previous])) {
 
-                map.setPaintProperty("blur-line" + all_years_hist_shore[previous], 'line-opacity', 0);
-                map.setPaintProperty("blur-line-2" + all_years_hist_shore[previous], 'line-opacity', 0);
-                map.setPaintProperty("blur-line-3" + all_years_hist_shore[previous], 'line-opacity', 0);
-            };
+            //     map.setPaintProperty("blur-line" + all_years_hist_shore[previous], 'line-opacity', 0);
+            //     map.setPaintProperty("blur-line-2" + all_years_hist_shore[previous], 'line-opacity', 0);
+            //     map.setPaintProperty("blur-line-3" + all_years_hist_shore[previous], 'line-opacity', 0);
+            // };
 
             //show layers that are toggled on by the switch
             // toggled on layers should be kept visible
+            // surveyed_year.forEach((yr) => {
+            //     if (document.getElementById('flexSwitchCheckDefault'+yr).checked) {
+            //         map.setPaintProperty('main-line'+yr, 'line-opacity', 1);
+            //     }
+            // });
             surveyed_year.forEach((yr) => {
                 if (document.getElementById('flexSwitchCheckDefault'+yr).checked) {
-                    map.setPaintProperty('main-line'+yr, 'line-opacity', 1);;
+                    offsetDistOfPoly.forEach(d => {
+                        map.setPaintProperty(`polygon_${yr}_${d}`, 'fill-opacity', 1);
+                    });
                 }
             });
 
             // Show the layer for the year on the slider
-            map.setPaintProperty("main-line"+SLIDERYEAR, 'line-opacity', 1);
+            //map.setPaintProperty("main-line"+SLIDERYEAR, 'line-opacity', 1);
+            offsetDistOfPoly.forEach(d => {
+                map.setPaintProperty(`polygon_${SLIDERYEAR}_${d}`, 'fill-opacity', 1);
+            });
 
             // if the slider year is not a surveyed year, then show the blurred layers as well
-            if (!surveyed_year.includes(parseInt(SLIDERYEAR))) {
-                map.setPaintProperty("blur-line"+SLIDERYEAR, 'line-opacity', 0.6);
-                map.setPaintProperty("blur-line-2"+SLIDERYEAR, 'line-opacity', 0.5);
-                map.setPaintProperty("blur-line-3"+SLIDERYEAR, 'line-opacity', 0.25)
-            };
+            // if (!surveyed_year.includes(parseInt(SLIDERYEAR))) {
+            //     map.setPaintProperty("blur-line"+SLIDERYEAR, 'line-opacity', 0.6);
+            //     map.setPaintProperty("blur-line-2"+SLIDERYEAR, 'line-opacity', 0.5);
+            //     map.setPaintProperty("blur-line-3"+SLIDERYEAR, 'line-opacity', 0.25)
+            // };
 
             previous = all_years_hist_shore.indexOf(parseInt(SLIDERYEAR));
             if (previous != all_years_hist_shore.lehgth) {
