@@ -48,17 +48,18 @@ var config = {
                 pitch: 0.00,
                 bearing: 0.00
             },
+            dropDown: true,
 
             lines: [
                 {
                   name: 'RCP 8.5',
                   values: [{ year: 2020, ft: 0.1, lower: -0.1, upper:0.2 }, { year: 2030, ft: 0.2, lower:0, upper: 0.3}, { year: 2040, ft: 0.3, lower:0, upper: 0.6}, { year: 2050, ft: 0.4, lower:0, upper:0.8 }, { year: 2060, ft: 0.6, lower:0.1, upper:1.1 }, { year: 2070, ft: 0.8, lower:0.2, upper:1.5 },{ year: 2080, ft: 1.0, lower:0.3, upper:1.9 },{ year: 2090, ft: 1.2, lower:0.4, upper:2.4 },{ year: 2100, ft: 1.5, lower:0.5, upper:3.0 },{ year: 2110, ft: 1.6, lower:0.5, upper:3.2 },{ year: 2120, ft: 1.9, lower:0.7, upper:3.9 },{ year: 2130, ft: 2.1, lower:0.7, upper:4.5 },{ year: 2140, ft: 2.4, lower:0.8, upper:5.1 },{ year: 2150, ft: 2.7, lower:0.8, upper:5.8 }],
-                  color: 'blue'
+                  color: 'red'
                 },
                 {
                   name: 'RCP 4.5',
                   values: [{ year: 2020, ft: 0.1, lower:-0.1, upper:0.2 }, { year: 2030, ft: 0.2, lower:0, upper:0.4 }, { year: 2040, ft: 0.3, lower:0, upper:0.5 }, { year: 2050, ft: 0.4, lower:0, upper:0.8 }, { year: 2060, ft: 0.5, lower:0, upper:1.0 }, { year: 2070, ft: 0.6, lower:0.1, upper:1.3 },{ year: 2080, ft: 0.8, lower:0.1, upper:1.6 },{ year: 2090, ft: 0.9, lower:0.1, upper:2.0 },{ year: 2100, ft: 1.1, lower:0.1, upper:2.4 },{ year: 2110, ft: 1.2, lower:0.1, upper:2.7 },{ year: 2120, ft: 1.3, lower:0.1, upper:3.1 },{ year: 2130, ft: 1.5, lower:0.1, upper:3.6 },{ year: 2140, ft: 1.6, lower:0, upper:4.1 },{ year: 2150, ft: 1.7, lower:-0.1, upper: 4.6}],
-                  color: 'red'
+                  color: 'blue'
                 },
 
               ]

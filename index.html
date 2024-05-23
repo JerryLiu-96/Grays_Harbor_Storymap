@@ -409,6 +409,10 @@
     //get the length of the chapters
     let chapters_length = config.chapters.length;
 
+    let xScale;
+    let yScale;
+    let svg;
+
     config.chapters.forEach((record, idx) => {
         var container = document.createElement('div');
         var chapter = document.createElement('div');
@@ -518,6 +522,25 @@
 
         }
 
+        // add a dropdown selector for the sea level rise
+        if (record.dropDown) {
+            let select = document.createElement('select');
+            select.id = 'line-selector';
+
+            // values in the options should match line id in the svg
+            let options = ['all', 'RCP 4.5 line', 'RCP 8.5 line'];
+            let optionNames = ['All scenarios','RCP 4.5 Low emission Scenario','RCP 8.5 High Emission Scenario']
+
+            for (let i = 0; i < options.length; i++) {
+                let option = document.createElement('option');
+                option.value = options[i];
+                option.text = optionNames[i];
+                select.appendChild(option);
+            }
+            chapter.appendChild(select);
+        }
+
+
         // if lines exist for sea level rise section
         if (record.lines) {
 
@@ -526,17 +549,17 @@
             width = 360 - margin.left - margin.right, // Total width of the SVG
             height = 300 - margin.top - margin.bottom; // Total height of the SVG
 
-            d3_slr = document.createElement('div');
+            let d3_slr = document.createElement('div');
             // set the id of this div
             d3_slr.setAttribute('id', 'd3_slr');
 
             // set the xscale
-            var xScale = d3.scaleLinear()
+            xScale = d3.scaleLinear()
                 .domain([2020, 2150])    // the range of the projection years
                 .range([0, width - margin.right]);
 
             // set the yscale
-            var yScale = d3.scaleLinear()
+            yScale = d3.scaleLinear()
                 .domain([-2, 10])  // the range of the sea level rise in feet
                 .range([height, 0]);
 
@@ -552,13 +575,11 @@
                 .y0(d => yScale(d.lower))
                 .y1(d => yScale(d.upper));
 
-
-
-
             // append svg to the div
-            const svg = d3.select(d3_slr).append('svg')
-                .attr('width', width+margin.left+margin.right)
-                .attr('height', height+margin.top+margin.bottom)
+            svg = d3.select(d3_slr).append('svg')
+                .attr('width', width + margin.left + margin.right)
+                .attr('height', height + margin.top + margin.bottom)
+                .attr('id', 'd3_slr_svg')
                 .append('g')
                 .attr('transform', `translate(${margin.left}, ${margin.top})`);
 
@@ -605,6 +626,7 @@
             .enter() // Enter the data
             .append('path') // Append a path element for each data series
                 .attr('class', 'line')
+                .attr('id', d => d.name + " line")
                 .attr('d', d => lineGenerator(d.values)) // Generate the line
                 .attr('stroke', d => d.color) // Use the color from the data
                 .attr('fill', 'none')
@@ -617,16 +639,17 @@
             .enter() // Enter the data
             .append('path') // Append a path element for each data series
                 .attr('class', 'confidence-interval')
+                .attr('id', d => d.name + " confidence interval")
                 .attr('d', d => areaGenerator(d.values)) // Generate the line
                 .attr('stroke', d => d.color) // Use the color from the data
                 .attr('fill', d => d.color)
                 .attr('fill-opacity', 0.2)
                 .attr('stroke-dasharray', '5,5');
-
-
             chapter.appendChild(d3_slr);
 
         }
+
+
 
         if (record.image) {
             var image = new Image();
@@ -686,6 +709,8 @@
         features.appendChild(container);
     });
 
+
+
     story.appendChild(features);
 
     var footer = document.createElement('div');
@@ -744,6 +769,138 @@
     var scroller = scrollama();
 
     map.on("load", function() {
+
+        // toggle the line-selector of the d3.js
+        document.getElementById("line-selector").addEventListener('change', function() {
+            let selectedOption = this.value;
+            console.log(selectedOption);
+            if (selectedOption === "all") {
+                document.querySelectorAll('.line').forEach(function(line) {
+                    line.style.display = 'block';
+                });
+                document.querySelectorAll('.confidence-interval').forEach(function(range) {
+                    range.style.display = 'block';
+                })
+            } else {
+
+                // set all lines in the d3_slr to not visible
+                document.querySelectorAll('.line').forEach(function(line) {
+                    line.style.display = 'none';
+                });
+
+                // set all confidence intervals in the d3_slr to not visible
+                document.querySelectorAll('.confidence-interval').forEach(function(range) {
+                    range.style.display = 'none';
+                })
+
+                // set the selected line in the d3_slr to visible
+                document.getElementById(selectedOption).style.display ='block';
+
+                // set the selected confidence interval in the d3_slr to visible
+                document.getElementById(selectedOption.replace('line', 'confidence interval')).style.display = 'block';
+            }
+        });
+
+
+        svg.on('mousemove', function(event) {
+            svg.selectAll('.circle-slr').remove();
+            let [mx, my] = d3.pointer(event);
+
+            let year = Math.round(xScale.invert(mx));
+            year = Math.round(year / 10) * 10;
+
+
+            // get the config.chapters whose id is 'sea-level-rise'
+            let slr_chapter = config.chapters.filter(chapter => chapter.id === 'sea-level-rise')[0];
+
+
+            let slr_lines = slr_chapter.lines;
+
+
+            // example output: {name:, values:, color:}
+            let line_high_values = slr_lines.filter(line => line.name === 'RCP 8.5')[0].values;
+
+            console.log(line_high_values);
+            let line_low_values = slr_lines.filter(line => line.name === 'RCP 4.5')[0].values;
+
+
+            let high_color = slr_lines.filter(line => line.name === 'RCP 8.5')[0].color;
+            let low_color = slr_lines.filter(line => line.name === 'RCP 4.5')[0].color;
+            console.log(high_color)
+
+            // get the value of the year in the high rcp scenario that is selected by the mouseover
+            // example output: { year: 2020, ft: 0.1, lower: -0.1, upper:0.2 }
+            let line_high_values_of_year = line_high_values.filter(line => line.year === year)[0];
+            //console.log(line_high_values_of_year);
+
+            // get the value of the year in the low rcp scenario that is selected by the mouseover
+            // example output: { year: 2020, ft: 0.1, lower: -0.1, upper:0.2 }
+            let line_low_values_of_year = line_low_values.filter(line => line.year === year)[0];
+
+            // get the value of the drop down
+            let selectedOption = document.getElementById('line-selector').value;
+
+            if (selectedOption === 'all') {
+                svg.append('circle')
+                    .attr('class', 'circle-slr')
+                    .attr('cx', xScale(year))
+                    .attr('cy', yScale(line_high_values_of_year.upper))
+                    .attr('r', 5)
+                    .attr('fill', high_color);
+
+                    svg.append('circle')
+                    .attr('class', 'circle-slr')
+                    .attr('cx', xScale(year))
+                    .attr('cy', yScale(line_high_values_of_year.lower))
+                    .attr('r', 5)
+                    .attr('fill', high_color);
+
+                    svg.append('circle')
+                    .attr('class', 'circle-slr')
+                    .attr('cx', xScale(year))
+                    .attr('cy', yScale(line_low_values_of_year.upper))
+                    .attr('r', 5)
+                    .attr('fill', low_color);
+
+
+                    svg.append('circle')
+                    .attr('class', 'circle-slr')
+                    .attr('cx', xScale(year))
+                    .attr('cy', yScale(line_low_values_of_year.lower))
+                    .attr('r', 5)
+                    .attr('fill', low_color);
+            } else if (selectedOption === 'RCP 8.5 line') {
+                svg.append('circle')
+                    .attr('class', 'circle-slr')
+                    .attr('cx', xScale(year))
+                    .attr('cy', yScale(line_high_values_of_year.upper))
+                    .attr('r', 5)
+                    .attr('fill', high_color);
+
+                    svg.append('circle')
+                    .attr('class', 'circle-slr')
+                    .attr('cx', xScale(year))
+                    .attr('cy', yScale(line_high_values_of_year.lower))
+                    .attr('r', 5)
+                    .attr('fill', high_color);
+            } else if (selectedOption === 'RCP 4.5 line') {
+                svg.append('circle')
+                    .attr('class', 'circle-slr')
+                    .attr('cx', xScale(year))
+                    .attr('cy', yScale(line_low_values_of_year.upper))
+                    .attr('r', 5)
+                    .attr('fill', low_color);
+
+                    svg.append('circle')
+                    .attr('class', 'circle-slr')
+                    .attr('cx', xScale(year))
+                    .attr('cy', yScale(line_low_values_of_year.lower))
+                    .attr('r', 5)
+                    .attr('fill', low_color);
+            }
+
+        })
+
         if (config.use3dTerrain) {
             map.addSource('mapbox-dem', {
                 'type': 'raster-dem',
@@ -768,13 +925,20 @@
 
         let surveyed_year = [1700, 1860, 1911, 1926, 1942, 1954, 1967, 1974, 1986, 1995, 1997, 1999, 2001, 2006, 2015];
 
-        let offsetDistOfPoly = [4.5,9,13.6,18.3, 22.8, 27.3, 31.9, 36.6];
+        //must from small to large
+        let offsetDistOfPoly = [-22.5, -18, -13.5, -9, -4.5, 13.6, 9, 4.5];
 
-        let colorPoly =["#238b45","#74c476","#bae4b3","#edf8e9","#eff3ff","#bdd7e7","#6baed6","#2171b5"];
+        let colorPoly =["#238b45","#74c476","#bae4b3","#edf8e9","#eff3ff","#2171b5","#6baed6","#bdd7e7"];
 
-        // get the reverse list of offsetDistPoly
-        offsetDistOfPoly.reverse();
-        colorPoly.reverse();
+        map.addSource('shoreline_1860', {
+            "type": "geojson",
+            "data": "assets/ECY_estimated_shorelines/Oct1/1860.geojson"
+        });
+
+        map.addSource('shoreline_1911', {
+            "type": "geojson",
+            "data": "assets/ECY_estimated_shorelines/Oct1/1911.geojson"
+        });
 
         // add sources and layers of the shorelines from 1700 to 2015
         // set them to invisible by default
